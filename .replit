@@ -1,7 +1,7 @@
-modules = ["nodejs-20", "web", "python-3.12"]
+modules = ["web", "python-3.12", "nodejs-22"]
 [nix]
 channel = "stable-25_05"
-packages = ["freetype", "gumbo", "harfbuzz", "jbig2dec", "libjpeg_turbo", "mupdf", "openjpeg", "swig", "xcbuild"]
+packages = ["freetype", "gumbo", "harfbuzz", "jbig2dec", "libjpeg_turbo", "mupdf", "openjpeg", "swig", "xcbuild", "glib", "nspr", "nss", "atk", "at-spi2-atk", "dbus", "xorg.libX11", "xorg.libXcomposite", "xorg.libXdamage", "xorg.libXext", "xorg.libXfixes", "xorg.libXrandr", "libgbm", "xorg.libxcb", "libxkbcommon", "alsa-lib", "at-spi2-core"]
 
 [agent]
 expertMode = true

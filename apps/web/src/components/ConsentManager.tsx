@@ -1,35 +1,50 @@
 import { useEffect, useState } from "preact/hooks";
 import {
   getConsent,
+  getMonetizationConfig,
   loadAdScripts,
   onChange,
   setConsent,
   type ConsentPreferences,
 } from "../lib/consent.js";
 
-const ADS_ENABLED = import.meta.env.ADS_ENABLED === "true";
 const REGISTERED_AD_SCRIPTS = [] as const;
-
-function enablePermittedAds(preferences: ConsentPreferences) {
-  loadAdScripts(ADS_ENABLED, preferences, REGISTERED_AD_SCRIPTS);
-}
 
 export default function ConsentManager() {
   const [consent, setCurrentConsent] = useState<ConsentPreferences | null>(null);
+  const [adsEnabled, setAdsEnabled] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
   const [analytics, setAnalytics] = useState(false);
   const [ads, setAds] = useState(false);
 
   useEffect(() => {
+    let mounted = true;
     const current = getConsent();
     setCurrentConsent(current);
     setAnalytics(current?.analytics ?? false);
     setAds(current?.ads ?? false);
-    return onChange((updated) => {
+    void getMonetizationConfig()
+      .then((config) => {
+        if (mounted) {
+          setAdsEnabled(config.adsEnabled);
+          const savedConsent = getConsent();
+          if (savedConsent) {
+            loadAdScripts(config.adsEnabled, savedConsent, REGISTERED_AD_SCRIPTS);
+          }
+        }
+      })
+      .catch(() => {
+        if (mounted) setAdsEnabled(false);
+      });
+    const unsubscribe = onChange((updated) => {
       setCurrentConsent(updated);
       setAnalytics(updated?.analytics ?? false);
       setAds(updated?.ads ?? false);
     });
+    return () => {
+      mounted = false;
+      unsubscribe();
+    };
   }, []);
 
   function savePreferences(analyticsChoice: boolean, adsChoice: boolean) {
@@ -37,7 +52,10 @@ export default function ConsentManager() {
       analytics: analyticsChoice,
       ads: adsChoice,
     });
-    enablePermittedAds(saved);
+    setCurrentConsent(saved);
+    setAnalytics(saved.analytics);
+    setAds(saved.ads);
+    loadAdScripts(adsEnabled, saved, REGISTERED_AD_SCRIPTS);
     setShowPreferences(false);
   }
 
@@ -50,12 +68,13 @@ export default function ConsentManager() {
         type="button"
         onClick={() => setShowPreferences(true)}
       >
-        Pengaturan cookie
+        Ubah pilihan cookie
       </button>
       {bannerVisible && (
         <section
           class="consent-banner"
-          role="region"
+          role="dialog"
+          aria-modal="false"
           aria-labelledby="consent-heading"
           data-testid="consent-banner"
         >

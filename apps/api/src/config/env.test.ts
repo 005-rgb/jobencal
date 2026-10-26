@@ -11,6 +11,13 @@ describe("parseEnv", () => {
     const env = parseEnv({ DATABASE_URL: "postgresql://user:pass@localhost:5432/jobenapp" });
     expect(env.PORT).toBe(3001);
     expect(env.BASE_PATH).toBe("/api");
+    expect(env.ADS_ENABLED).toBe(false);
+  });
+
+  it("reads the explicit backend ad switch and rejects other values", () => {
+    const url = "postgresql://user:pass@localhost:5432/jobenapp";
+    expect(parseEnv({ DATABASE_URL: url, ADS_ENABLED: "true" }).ADS_ENABLED).toBe(true);
+    expect(() => parseEnv({ DATABASE_URL: url, ADS_ENABLED: "yes" })).toThrow("ADS_ENABLED");
   });
 
   it("rejects a port outside the TCP range", () => {

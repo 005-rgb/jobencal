@@ -7,6 +7,10 @@ const envSchema = z.object({
     .string()
     .regex(/^\/[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*$/, "must be an absolute URL path")
     .default("/api"),
+  ADS_ENABLED: z
+    .enum(["true", "false"])
+    .default("false")
+    .transform((value) => value === "true"),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 });
 

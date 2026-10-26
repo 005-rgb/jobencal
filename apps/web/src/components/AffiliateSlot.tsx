@@ -2,7 +2,13 @@ import { useEffect, useState } from "preact/hooks";
 import { validateAdPolicy, type AffiliateRule, type BlockedAdCategories } from "@jobenapp/shared";
 import rulesData from "@jobenapp/data/affiliate/rules.example.json";
 import blockedData from "@jobenapp/data/ads/blocked-categories.json";
-import { getConsent, onChange, type ConsentPreferences } from "../lib/consent.js";
+import {
+  getConsent,
+  getCachedMonetizationConfig,
+  onChange,
+  onMonetizationConfig,
+  type ConsentPreferences,
+} from "../lib/consent.js";
 
 const affiliateRules = rulesData as AffiliateRule[];
 const blockedCategories = blockedData as BlockedAdCategories;
@@ -22,24 +28,36 @@ function matchesResult(rule: AffiliateRule, result: bigint): boolean {
 
 export default function AffiliateSlot({ toolKey, resultRupiah }: Props) {
   const [consent, setCurrentConsent] = useState<ConsentPreferences | null>(null);
+  const [adsEnabled, setAdsEnabled] = useState(
+    getCachedMonetizationConfig()?.adsEnabled === true,
+  );
 
   useEffect(() => {
     setCurrentConsent(getConsent());
-    return onChange(setCurrentConsent);
+    const unsubscribeConsent = onChange(setCurrentConsent);
+    const unsubscribeConfig = onMonetizationConfig((config) =>
+      setAdsEnabled(config.adsEnabled),
+    );
+    return () => {
+      unsubscribeConsent();
+      unsubscribeConfig();
+    };
   }, []);
 
   const policyIssues = validateAdPolicy(affiliateRules, blockedCategories);
-  if (policyIssues.length > 0 || consent?.ads !== true) return null;
+  if (policyIssues.length > 0 || !adsEnabled || consent?.ads !== true) return null;
 
   const rule = affiliateRules.find(
     (candidate) =>
-      candidate.toolKey === toolKey && matchesResult(candidate, resultRupiah),
+      !candidate.isExample &&
+      candidate.toolKey === toolKey &&
+      matchesResult(candidate, resultRupiah),
   );
   if (!rule) return null;
 
   return (
     <aside class="affiliate-slot" aria-label="Tautan afiliasi">
-      <span class="affiliate-label">Tautan afiliasi · contoh</span>
+      <span class="affiliate-label">Tautan afiliasi</span>
       <a href={rule.destination} rel="sponsored noopener">
         {rule.title}
       </a>

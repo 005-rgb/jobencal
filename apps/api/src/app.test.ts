@@ -2,6 +2,26 @@ import request from "supertest";
 import { describe, expect, it, vi } from "vitest";
 import { createApp } from "./app.js";
 
+describe("GET /api/v1/public/monetization", () => {
+  it("fails closed by default and returns no private configuration", async () => {
+    const response = await request(createApp({ query: vi.fn() })).get(
+      "/api/v1/public/monetization",
+    );
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ adsEnabled: false });
+    expect(response.headers["cache-control"]).toBe("no-store");
+  });
+
+  it("exposes only the explicitly configured public switch", async () => {
+    const response = await request(
+      createApp({ query: vi.fn() }, "/api", { adsEnabled: true }),
+    ).get("/api/v1/public/monetization");
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ adsEnabled: true });
+    expect(Object.keys(response.body)).toEqual(["adsEnabled"]);
+  });
+});
+
 describe("GET /api/v1/health", () => {
   it("returns healthy only after a database query succeeds", async () => {
     const database = { query: vi.fn().mockResolvedValue({ rows: [{ "?column?": 1 }] }) };

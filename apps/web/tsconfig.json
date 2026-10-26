@@ -6,7 +6,8 @@
     "jsxImportSource": "preact",
     "paths": {
       "@jobenapp/shared": ["../../packages/shared/src/index.ts"],
-      "@jobenapp/engine": ["../../packages/engine/src/index.ts"]
+      "@jobenapp/engine": ["../../packages/engine/src/index.ts"],
+      "@jobenapp/data/*": ["../../data/*"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],

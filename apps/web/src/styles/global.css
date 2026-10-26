@@ -1662,3 +1662,355 @@ a:focus-visible {
     font-size: 24px;
   }
 }
+
+.footer-privacy-link {
+  flex: 0 0 auto;
+  color: #596376;
+  font-size: 10px;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ad-slot {
+  position: relative;
+  display: flex;
+  height: var(--slot-min-mobile);
+  min-height: var(--slot-min-mobile);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  overflow: hidden;
+  border: 1px dashed #d7dce7;
+  border-radius: 12px;
+  background: #f8f9fc;
+  color: #7b8494;
+}
+
+.ad-slot-label {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  color: #536074;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ad-slot-placeholder {
+  color: #596376;
+  font-size: 11px;
+}
+
+.ad-slot-sidebar {
+  display: none;
+}
+
+.core-playground-ad-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  align-items: start;
+  gap: 20px;
+}
+
+.core-playground-main {
+  min-width: 0;
+}
+
+.affiliate-slot {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid #dbe4f2;
+  border-radius: 12px;
+  background: #f7faff;
+}
+
+.affiliate-label {
+  display: block;
+  margin-bottom: 7px;
+  color: #53667e;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.affiliate-slot a {
+  color: #344a91;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.affiliate-slot p {
+  margin: 5px 0 0;
+  color: #687386;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.consent-settings-link {
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #596376;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.consent-settings-link:focus-visible,
+.consent-banner button:focus-visible,
+.ad-report-form button:focus-visible,
+.ad-report-form input:focus-visible,
+.ad-report-form select:focus-visible,
+.ad-report-form textarea:focus-visible {
+  outline: 3px solid #fa9b4e;
+  outline-offset: 3px;
+}
+
+.consent-banner {
+  position: fixed;
+  z-index: 30;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  width: min(920px, calc(100% - 32px));
+  margin-inline: auto;
+  padding: 20px;
+  border: 1px solid #dce2ec;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 12px 50px rgb(20 31 55 / 18%);
+}
+
+.consent-banner-copy h2 {
+  margin: 3px 0 6px;
+  color: var(--ink);
+  font-size: 18px;
+}
+
+.consent-banner-copy p:not(.consent-eyebrow) {
+  max-width: 570px;
+  margin: 0;
+  color: #536074;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.consent-eyebrow {
+  margin: 0;
+  color: #6459ce;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.consent-banner-controls,
+.consent-decisions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.consent-decision,
+.consent-preferences-toggle,
+.consent-save {
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid #cfd6e2;
+  border-radius: 9px;
+  background: #fff;
+  color: #202a3f;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.consent-decision:hover,
+.consent-preferences-toggle:hover {
+  background: #f4f6fa;
+}
+
+.consent-preferences {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: 12px;
+  padding-top: 15px;
+  border-top: 1px solid #e6e9f0;
+}
+
+.consent-preferences > p,
+.consent-preferences label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  margin: 0;
+  color: #263047;
+  font-size: 11px;
+}
+
+.consent-preferences label {
+  cursor: pointer;
+}
+
+.consent-preferences input {
+  width: 16px;
+  height: 16px;
+  accent-color: #5e52db;
+}
+
+.consent-preferences span {
+  display: grid;
+  gap: 3px;
+}
+
+.consent-preferences small,
+.consent-preferences > p span {
+  color: #687386;
+  font-size: 10px;
+}
+
+.consent-save {
+  border-color: #574bc9;
+  background: #574bc9;
+  color: #fff;
+}
+
+.ad-report-page {
+  max-width: 720px;
+  margin: 54px auto;
+  padding: clamp(24px, 5vw, 48px);
+  border: 1px solid #e2e6ee;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.ad-report-page h1 {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: clamp(27px, 5vw, 40px);
+  letter-spacing: -0.045em;
+}
+
+.ad-report-page > p {
+  color: #596376;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.ad-report-form {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.ad-report-form label {
+  display: grid;
+  gap: 7px;
+  color: #263047;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.ad-report-form input,
+.ad-report-form select,
+.ad-report-form textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #d8deea;
+  border-radius: 9px;
+  background: #fff;
+  color: #172033;
+  font: inherit;
+  font-size: 13px;
+}
+
+.ad-report-form small {
+  color: #687386;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.ad-report-form button {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9px;
+  background: #574bc9;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ad-report-form .ad-report-copy {
+  border: 1px solid #cfd6e2;
+  background: #fff;
+  color: #263047;
+}
+
+@media (min-width: 901px) {
+  .ad-slot {
+    height: var(--slot-min-desktop);
+    min-height: var(--slot-min-desktop);
+  }
+
+  .ad-slot-sidebar {
+    display: flex;
+  }
+
+  .consent-preferences {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .core-playground-ad-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-slot-sidebar {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .consent-banner {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .consent-banner-controls,
+  .consent-decisions {
+    justify-content: stretch;
+  }
+
+  .consent-decision,
+  .consent-preferences-toggle {
+    flex: 1 1 120px;
+  }
+
+  .consent-preferences {
+    grid-template-columns: 1fr;
+  }
+
+  .consent-save {
+    grid-column: 1 / -1;
+  }
+}

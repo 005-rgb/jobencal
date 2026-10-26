@@ -1,0 +1,33 @@
+---
+import "../styles/global.css";
+import AdReportForm from "../components/AdReportForm";
+import ConsentManager from "../components/ConsentManager";
+
+const recipient = import.meta.env.PUBLIC_AD_REPORT_EMAIL ?? "";
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,follow" />
+    <title>Laporkan iklan · JOBENAPP</title>
+  </head>
+  <body>
+    <main class="ad-report-page">
+      <a href="/">← Kembali ke JOBENAPP</a>
+      <h1>Laporkan iklan tidak pantas</h1>
+      <p>
+        Laporkan iklan dewasa, perjudian, menyesatkan, atau berbahaya. Jangan
+        sertakan nilai input, hasil hitung, atau informasi pribadi. Formulir
+        menyiapkan draf email dan tidak mengirim data ke JOBENAPP.
+      </p>
+      <AdReportForm client:load recipient={recipient} />
+    </main>
+    <footer class="site-footer ad-report-page">
+      <a class="footer-brand" href="/">JOBEN<span>APP</span></a>
+      <ConsentManager client:load />
+    </footer>
+  </body>
+</html>

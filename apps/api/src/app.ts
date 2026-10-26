@@ -5,10 +5,22 @@ export interface HealthDatabase {
   query: (text: string) => Promise<unknown>;
 }
 
-export function createApp(database: HealthDatabase, basePath = "/api"): Express {
+export interface PublicAppConfig {
+  readonly adsEnabled?: boolean;
+}
+
+export function createApp(
+  database: HealthDatabase,
+  basePath = "/api",
+  config: PublicAppConfig = {},
+): Express {
   const app = express();
   const api: Router = express.Router();
   app.disable("x-powered-by");
+  api.get("/v1/public/monetization", (_request, response) => {
+    response.setHeader("Cache-Control", "no-store");
+    response.json({ adsEnabled: config.adsEnabled === true });
+  });
   api.get("/v1/health", async (_request, response) => {
     try {
       await database.query("SELECT 1");

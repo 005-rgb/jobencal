@@ -18,7 +18,63 @@ export type ConsentListener = (
   preferences: ConsentPreferences | null,
 ) => void;
 
+export interface MonetizationConfig {
+  readonly adsEnabled: boolean;
+}
+
 const listeners = new Set<ConsentListener>();
+let monetizationConfigRequest: Promise<MonetizationConfig> | null = null;
+let cachedMonetizationConfig: MonetizationConfig | null = null;
+const monetizationConfigListeners = new Set<
+  (config: MonetizationConfig) => void
+>();
+
+export function getCachedMonetizationConfig(): MonetizationConfig | null {
+  return cachedMonetizationConfig;
+}
+
+export function onMonetizationConfig(
+  listener: (config: MonetizationConfig) => void,
+): () => void {
+  monetizationConfigListeners.add(listener);
+  if (cachedMonetizationConfig) listener(cachedMonetizationConfig);
+  return () => monetizationConfigListeners.delete(listener);
+}
+
+export function getMonetizationConfig(
+  request: typeof fetch = fetch,
+): Promise<MonetizationConfig> {
+  if (!monetizationConfigRequest) {
+    monetizationConfigRequest = request("/api/v1/public/monetization", {
+      credentials: "same-origin",
+      cache: "no-store",
+      headers: { Accept: "application/json" },
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Pengaturan monetisasi tidak tersedia.");
+        const payload: unknown = await response.json();
+        if (
+          typeof payload !== "object" ||
+          payload === null ||
+          typeof (payload as Record<string, unknown>).adsEnabled !== "boolean"
+        ) {
+          throw new Error("Pengaturan monetisasi tidak valid.");
+        }
+        const config = {
+          adsEnabled: (payload as { adsEnabled: boolean }).adsEnabled,
+        };
+        cachedMonetizationConfig = config;
+        monetizationConfigListeners.forEach((listener) => listener(config));
+        return config;
+      })
+      .catch((error: unknown) => {
+        monetizationConfigRequest = null;
+        console.warn("Monetisasi dinonaktifkan karena konfigurasi backend gagal dibaca.");
+        throw error;
+      });
+  }
+  return monetizationConfigRequest;
+}
 
 function isConsentPreferences(value: unknown): value is ConsentPreferences {
   if (typeof value !== "object" || value === null) return false;
@@ -79,6 +135,11 @@ export function setConsent(
   }
 
   listeners.forEach((listener) => listener(saved));
+  if (!saved.ads && typeof document !== "undefined") {
+    document
+      .querySelectorAll<HTMLScriptElement>("script[data-jobenapp-ad-script]")
+      .forEach((script) => script.remove());
+  }
   return saved;
 }
 

@@ -7,6 +7,7 @@ export default defineConfig({
       "@jobenapp/engine": fileURLToPath(
         new URL("./packages/engine/src/index.ts", import.meta.url),
       ),
+      "@jobenapp/data": fileURLToPath(new URL("./data", import.meta.url)),
     },
   },
   test: {

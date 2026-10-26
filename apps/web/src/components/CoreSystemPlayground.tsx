@@ -12,6 +12,7 @@ import {
   parsePercentageInput,
   parseRupiahInput,
 } from "@jobenapp/shared";
+import AffiliateSlot from "./AffiliateSlot.js";
 
 const METHOD_VERSION = "core-percentage/1.0.0";
 
@@ -238,6 +239,12 @@ export default function CoreSystemPlayground() {
             </div>
           )}
         </div>
+        {result && (
+          <AffiliateSlot
+            toolKey="percentage-demo"
+            resultRupiah={result.resultRupiah}
+          />
+        )}
       </div>
 
       <p class="core-disclaimer">
