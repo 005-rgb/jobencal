@@ -19,7 +19,7 @@ JOBENAPP adalah satu aplikasi Node.js yang melayani halaman statis hasil build d
 ### Batasan cPanel yang memengaruhi desain
 
 - Passenger menjalankan aplikasi sesuai permintaan dan dapat memulai ulang proses, jadi aplikasi harus stateless dan tidak memakai proses latar permanen.
-- Tugas terjadwal (backup, pembaruan data, sitemap) memakai Cron cPanel, bukan worker di dalam aplikasi.
+- Tugas terjadwal (backup, pemantauan pembaruan data, sitemap) memakai skrip CLI lewat Cron cPanel, bukan worker permanen di dalam aplikasi; job harus dibatasi agar tidak mengganggu permintaan API.
 - Memori dan jumlah proses dibatasi (CloudLinux LVE), jadi build dilakukan di komputer atau CI, lalu hasilnya diunggah.
 - WebSocket tidak diandalkan; semua fitur memakai HTTP biasa.
 
@@ -181,7 +181,7 @@ Pengunjung anonim hanya memanggil Apache; API dipanggil untuk tarif, peristiwa a
 - **Lapisan per modul:** `routes → controller → service → repository`. Hanya repository yang menyentuh SQL; service berisi aturan bisnis dan mudah diuji tanpa HTTP.
 - **Urutan middleware:** ID permintaan → Helmet → batas ukuran badan → cookie → pembatasan laju → muat sesi → CSRF → validasi Zod → handler → penanganan galat seragam.
 - **Tanpa status di memori:** sesi dan pembatasan laju ada di PostgreSQL, sehingga Passenger boleh memulai ulang proses kapan saja.
-- **Tugas terjadwal** berupa skrip CLI di `jobs/` yang dipanggil Cron, bukan proses latar di dalam aplikasi.
+- **Tugas terjadwal** berupa skrip CLI di `jobs/` yang dipanggil Cron, bukan proses latar di dalam aplikasi. Pemantauan sumber tarif dan tes draf dijalankan sebagai pekerjaan terbatas, tidak pernah menahan rute kalkulasi atau otomatis menerbitkan aturan.
 - **Email** lewat `nodemailer` ke SMTP cPanel, dengan percobaan ulang tiga kali; kegagalan dicatat dan tidak menggagalkan permintaan pengguna.
 - **Dokumentasi:** OpenAPI 3.1 dibuat dari skema Zod yang sama, jadi kontrak dan validasi tidak bisa berbeda.
 - **Logging:** `pino` berformat JSON dengan penyamaran data sensitif dan ID permintaan di setiap baris.
@@ -675,6 +675,9 @@ API berjalan di `https://jobenapp.cloud/api/v1`, memakai JSON, dan divalidasi de
 | POST | `/admin/rates/{rateKey}/versions/{id}/publish` | admin | Terbitkan; hanya jika semua uji lulus |
 | POST | `/admin/rates/{rateKey}/versions/{id}/archive` | admin | Arsipkan |
 | GET / POST / PATCH | `/admin/rate-test-cases` | editor | Kelola kasus uji baku |
+| GET | `/admin/rate-monitoring/schedules` | admin | Lihat jadwal, status sumber, dan waktu pemeriksaan berikutnya |
+| PATCH | `/admin/rate-monitoring/schedules/{sourceId}` | admin | Atur sumber aktif, frekuensi dalam batas aman, zona waktu, dan jendela waktu pemeriksaan |
+| GET | `/admin/rate-monitoring/jobs` | admin | Lihat hasil pemeriksaan dan validasi draf yang berjalan/selesai |
 | PUT | `/admin/regions/{slug}/minimum-wage/{year}` | editor | Isi UMR |
 | PUT | `/admin/holidays/{year}` | editor | Isi libur nasional |
 | GET / PATCH | `/admin/messages` | editor | Pesan kontak dan statusnya |
@@ -942,11 +945,20 @@ Berkas kecil yang memuat hasil build: `require('./dist/server.js')`. Server mema
 | Jadwal | Perintah | Fungsi |
 | --- | --- | --- |
 | Tiap jam | `node dist/jobs/cleanup.js` | Hapus sesi, token, dan `rate_limits` kedaluwarsa |
+| Tiap jam (runner ringan) | `node dist/jobs/rate-source-check.js` | Periksa hanya sumber yang jatuh tempo menurut jadwal backend; buat notifikasi/draf, tanpa menerbitkan tarif |
 | Harian 02.15 WIB | `backup.sh` | `pg_dump` terkompresi dan terenkripsi, kirim ke penyimpanan luar, buang cadangan lama |
 | Harian 03.00 WIB | `node dist/jobs/retention.js` | Hapus peristiwa analitik > 400 hari; hapus permanen akun yang lewat masa tunggu 7 hari |
 | 1 Des dan 1 Jun | `node dist/jobs/rate-reminder.js` | Kirim email pengingat meninjau tarif pajak, BPJS, UMR, dan libur |
 
 Perintah Cron memakai jalur lengkap ke Node dari lingkungan cPanel (`/home/smknwon2/nodevenv/public_html/jobenapp/22/bin/node`).
+Cron hanya memulai runner singkat; jadwal per sumber disimpan dan diatur di
+backend admin. Runner memakai lock agar tidak tumpang tindih, melakukan
+permintaan bersyarat saat didukung sumber, dan membatasi timeout, batch,
+konkurensi, serta koneksi database. Kegagalan dijadwalkan ulang dengan
+backoff; proses API dan kalkulasi tetap melayani versi tarif terbit tanpa
+menunggu job. Hasil pemeriksaan tidak menerbitkan tarif otomatis.
+Frekuensi per sumber tidak boleh lebih rapat daripada pemanggilan runner;
+frekuensi runner baru boleh dinaikkan setelah uji performa staging.
 
 ### Pemantauan dan performa
 
@@ -1087,6 +1099,8 @@ Sebuah fase dianggap selesai hanya jika **semua** butir di bawahnya terpenuhi da
 - [ ] Editor/admin tidak bisa masuk tanpa TOTP; editor tidak bisa menerbitkan tarif
 - [ ] Setiap spesifikasi/tarif menyimpan rumus, sumber, tanggal diperiksa dan berlaku, pembulatan, pengecualian, serta tim pemilik; pemeriksa berbeda dari pembuat
 - [ ] Alur tarif: draf → uji → uji gagal memblokir terbit (422) → pemeriksaan independen → terbit → `/rates/{key}/current` memakai versi baru pada tanggal berlaku; semuanya tercatat di `audit_logs`
+- [ ] Jadwal pemeriksaan sumber dapat diatur admin di backend; Cron menjalankan CLI dengan batas waktu, batch, konkurensi, lock, dan retry/backoff. Perubahan yang terdeteksi hanya membuat draf/notifikasi, bukan mengubah versi aktif atau menahan permintaan kalkulasi
+- [ ] Uji beban k6 dijalankan saat pemeriksaan sumber dan tes draf berlangsung bersamaan; target Bagian 9 tetap terpenuhi (50 permintaan/detik selama 5 menit, p95 < 300 ms, galat < 1%)
 - [ ] Tes otomatis membuktikan `password_hash`, token, dan sandi tidak pernah muncul di respons maupun log
 - [ ] Pekerjaan Cron `retention.js` menghapus akun yang lewat 7 hari dan semua datanya, dibuktikan tes
 

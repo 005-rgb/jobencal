@@ -88,6 +88,58 @@ perilaku deterministik, parsing/validasi, pemilihan versi data, galat eksplisit,
 dan reproduksi hasil. Fase ini tidak menetapkan angka tarif atau menerbitkan
 aturan hukum.
 
+### Pemantauan aturan tanpa membebani jalur utama
+
+Pemantauan sumber dan pemeriksaan calon perubahan adalah pekerjaan backend
+terjadwal, bukan bagian dari kalkulasi pengguna dan bukan proses latar permanen
+di aplikasi Passenger:
+
+- Jalankan pemeriksa sebagai skrip CLI terbatas di `jobs/`, dipanggil Cron
+  cPanel. Pengaturan di backend admin menentukan sumber yang aktif, frekuensi
+  dalam batas aman, waktu pemeriksaan berikutnya, zona waktu (`Asia/Jakarta`
+  sebagai bawaan), dan bila perlu jendela waktu sepi. Pengaturan jadwal
+  divalidasi dan dicatat di audit log; jangan menerima ekspresi jadwal bebas
+  yang dapat meminta frekuensi berlebihan. Simpan status pemeriksaan terakhir,
+  pemeriksaan berikutnya, dan hasil terakhir per sumber. Frekuensi per sumber
+  tidak boleh lebih rapat daripada pemanggilan runner terjadwal.
+- Jika sumber resmi menyediakan notifikasi/peristiwa yang andal, gunakan untuk
+  memasukkan pekerjaan ke antrean pemeriksaan; webhook/notifikasi tidak
+  menjalankan pengambilan sumber atau tes di dalam permintaan yang menerimanya.
+  Jika tidak, runner memeriksa sumber yang sudah jatuh tempo pada Cron
+  berikutnya. Maka “real-time” hanya dijanjikan untuk sumber yang benar-benar
+  menyediakan pemicu semacam itu dan worker yang mampu memproses antreannya;
+  sumber lain mengikuti interval pemeriksaan yang disetel.
+- Pemeriksa hanya mendeteksi perubahan. Gunakan ETag/`If-Modified-Since` bila
+  tersedia; beri batas waktu permintaan, jumlah sumber per batch, frekuensi
+  permintaan, dan konkurensi yang rendah serta dapat dikonfigurasi dalam rentang
+  aman. Cegah dua runner tumpang tindih dengan lock/idempotency; kegagalan
+  mencoba ulang dengan jeda bertambah dan jitter.
+- Jangan menahan koneksi/transaksi database selama mengambil sumber eksternal.
+  Batasi akses database job dan tulis status setelah permintaan selesai. Jadwal
+  berat ditempatkan di luar jam sibuk dan tidak bersamaan dengan backup,
+  migrasi, atau pekerjaan CPU berat. Pemeriksaan sumber tidak menjalankan
+  seluruh suite fixture di dalam permintaan HTTP; validasi draf dijalankan
+  sebagai pekerjaan terpisah dan statusnya dapat dilihat admin.
+- Perbedaan yang ditemukan membuat notifikasi dan versi **draf** untuk
+  pemeriksaan manusia. Tidak ada tarif aktif yang berubah otomatis, build situs
+  tidak terpicu otomatis, dan permintaan kalkulasi tidak menunggu pemeriksaan
+  sumber, tes draf, maupun respons email. Publikasi tetap mengikuti alur draf →
+  tes → pemeriksa independen → admin menerbitkan.
+- Rute publik hanya membaca versi yang sudah diterbitkan dan berlaku. Setelah
+  penerbitan, ETag/cache hanya diperbarui untuk kunci aturan terdampak. Jika
+  sumber atau runner gagal, catat status dan kirim peringatan setelah batas
+  percobaan; jangan merusak health endpoint atau kalkulator lain. Jika versi
+  aktif melewati masa berlaku, tampilkan status data kedaluwarsa dan terapkan
+  kebijakan alat berisiko tinggi—jangan menyebut data lama masih mutakhir.
+
+Gerbang performa: uji beban API ketika job pemeriksaan dan tes draf berjalan
+bersamaan. Keduanya tetap memenuhi target beban/performa Bagian 9; job gagal
+atau tertunda tidak boleh menahan respons API, membuka transaksi lama, atau
+menjalankan pekerjaan tanpa batas. Pada tahap awal, jadwalkan runner ringan
+sekali per jam dan gunakan interval per sumber yang lebih renggang; ubah
+frekuensi runner hanya setelah uji staging membuktikan anggaran sumber daya
+tetap terpenuhi.
+
 ## 3. Subfase alat
 
 ### Fase 1.1 — Gaji bersih (PPh 21 TER dan BPJS)
