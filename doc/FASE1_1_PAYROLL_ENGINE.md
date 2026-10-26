@@ -1,8 +1,10 @@
 # Fase 1.1 — Engine logika gaji bersih
 
-**Cakupan perubahan:** logika kalkulasi murni di `@jobenapp/engine`. Widget,
-halaman alat, fixture pajak/BPJS bersumber, dan pemuatan data aturan resmi
-belum termasuk dalam tahap logika ini. Fase 1.1 belum siap diterbitkan.
+**Cakupan implementasi:** engine kalkulasi murni di `@jobenapp/engine`, formulir
+payroll lokal di browser, pemeriksaan gerbang rilis, dan laporan yang dapat
+dicetak atau diunduh sebagai CSV setelah aturan serta fixture lolos tinjauan.
+Dataset tarif resmi dan fixture emas belum tersedia, sehingga halaman saat ini
+tetap terkunci dan Fase 1.1 belum siap diterbitkan.
 
 ## Perilaku yang dihitung
 
@@ -30,6 +32,41 @@ belum termasuk dalam tahap logika ini. Fase 1.1 belum siap diterbitkan.
 - Riwayat kerja wajib mencakup setiap bulan kerja sebelum bulan ini berikut
   jumlah PPh yang benar-benar dipotong; ketidaklengkapan riwayat adalah galat,
   bukan asumsi potongan nol.
+- Batas atas setiap lapisan TER bulanan bersifat inklusif. Nilai tepat pada
+  batas tetap menggunakan lapisan tersebut; lapisan berikutnya berlaku mulai
+  satu Rupiah di atasnya.
+
+## Formulir, laporan, dan gerbang rilis
+
+Formulir meminta klasifikasi komponen tunai, bruto kena pajak, dasar upah enam
+program BPJS, status awal tahun, partisipasi setiap program, dan riwayat
+potongan bulanan. Seluruh perhitungan berjalan di browser; tidak ada input gaji
+yang dikirim ke API.
+
+Formulir juga meminta konfirmasi bahwa kewajiban pajak telah dimulai sejak
+awal tahun, tidak ada pemberi kerja lain, pekerjaan tidak berakhir pada bulan
+yang dihitung, dan tidak menggunakan gross-up. Kasus kewajiban yang mulai
+pertengahan tahun, pekerjaan yang berakhir, beberapa pemberi kerja, atau
+gross-up ditolak karena varian dan rumus rinci pada referensi belum diverifikasi.
+
+Laporan menampilkan ringkasan pajak, rincian porsi BPJS pegawai/pemberi kerja/
+pemerintah, versi aturan, catatan, dan hasil bersih. Setelah perhitungan
+berhasil, laporan dapat dicetak/disimpan ke PDF melalui browser atau diunduh
+sebagai CSV. Tidak ada form atau laporan bernilai gaji sebelum aturan dan
+fixture pembanding lolos gerbang:
+
+- Kedua dataset aturan harus lengkap, bertanggal efektif, berstatus terbit, dan
+  mempunyai pemeriksa independen.
+- Setidaknya 30 fixture PPh 21/TER dan 20 fixture BPJS harus memiliki sumber,
+  hasil harapan, berkas test, hasil test lulus, dan pemeriksa yang berbeda dari
+  penyusunnya.
+- Sebelum produksi, validasi slip gaji nyata yang dianonimkan harus dicatat.
+  Sampai itu terpenuhi, hasil perhitungan (jika gerbang sebelumnya dibuka)
+  diberi label validasi terbatas dan bukan untuk produksi.
+
+Saat ini `data/payroll-release.ts` sengaja tidak berisi aturan terbit maupun
+fixture emas. Gerbang menolak dataset yang belum lengkap; vektor matematika
+sintetis tidak dapat digunakan untuk membukanya.
 
 ## Kontrak data aturan dan batas publikasi
 
@@ -80,7 +117,9 @@ vektor TER sintetis dan 20 vektor kontribusi sintetis dengan hasil hitung
 bilangan bulat. Vektor menguji kontrak matematika, pembatasan upah, pemisahan
 porsi, dan pembulatan. Semuanya secara eksplisit **bukan** tarif hukum dan
 **tidak dihitung** sebagai minimum 50 fixture emas bersumber pada adendum
-Fase 1.
+Fase 1. Tes gerbang di `apps/web/src/data/payroll-release.test.ts` menggunakan
+metadata dummy hanya untuk menguji perilaku gate; metadata tersebut juga bukan
+fixture payroll dan tidak membuka gate aplikasi.
 
 Tes tambahan menguji rekonsiliasi akhir tahun, status/TRE kategori, PTKP,
 penghasilan bagian tahun, riwayat potong, deduksi yang diizinkan, status aturan,

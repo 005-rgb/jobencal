@@ -8,10 +8,13 @@
 - The Fase 1.0 percentage playground calculates in the browser and does not
   require the API or database. The API still requires a development
   `DATABASE_URL` before its health endpoint can report `db: "ok"`.
-- The Phase 1.1 payroll engine and module report are implemented, but real
-  salary calculations remain unavailable until independently reviewed,
-  effective PPh 21 and BPJS rule datasets are supplied. Synthetic test vectors
-  must never be used as published rates.
+- Phase 1.1 includes a browser-local payroll form and reports that can be
+  printed or downloaded as CSV after the release gate opens. The gate currently
+  stays closed: reviewed effective PPh 21/BPJS datasets and 30 PPh 21/TER plus
+  20 BPJS sourced, independently checked fixtures are not present. Synthetic
+  math vectors and gate tests are not payroll fixtures.
+- Results must not be used for production until they have also been compared
+  with anonymized real payslips. Inputs remain in the user's browser.
 - Configure `DATABASE_URL` as a Replit development PostgreSQL connection string.
   Never put database credentials in the repository or frontend.
 - The Replit database is development-only. Production remains the PostgreSQL
@@ -43,4 +46,4 @@ See [`doc/FASE1_0_CORE_SYSTEM.md`](doc/FASE1_0_CORE_SYSTEM.md) for the
 implemented calculation contract and the boundary between the core demo and
 the 12 calculator modules that remain unverified.
 See [`doc/FASE1_1_PAYROLL_ENGINE.md`](doc/FASE1_1_PAYROLL_ENGINE.md) for the
-payroll engine contract and its data-publication gate.
+payroll engine, gated input/report flow, and evidence required for publication.

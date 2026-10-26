@@ -22,6 +22,7 @@ export {
   PAYROLL_TAX_RULE_KEY,
   PayrollCalculationError,
   calculateNetSalary,
+  validatePayrollRuleData,
 } from "./payroll.js";
 export type {
   BpjsContributionLine,

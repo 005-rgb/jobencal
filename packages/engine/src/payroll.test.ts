@@ -7,6 +7,7 @@ import {
   PAYROLL_BPJS_RULE_KEY,
   PAYROLL_TAX_RULE_KEY,
   calculateNetSalary,
+  validatePayrollRuleData,
   type BpjsProgramCode,
   type BpjsRuleData,
   type CalculateNetSalaryInput,
@@ -83,8 +84,8 @@ function makeTaxData(
     terCategoryByTaxStatus: { TEST: "A", TEST_B: "B" },
     ptkpByTaxStatusRupiah: { TEST: 100_000n, TEST_B: 200_000n },
     terMonthlyBrackets: {
-      A: [{ upperBoundExclusiveGrossRupiah: null, rateBasisPoints: 500n }],
-      B: [{ upperBoundExclusiveGrossRupiah: null, rateBasisPoints: 1_000n }],
+      A: [{ upperBoundInclusiveGrossRupiah: null, rateBasisPoints: 500n }],
+      B: [{ upperBoundInclusiveGrossRupiah: null, rateBasisPoints: 1_000n }],
     },
     annualTaxBrackets: [
       { upperBoundExclusiveRupiah: 1_000_000n, rateBasisPoints: 1_000n },
@@ -233,6 +234,16 @@ function expectPayrollError(
 }
 
 describe("Phase 1.1 synthetic math vectors", () => {
+  it("validates complete rule datasets without publishing or calculating them", () => {
+    expect(validatePayrollRuleData(makeTaxData(), makeBpjsData())).toEqual([]);
+    expect(
+      validatePayrollRuleData(
+        makeTaxData({ taxableIncomeRoundingUnitRupiah: 0n }),
+        makeBpjsData(),
+      ),
+    ).toContain("Aturan PPh 21: Satuan pembulatan PKP harus lebih besar dari nol.");
+  });
+
   it("labels its vectors as non-regulatory, non-publication test data", () => {
     expect(mathVectors.notice).toContain("do not contain official");
   });
@@ -243,8 +254,8 @@ describe("Phase 1.1 synthetic math vectors", () => {
       currentMonth: makeMonth(6, BigInt(fixture.gross)),
       taxRules: makeTaxRules({
         terMonthlyBrackets: {
-          A: [{ upperBoundExclusiveGrossRupiah: null, rateBasisPoints: rate }],
-          B: [{ upperBoundExclusiveGrossRupiah: null, rateBasisPoints: rate }],
+          A: [{ upperBoundInclusiveGrossRupiah: null, rateBasisPoints: rate }],
+          B: [{ upperBoundInclusiveGrossRupiah: null, rateBasisPoints: rate }],
         },
       }),
     });
@@ -299,17 +310,49 @@ describe("PPh 21 categories, final-month reconciliation, and payroll history", (
       taxRules: makeTaxRules({
         terMonthlyBrackets: {
           A: [
-            { upperBoundExclusiveGrossRupiah: 100_000n, rateBasisPoints: 100n },
-            { upperBoundExclusiveGrossRupiah: null, rateBasisPoints: 200n },
+            { upperBoundInclusiveGrossRupiah: 100_000n, rateBasisPoints: 100n },
+            { upperBoundInclusiveGrossRupiah: null, rateBasisPoints: 200n },
           ],
-          B: [{ upperBoundExclusiveGrossRupiah: null, rateBasisPoints: 300n }],
+          B: [{ upperBoundInclusiveGrossRupiah: null, rateBasisPoints: 300n }],
         },
       }),
     });
     const result = calculateNetSalary(input);
     expect(result.tax.category).toBe("A");
-    expect(result.tax.currentWithholdingRupiah).toBe(2_000n);
+    expect(result.tax.currentWithholdingRupiah).toBe(1_000n);
     expect(result.tax.mode).toBe("ter-monthly");
+  });
+
+  it("uses the next TER bracket only above the inclusive upper bound", () => {
+    const makeResult = (gross: bigint) =>
+      calculateNetSalary(
+        makeInput({
+          currentMonth: makeMonth(6, gross),
+          taxRules: makeTaxRules({
+            terMonthlyBrackets: {
+              A: [
+                {
+                  upperBoundInclusiveGrossRupiah: 5_400_000n,
+                  rateBasisPoints: 0n,
+                },
+                {
+                  upperBoundInclusiveGrossRupiah: null,
+                  rateBasisPoints: 25n,
+                },
+              ],
+              B: [
+                {
+                  upperBoundInclusiveGrossRupiah: null,
+                  rateBasisPoints: 0n,
+                },
+              ],
+            },
+          }),
+        }),
+      );
+
+    expect(makeResult(5_400_000n).tax.currentWithholdingRupiah).toBe(0n);
+    expect(makeResult(5_400_001n).tax.currentWithholdingRupiah).toBe(13_500n);
   });
 
   it("does not use a current-year status change instead of the year-start status", () => {
@@ -469,11 +512,11 @@ describe("PPh 21 categories, final-month reconciliation, and payroll history", (
               terMonthlyBrackets: {
                 A: [
                   {
-                    upperBoundExclusiveGrossRupiah: 100_000n,
+                    upperBoundInclusiveGrossRupiah: 100_000n,
                     rateBasisPoints: 500n,
                   },
                 ],
-                B: [{ upperBoundExclusiveGrossRupiah: null, rateBasisPoints: 500n }],
+                B: [{ upperBoundInclusiveGrossRupiah: null, rateBasisPoints: 500n }],
               },
             }),
           }),

@@ -32,8 +32,8 @@ export interface TaxBracket {
 }
 
 export interface MonthlyTerBracket {
-  /** Upper bound is exclusive; null means the final, unbounded bracket. */
-  readonly upperBoundExclusiveGrossRupiah: bigint | null;
+  /** Upper bound is inclusive; null means the final, unbounded bracket. */
+  readonly upperBoundInclusiveGrossRupiah: bigint | null;
   readonly rateBasisPoints: bigint;
 }
 
@@ -388,7 +388,7 @@ function assertTaxRules(data: PayrollTaxRuleData): void {
     assertAmount(ptkp, `PTKP ${status}`);
     assertOrderedBrackets(
       brackets,
-      (bracket) => bracket.upperBoundExclusiveGrossRupiah,
+    (bracket) => bracket.upperBoundInclusiveGrossRupiah,
       `Tabel TER ${category}`,
     );
   }
@@ -463,6 +463,32 @@ function assertBpjsRules(data: BpjsRuleData): void {
       }
     }
   }
+}
+
+/**
+ * Validate the shape and required numeric values of both rule datasets without
+ * selecting a date or performing a salary calculation.
+ */
+export function validatePayrollRuleData(
+  taxData: PayrollTaxRuleData,
+  bpjsData: BpjsRuleData,
+): readonly string[] {
+  const issues: string[] = [];
+  for (const [label, validate] of [
+    ["Aturan PPh 21", () => assertTaxRules(taxData)],
+    ["Aturan BPJS", () => assertBpjsRules(bpjsData)],
+  ] as const) {
+    try {
+      validate();
+    } catch (error) {
+      issues.push(
+        error instanceof Error
+          ? `${label}: ${error.message}`
+          : `${label}: data tidak valid.`,
+      );
+    }
+  }
+  return issues;
 }
 
 function assertRuleVersion(
@@ -571,7 +597,7 @@ function chooseBracket<T extends {
 ): T {
   const selected = brackets.find((bracket) => {
     const upper = getUpper(bracket);
-    return upper === null || amount < upper;
+    return upper === null || amount <= upper;
   });
   if (!selected) {
     fail("invalid_payroll_rules", "Tabel tarif tidak mencakup nilai yang dihitung.");
@@ -850,7 +876,7 @@ export function calculateNetSalary(
     const bracket = chooseBracket(
       terBrackets,
       current.taxable,
-      (candidate) => candidate.upperBoundExclusiveGrossRupiah,
+      (candidate) => candidate.upperBoundInclusiveGrossRupiah,
     );
     const withholding = roundRatio(
       current.taxable * bracket.rateBasisPoints,
