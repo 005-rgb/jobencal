@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "categories": [
+    {
+      "id": "pornografi",
+      "label": "Pornografi dan konten dewasa",
+      "keywords": [
+        "pornografi",
+        "porn",
+        "konten dewasa",
+        "adult content",
+        "adult dating",
+        "explicit content",
+        "situs kencan dewasa"
+      ],
+      "domains": [
+        "pornhub.com",
+        "xvideos.com",
+        "xnxx.com",
+        "redtube.com"
+      ]
+    },
+    {
+      "id": "perjudian",
+      "label": "Perjudian",
+      "keywords": [
+        "judi",
+        "judi online",
+        "kasino",
+        "casino",
+        "taruhan",
+        "betting",
+        "sportsbook",
+        "togel",
+        "slot",
+        "poker",
+        "gambling"
+      ],
+      "domains": [
+        "bet365.com",
+        "1xbet.com",
+        "stake.com",
+        "pokerstars.com",
+        "casino.com"
+      ]
+    }
+  ]
+}

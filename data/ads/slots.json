@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "slots": [
+    {
+      "id": "tool-top",
+      "size": "leaderboard",
+      "minHeightMobile": 90,
+      "minHeightDesktop": 90,
+      "position": "atas-alat"
+    },
+    {
+      "id": "tool-sidebar",
+      "size": "medium-rectangle",
+      "minHeightMobile": 0,
+      "minHeightDesktop": 250,
+      "position": "sidebar"
+    },
+    {
+      "id": "results-bottom",
+      "size": "mobile-banner",
+      "minHeightMobile": 100,
+      "minHeightDesktop": 100,
+      "position": "bawah-hasil"
+    }
+  ]
+}

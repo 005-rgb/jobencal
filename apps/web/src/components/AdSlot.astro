@@ -1,0 +1,30 @@
+---
+import slotsConfig from "@jobenapp/data/ads/slots.json";
+
+interface Props {
+  slotId: string;
+}
+
+const { slotId } = Astro.props;
+const slot = slotsConfig.slots.find((item) => item.id === slotId);
+
+if (!slot) {
+  throw new Error(`Konfigurasi slot iklan tidak ditemukan: ${slotId}`);
+}
+
+const desktopOnly = slot.position === "sidebar";
+---
+
+<div
+  class:list={["ad-slot", desktopOnly && "ad-slot-sidebar"]}
+  data-slot={slot.id}
+  data-slot-position={slot.position}
+  data-slot-size={slot.size}
+  data-ads-enabled={import.meta.env.ADS_ENABLED === "true"}
+  aria-label={`Slot iklan, posisi ${slot.position}`}
+  role="region"
+  style={`--slot-min-mobile:${slot.minHeightMobile}px;--slot-min-desktop:${slot.minHeightDesktop}px`}
+>
+  <span class="ad-slot-label">Iklan</span>
+  <span class="ad-slot-placeholder">Placeholder kosong · jaringan iklan belum aktif</span>
+</div>

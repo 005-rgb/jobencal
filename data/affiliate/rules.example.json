@@ -1,0 +1,14 @@
+[
+  {
+    "id": "demo-education",
+    "toolKey": "percentage-demo",
+    "category": "edukasi-keuangan",
+    "title": "Contoh bacaan: memahami hitungan persentase",
+    "description": "Materi edukasi contoh dari JOBENAPP. Bukan merchant atau penawaran nyata.",
+    "destination": "/#prinsip",
+    "condition": {
+      "minResultRupiah": "0"
+    },
+    "isExample": true
+  }
+]
