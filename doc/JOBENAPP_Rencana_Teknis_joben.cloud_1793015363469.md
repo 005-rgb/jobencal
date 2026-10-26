@@ -1065,8 +1065,13 @@ Sebuah fase dianggap selesai hanya jika **semua** butir di bawahnya terpenuhi da
 
 ### Fase 1 — Mesin hitung dan 12 alat inti
 
+- Rincian wajib per subfase, gerbang sumber, dan kasus uji ada di
+  [Adendum Fase 1 — Core System dan 12 alat](ADENDUM_FASE1_CORE_SYSTEM.md).
+  Implementasikan dan tutup Fase 1.0 lalu subfase alat 1.1–1.12; target
+  keseluruhan adendum adalah minimal 209 fixture, termasuk 12 fixture invoice
+  yang menutup kekosongan hitungan di tabel Bagian 9.
 - [ ] 12 alat di bagian 2 tersedia sebagai fungsi murni di `packages/engine`, tanpa impor dari `apps/`
-- [ ] Seluruh kasus uji baku bagian 9 lulus (minimal 197 kasus) dengan selisih sesuai toleransi per alat
+- [ ] Seluruh kasus uji baku bagian 9 dan adendum lulus (minimal 209 fixture) dengan selisih sesuai toleransi per alat
 - [ ] Mengubah nilai di `data/rates/*.json` mengubah hasil tanpa mengubah kode (dibuktikan tes)
 - [ ] Input rupiah menerima `1.500.000` dan `1500000`; input tidak valid menampilkan pesan jelas berbahasa Indonesia
 - [ ] Hasil muncul < 100 ms setelah input pada ponsel kelas menengah; tampilan benar di 320 px tanpa gulir horizontal
@@ -1197,21 +1202,17 @@ pastikan aplikasi lokal/preview berfungsi penuh untuk fondasi ini.
 ### Prompt Fase 1 — mesin hitung dan 12 alat
 
 ```text
-Jalankan Fase 1 sesuai Prompt induk dan kriteria Bagian 11. Implementasikan
-seluruh mesin hitung murni TypeScript serta UI kalkulator yang dapat digunakan
-untuk 12 alat di Bagian 2. Pastikan rupiah deterministik (hindari galat float
-yang memengaruhi hasil), aturan dan tarif dibaca dari data versi, setiap hasil
-memperlihatkan langkah, asumsi, rujukan, masa berlaku, serta pembulatan.
-Lengkapi validasi Indonesia, format rupiah, salin, bagikan, cetak/PDF, dan
-pemrosesan foto/PDF tetap di browser sesuai PRD.
+Ikuti doc/ADENDUM_FASE1_CORE_SYSTEM.md dan kriteria Bagian 11. Kerjakan Fase
+1.0 terlebih dahulu, lalu satu subfase alat 1.1–1.12 pada satu waktu. Untuk
+setiap subfase, tuntaskan spesifikasi/sumber, fungsi murni TypeScript, fixture
+independen, UI, dan E2E sebelum menyatakan subfase lulus. Pertahankan semua
+ketentuan sumber, versi, masa berlaku, pembulatan, dan privasi pada adendum.
 
-Untuk PPh 21, BPJS, KPR, dan marketplace, gunakan sumber resmi terkini,
-kategorisasi, pengecualian, dan tanggal efektif; jangan menanam tarif contoh
-yang belum diverifikasi. Buat fixture bersumber untuk seluruh minimum Bagian 9
-(197 kasus), kasus batas, pembulatan, dan uji sifat. Jalankan uji mesin dan
-E2E widget; periksa semua 12 alat pada viewport mobile dan desktop. Jangan
-menandai fase selesai jika tarif inti belum punya sumber/pemeriksa atau hasil
-perhitungan belum cocok.
+Jangan menanam tarif/keputusan yang belum diverifikasi. Target penutupan
+keseluruhan adalah minimal 209 fixture (197 minimum lama ditambah 12 fixture
+invoice), beserta uji batas, pembulatan, uji sifat, E2E, dan pemeriksaan mobile
+serta desktop. Jangan menyatakan alat atau fase selesai jika sumber, pemeriksa
+kedua, hasil independen, atau gerbang khususnya belum lulus.
 ```
 
 ### Prompt Fase 2 — API, akun, riwayat, dan admin
