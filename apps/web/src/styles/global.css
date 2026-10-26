@@ -1951,6 +1951,383 @@ a:focus-visible {
   }
 }
 
+.payroll-module-card {
+  max-width: 1000px;
+}
+
+.payroll-module-card .module-detail-heading {
+  margin-bottom: 22px;
+}
+
+.payroll-module-card .tool-status {
+  border: 1px solid #f0dfba;
+  border-radius: 999px;
+  background: #fff8eb;
+  color: #805516;
+  font-weight: 700;
+}
+
+.payroll-module-content {
+  display: grid;
+  gap: 22px;
+  margin-top: 28px;
+}
+
+.payroll-readiness {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 14px;
+  padding: 19px 20px;
+  border: 1px solid #f0dfba;
+  border-radius: 15px;
+  background: linear-gradient(110deg, #fffaf0, #fffdf8);
+}
+
+.payroll-readiness-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 11px;
+  background: #f6e8ca;
+  color: #845713;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.payroll-readiness strong {
+  display: block;
+  margin: 1px 0 5px;
+  color: #463718;
+  font-size: 14px;
+}
+
+.payroll-readiness p {
+  max-width: 640px;
+  margin: 0;
+  color: #736448;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.payroll-readiness-state {
+  align-self: center;
+  padding: 7px 9px;
+  border: 1px solid #ead7ae;
+  border-radius: 8px;
+  color: #805516;
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.payroll-capabilities {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.payroll-capabilities article {
+  min-height: 153px;
+  padding: 17px;
+  border: 1px solid #e7eaf1;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.payroll-capabilities article > span {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 9px;
+  background: #f0efff;
+  color: #6357d9;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.payroll-capabilities h2 {
+  margin: 13px 0 6px;
+  color: #202a40;
+  font-size: 13px;
+}
+
+.payroll-capabilities p {
+  margin: 0;
+  color: #687386;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.payroll-report-preview {
+  padding: clamp(17px, 3vw, 26px);
+  border: 1px solid #e1e6ef;
+  border-radius: 17px;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgb(235 233 255 / 52%), transparent 35%),
+    #fbfcfe;
+}
+
+.payroll-report-preview > header,
+.payroll-programs-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.payroll-report-kicker {
+  color: #7165dd;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.payroll-report-preview > header h2 {
+  margin: 5px 0 0;
+  color: #1d2940;
+  font-size: clamp(18px, 2.5vw, 22px);
+  letter-spacing: -0.035em;
+}
+
+.payroll-report-label {
+  padding: 7px 9px;
+  border: 1px solid #e0e4ed;
+  border-radius: 8px;
+  background: #fff;
+  color: #667084;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.payroll-report-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 20px 0 22px;
+}
+
+.payroll-report-summary > div {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 14px;
+  border: 1px solid #e8ebf2;
+  border-radius: 11px;
+  background: rgb(255 255 255 / 88%);
+}
+
+.payroll-report-summary dt {
+  color: #657084;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.payroll-report-summary dd {
+  margin: 0;
+  color: #747d8d;
+  font-size: 10px;
+  font-weight: 650;
+  text-align: right;
+}
+
+.payroll-report-summary .payroll-report-total {
+  border-color: #d9d6ff;
+  background: #f5f4ff;
+}
+
+.payroll-report-total dt,
+.payroll-report-total dd {
+  color: #4238a7;
+  font-weight: 800;
+}
+
+.payroll-programs-heading {
+  margin-bottom: 11px;
+}
+
+.payroll-programs-heading h3 {
+  margin: 0;
+  color: #29344a;
+  font-size: 12px;
+}
+
+.payroll-programs-heading > span {
+  color: #788295;
+  font-size: 10px;
+  text-align: right;
+}
+
+.payroll-program-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.payroll-program-grid li {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 9px;
+  row-gap: 5px;
+  padding: 12px;
+  border: 1px solid #e8ebf2;
+  border-radius: 11px;
+  background: #fff;
+}
+
+.payroll-program-code {
+  display: grid;
+  width: 31px;
+  height: 28px;
+  grid-row: span 2;
+  place-items: center;
+  border-radius: 8px;
+  background: #eef1f8;
+  color: #44516a;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.payroll-program-name {
+  overflow: hidden;
+  color: #354158;
+  font-size: 10px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.payroll-program-pending {
+  color: #8991a0;
+  font-size: 9px;
+}
+
+.payroll-report-footnote {
+  margin: 15px 0 0;
+  color: #798295;
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+.payroll-review-note {
+  padding: 16px 18px;
+  border-left: 3px solid #6b60df;
+  border-radius: 0 10px 10px 0;
+  background: #f5f4ff;
+}
+
+.payroll-review-note strong {
+  color: #4038a0;
+  font-size: 11px;
+}
+
+.payroll-review-note p {
+  margin: 5px 0 0;
+  color: #626b80;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+@media (max-width: 850px) {
+  .payroll-capabilities {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .payroll-program-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .payroll-module-card .tool-status {
+    margin-left: 0;
+  }
+
+  .payroll-module-content {
+    gap: 16px;
+    margin-top: 22px;
+  }
+
+  .payroll-readiness {
+    grid-template-columns: 34px minmax(0, 1fr);
+    padding: 15px;
+  }
+
+  .payroll-readiness-state {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .payroll-capabilities {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .payroll-capabilities article {
+    min-height: 0;
+  }
+
+  .payroll-capabilities h2 {
+    margin-top: 10px;
+  }
+
+  .payroll-report-preview > header,
+  .payroll-programs-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .payroll-report-label {
+    white-space: normal;
+  }
+
+  .payroll-report-summary {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .payroll-program-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .payroll-programs-heading > span {
+    text-align: left;
+  }
+}
+
+@media print {
+  .site-header,
+  .site-footer,
+  .access-back-link {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .page-shell {
+    width: 100%;
+  }
+
+  .payroll-module-card {
+    max-width: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
 .core-playground-ad-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px;

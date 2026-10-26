@@ -21,3 +21,9 @@ marketplace rates are published. The homepage is a tool catalogue; each of the
 [`doc/FASE1_0_CORE_SYSTEM.md`](doc/FASE1_0_CORE_SYSTEM.md) for scope and
 evidence, and [`doc/FASE0_VERIFICATION.md`](doc/FASE0_VERIFICATION.md) for
 staging blockers.
+
+The Phase 1.1 payroll calculation engine is implemented with synthetic
+arithmetic regression vectors and a detailed result contract. It is not ready
+to calculate real salaries: reviewed, effective PPh 21 and BPJS rule datasets
+are intentionally not included. See
+[`doc/FASE1_1_PAYROLL_ENGINE.md`](doc/FASE1_1_PAYROLL_ENGINE.md).

@@ -11,6 +11,7 @@ export function getStaticPaths() {
 }
 
 const { tool } = Astro.props;
+const isPayrollTool = tool.slug === "gaji-bersih";
 ---
 
 <!doctype html>
@@ -38,36 +39,130 @@ const { tool } = Astro.props;
       </header>
       <main class="module-page">
         <a class="access-back-link" href="/#modul">← Kembali ke semua modul</a>
-        <section class={`module-detail-card tone-${tool.tone}`}>
+        <section class:list={["module-detail-card", `tone-${tool.tone}`, isPayrollTool && "payroll-module-card"]}>
           <div class="module-detail-heading">
             <span class="tool-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d={tool.icon} /></svg>
             </span>
             <span class="tool-category">{tool.category}</span>
-            <span class="tool-status">Dalam persiapan</span>
+            <span class="tool-status">
+              {isPayrollTool ? "Engine tersedia · aturan belum ditinjau" : "Dalam persiapan"}
+            </span>
           </div>
           <p class="section-kicker">FASE {tool.phase}</p>
           <h1>{tool.name}</h1>
-          <p class="module-detail-description">{tool.description}</p>
+          <p class="module-detail-description">
+            {isPayrollTool
+              ? "Rincian PPh 21 dan enam program BPJS dengan aturan berversi. Perhitungan nyata menunggu dataset yang ditinjau independen."
+              : tool.description}
+          </p>
 
-          <div class="module-status-panel" role="status">
-            <span class="module-status-icon" aria-hidden="true">i</span>
-            <div>
-              <h2>Kalkulator belum tersedia</h2>
-              <p>
-                Halaman ini belum menjalankan perhitungan. Kalkulator hanya akan
-                diaktifkan setelah rumus, sumber, masa berlaku, pembulatan, dan
-                hasil uji diverifikasi. Tidak ada hasil contoh yang ditampilkan
-                sebagai hasil nyata.
-              </p>
+          {isPayrollTool ? (
+            <div class="payroll-module-content">
+              <div class="payroll-readiness" role="status">
+                <span class="payroll-readiness-icon" aria-hidden="true">!</span>
+                <div>
+                  <strong>Perhitungan nyata belum dibuka</strong>
+                  <p>
+                    Engine Phase 1.1 sudah mendukung alur di bawah. Dataset TER,
+                    PPh 21 tahunan, PTKP, dan iuran BPJS harus memiliki sumber
+                    resmi, masa berlaku, serta tinjauan independen sebelum hasil
+                    gaji dapat ditampilkan.
+                  </p>
+                </div>
+                <span class="payroll-readiness-state">Menunggu data aturan</span>
+              </div>
+
+              <div class="payroll-capabilities" aria-label="Cakupan engine gaji bersih">
+                <article>
+                  <span>01</span>
+                  <h2>Komponen terpisah</h2>
+                  <p>Nilai tunai, bruto kena PPh 21, dan dasar upah per program dicatat terpisah.</p>
+                </article>
+                <article>
+                  <span>02</span>
+                  <h2>Pajak bulanan &amp; akhir</h2>
+                  <p>TER bulanan serta rekonsiliasi masa pajak terakhir memakai riwayat potong.</p>
+                </article>
+                <article>
+                  <span>03</span>
+                  <h2>Enam program BPJS</h2>
+                  <p>JKN, JHT, JP, JKK, JKM, dan JKP dirinci dengan dasar dan porsi masing-masing.</p>
+                </article>
+              </div>
+
+              <section class="payroll-report-preview" aria-labelledby="payroll-report-title">
+                <header>
+                  <div>
+                    <span class="payroll-report-kicker">FORMAT RINCIAN</span>
+                    <h2 id="payroll-report-title">Laporan gaji bersih</h2>
+                  </div>
+                  <span class="payroll-report-label">Pratinjau struktur</span>
+                </header>
+                <dl class="payroll-report-summary">
+                  <div><dt>Gaji tunai</dt><dd>Menunggu aturan terverifikasi</dd></div>
+                  <div><dt>Bruto kena PPh 21</dt><dd>Menunggu aturan terverifikasi</dd></div>
+                  <div><dt>Mode pajak</dt><dd>TER bulanan / rekonsiliasi akhir</dd></div>
+                  <div class="payroll-report-total"><dt>Gaji bersih</dt><dd>Belum dapat dihitung</dd></div>
+                </dl>
+                <div class="payroll-programs-heading">
+                  <h3>Rincian program BPJS</h3>
+                  <span>Porsi pegawai dan pemberi kerja terpisah</span>
+                </div>
+                <ul class="payroll-program-grid">
+                  {[
+                    ["JKN", "Jaminan Kesehatan Nasional"],
+                    ["JHT", "Jaminan Hari Tua"],
+                    ["JP", "Jaminan Pensiun"],
+                    ["JKK", "Jaminan Kecelakaan Kerja"],
+                    ["JKM", "Jaminan Kematian"],
+                    ["JKP", "Jaminan Kehilangan Pekerjaan"],
+                  ].map(([code, name]) => (
+                    <li>
+                      <span class="payroll-program-code">{code}</span>
+                      <span class="payroll-program-name">{name}</span>
+                      <span class="payroll-program-pending">Aturan belum ditinjau</span>
+                    </li>
+                  ))}
+                </ul>
+                <p class="payroll-report-footnote">
+                  Tidak ada angka contoh atau tarif perkiraan pada laporan ini.
+                  Hasil akan menyertakan versi aturan, periode berlaku,
+                  pembulatan, asumsi, dan peringatan yang relevan.
+                </p>
+              </section>
+
+              <div class="payroll-review-note">
+                <strong>Gerbang publikasi</strong>
+                <p>
+                  Tarif dan batas tetap berupa data berversi. Kedua kelompok
+                  aturan harus efektif pada periode hitung, memiliki rujukan
+                  sumber, dan diperiksa oleh orang yang berbeda dari penyusunnya.
+                </p>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div class="module-status-panel" role="status">
+              <span class="module-status-icon" aria-hidden="true">i</span>
+              <div>
+                <h2>Kalkulator belum tersedia</h2>
+                <p>
+                  Halaman ini belum menjalankan perhitungan. Kalkulator hanya akan
+                  diaktifkan setelah rumus, sumber, masa berlaku, pembulatan, dan
+                  hasil uji diverifikasi. Tidak ada hasil contoh yang ditampilkan
+                  sebagai hasil nyata.
+                </p>
+              </div>
+            </div>
+          )}
 
-          <div class="module-detail-actions">
-            <a class="button button-primary" href="/#modul">
-              Kembali ke katalog <span aria-hidden="true">→</span>
-            </a>
-          </div>
+          {!isPayrollTool && (
+            <div class="module-detail-actions">
+              <a class="button button-primary" href="/#modul">
+                Kembali ke katalog <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          )}
 
           <div class="module-trust-points">
             <p><span aria-hidden="true">✓</span> Hasil harus dapat ditelusuri ke metode dan sumber.</p>
@@ -78,7 +173,11 @@ const { tool } = Astro.props;
       </main>
       <footer class="site-footer">
         <a class="footer-brand" href="/">JOBEN<span>APP</span></a>
-        <p>Modul Fase {tool.phase} · status implementasi belum tersedia.</p>
+        <p>
+          {isPayrollTool
+            ? "Modul Fase 1.1 · engine tersedia, dataset aturan menunggu tinjauan."
+            : `Modul Fase ${tool.phase} · status implementasi belum tersedia.`}
+        </p>
         <a class="footer-privacy-link" href="/lapor-iklan">Laporkan iklan tidak pantas</a>
         <ConsentManager client:load />
       </footer>
