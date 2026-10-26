@@ -84,6 +84,22 @@ Orang Indonesia mencari hitungan spesifik (“gaji bersih UMR Bekasi”, “cici
 11. Pembuat invoice / kwitansi (unduh PDF)
 12. Kalender libur nasional & cuti bersama
 
+### Spesifikasi akurasi dan tata kelola per alat
+
+Sebelum alat atau perubahan tarif diterbitkan, spesifikasi berversi untuk alat tersebut wajib mencatat: rumus dan definisi setiap variabel; satuan dan urutan langkah; sumber primer beserta URL, nomor/pasal atau judul dokumen, tanggal sumber diperiksa, dan tanggal mulai/akhir berlakunya; aturan pembulatan pada tahap antara dan hasil akhir; pengecualian, batas, dan perilaku input tidak valid; serta tim penanggung jawab, pemeriksa yang berbeda dari penyusun, tanggal pemeriksaan, dan pemicu/jadwal pemeriksaan berikutnya. Tarif dan ambang yang berubah menurut tahun, wilayah, bank, kategori, program, atau jenis penjual harus menjadi data berversi—bukan konstanta di mesin hitung. Halaman hasil menampilkan metode, rujukan, masa berlaku, dan tanggal pemeriksaan terakhir. Bila sumber belum cukup atau masa berlakunya tidak diketahui, versi tidak boleh diterbitkan.
+
+#### Spesifikasi khusus alat keuangan berisiko tinggi
+
+| Alat | Rumus dan cakupan aturan | Sumber primer dan masa berlaku | Pembulatan dan pengecualian | Pemeriksa pembaruan |
+| --- | --- | --- | --- | --- |
+| Gaji bersih / PPh 21 TER | Untuk pegawai yang tercakup TER, masa selain masa pajak terakhir memakai bruto bulanan × tarif TER sesuai kategori. Pada masa pajak terakhir, hitung kembali kewajiban setahun menurut ketentuan PPh 21 yang berlaku, lalu kurangi pemotongan masa sebelumnya. PTKP, kategori TER, komponen bruto, dan status pegawai menjadi input/data berversi. | UU HPP (UU 7/2021), PP 58/2023, PMK 168/2023 beserta perubahan/petunjuk DJP yang berlaku. Gunakan naskah pada JDIH Kemenkeu/DJP; simpan pasal, URL, tanggal diperiksa, dan tanggal efektif tiap aturan. | Nyatakan pembulatan PKP, pajak tahunan, dan pemotongan bulanan secara terpisah mengikuti aturan sumber; jangan menyamakan pembulatan tahunan dan bulanan. Uji kategori TER, perubahan status, pegawai masuk/keluar di tengah tahun, masa pajak terakhir, serta fasilitas atau pengecualian yang masih berlaku. | Editor pajak/payroll menyusun; spesialis pajak lain memeriksa. Tinjau sebelum tiap tahun pajak dan segera saat aturan DJP berubah. |
+| PPh 21 freelancer / tenaga ahli | Klasifikasikan penerima, sifat kesinambungan, dan cara pembayaran terlebih dahulu. Dasar pengenaan pajak dan tarif progresif Pasal 17 mengikuti klasifikasi serta ketentuan yang efektif; jangan menerapkan persentase DPP atau faktor tarif tambahan secara universal. | UU 7/2021, PMK 168/2023, dan aturan/petunjuk DJP terkait yang berlaku; JDIH Kemenkeu/DJP. Setiap komponen rumus dan pengecualian harus menunjuk pasal serta periode efektifnya. | Catat pembulatan DPP/PKP dan hasil pajak sesuai tahap yang ditentukan regulasi. Uji pembayaran berkesinambungan/tidak, kumulatif/tidak, ragam tenaga ahli, status identitas pajak, dan ambang tarif. | Editor pajak/payroll; pemeriksaan kedua oleh spesialis pajak. Tinjau minimal tiap semester dan pada setiap perubahan aturan. |
+| Gaji bersih / iuran BPJS | BPJS Kesehatan PPU: dasar upah yang berlaku × tarif, lalu pisahkan porsi pemberi kerja dan pekerja; terapkan batas upah, anggota keluarga, dan ketentuan yang relevan. BPJS Ketenagakerjaan dihitung terpisah per program (JHT, JP, JKK, JKM, JKP), dengan dasar upah, porsi, batas, dan kelas risiko masing-masing sesuai aturan. | Peraturan dan tabel resmi BPJS Kesehatan/BPJS Ketenagakerjaan serta peraturan pemerintah/menteri yang mendasarinya. Simpan dokumen untuk setiap program, wilayah/kelas bila relevan, tanggal pemeriksaan, dan periode efektif; perlakukan batas yang diperbarui berkala sebagai versi baru. | Bulatkan setiap porsi hanya pada tahap yang ditentukan aturan, bukan dengan satu kebijakan umum. Uji nilai tepat di bawah/pada/di atas batas, upah minimum bila relevan, pemisahan porsi, kelas risiko JKK, jumlah tanggungan, serta insentif/pengecualian sementara. | Editor HR/compliance menyusun; spesialis penggajian memeriksa. Tinjau berkala sebelum periode pembaruan tahunan dan segera setelah keputusan/peraturan BPJS atau pemerintah berubah. |
+| Simulasi KPR dan cicilan | Anuitas: `A = P × i / (1 − (1 + i)^−n)`; bunga bulanan = sisa pokok × `i`, pokok = angsuran − bunga. Flat: angsuran pokok `P/n` ditambah bunga sesuai dasar flat yang dinyatakan. Efektif: pokok `P/n`, bunga bulanan atas sisa pokok. Untuk fixed-to-floating, hitung ulang dari sisa pokok dan tenor tersisa menggunakan suku bunga periode baru. Nyatakan konvensi konversi suku bunga tahunan ke bulanan. | Suku bunga dan biaya wajib bersumber dari simulasi/ketentuan bank pemberi pinjaman untuk produk, tanggal, dan skenario yang dipilih; simpan tanggal kutipan dan masa promo. Rujuk BI/OJK untuk ketentuan yang memang diaturnya (mis. LTV/FTV), bukan sebagai sumber suku bunga bank. Bedakan angka input/asumsi pengguna dari penawaran bank. | Nyatakan presisi bunga, pembulatan angsuran tiap bulan, dan cara penyesuaian selisih angsuran terakhir agar sisa pokok tepat nol. Tampilkan provisi, administrasi, asuransi, pajak, dan notaris terpisah dari pokok kecuali pengguna memasukkannya. Uji perubahan bunga, tenor, pelunasan dipercepat, serta biaya/penalti sesuai produk. | Editor perbankan/keuangan memeriksa model dan kutipan bank. Suku bunga ditinjau pada setiap perubahan penawaran; asumsi regulasi saat ada pembaruan BI/OJK. |
+| Biaya marketplace | Total biaya merupakan penjumlahan komponen yang benar-benar berlaku untuk platform, kategori produk, tipe/program penjual, harga transaksi, diskon/voucher, dan status pesanan. Dokumentasikan dasar pengenaan setiap komponen; jangan memakai rentang komisi umum sebagai tarif perhitungan. | Seller Centre/Education Center resmi Shopee, Tokopedia, dan TikTok Shop serta pengumuman kebijakan masing-masing. Simpan URL/dokumen, kategori/program yang dicakup, tanggal diumumkan/diperiksa, dan tanggal efektif per platform. | Ikuti urutan dasar komisi, diskon, voucher, biaya tetap, dan pembulatan yang tercermin pada kebijakan/invoice platform. Uji perbedaan per platform, pembatalan, retur/refund, subsidi ongkir, promo, biaya per pesanan, dan batas maksimum bila kebijakan menetapkannya. | Editor e-commerce/merchant specialist memeriksa. Tinjau setiap pengumuman perubahan dan lakukan pemeriksaan berkala sekurangnya bulanan selama tarif mudah berubah. |
+
+Alat lain tetap wajib memiliki spesifikasi dengan kolom yang sama sebelum diterbitkan: HPP (jumlah biaya langsung/tidak langsung dan alokasi susut), harga jual/margin (bedakan margin atas harga jual dari markup atas biaya), BEP (biaya tetap dibagi kontribusi per unit), cicilan kendaraan (metode amortisasi dan biaya terpisah), terbilang (aturan angka/desimal), kompresi foto/PDF (batas format/ukuran dan pelestarian rasio), invoice (pajak/diskon sebagai konfigurasi yang memiliki sumber dan periode), serta kalender libur (keputusan resmi per tahun). Untuk alat tanpa aturan tarif eksternal, cantumkan standar/definisi yang menjadi acuan dan pemilik pemeriksa metode.
+
 ### Di luar MVP (fase berikutnya)
 
 - Kalender Hijriah, weton, jadwal sholat, kesehatan dan keluarga, investasi dan zakat
@@ -246,14 +262,14 @@ jobenapp/
 
 ## 6. Skema tabel & hubungan data
 
-Skema memakai 19 tabel PostgreSQL 13 atau lebih baru. Tidak ada ekstensi yang butuh hak superuser (`citext`, `btree_gist` dihindari), sehingga aman di cPanel.
+Skema memakai 20 tabel PostgreSQL 13 atau lebih baru. Tidak ada ekstensi yang butuh hak superuser (`citext`, `btree_gist` dihindari), sehingga aman di cPanel.
 
 ### Daftar tabel
 
 | Kelompok | Tabel | Fungsi |
 | --- | --- | --- |
 | Identitas | `users`, `sessions`, `auth_tokens`, `consents` | Akun, sesi, token verifikasi/reset, rekam persetujuan (UU PDP) |
-| Katalog | `categories`, `tools`, `tool_contents`, `tool_relations` | Kategori, alat, FAQ/penjelasan/contoh, alat terkait |
+| Katalog | `categories`, `tools`, `tool_contents`, `tool_relations`, `tool_spec_versions` | Kategori, alat, FAQ/penjelasan/contoh, alat terkait, rumus dan aturan alat berversi |
 | Tarif & data | `rate_versions`, `rate_test_cases`, `regions`, `minimum_wages`, `holidays` | Tarif bertanggal berlaku, kasus uji baku, wilayah, UMR, libur nasional |
 | Pengguna | `projects`, `calculations` | Proyek dan riwayat hitungan |
 | Operasional | `contact_messages`, `analytics_events`, `audit_logs`, `rate_limits` | Pesan, analitik tanpa data pribadi, log audit, pembatasan laju |
@@ -262,9 +278,10 @@ Skema memakai 19 tabel PostgreSQL 13 atau lebih baru. Tidak ada ekstensi yang bu
 
 - `users` 1—N `sessions`, `auth_tokens`, `projects`, `calculations`
 - `categories` 1—N `tools`; `tools` 1—N `tool_contents`; `tools` N—N `tools` lewat `tool_relations`
+- `tools` 1—N `tool_spec_versions`; setiap versi menyimpan rumus, pembulatan, pengecualian, sumber, masa berlaku, dan hasil pemeriksaan untuk alat tersebut
 - `projects` 1—N `calculations` (opsional); `tools` 1—N `calculations`
 - `rate_versions` dirujuk oleh `calculations.rate_version_ids`, sehingga hitungan lama tetap bisa direproduksi dengan tarif saat itu
-- `rate_test_cases` terikat pada `rate_key` dan `tools`; dipakai untuk pratinjau uji sebelum tarif diterbitkan
+- `rate_test_cases` terikat pada `rate_key`, `tools`, dan versi spesifikasi alat; dipakai untuk pratinjau uji sebelum tarif diterbitkan
 - `regions` 1—N `minimum_wages` (satu nilai per tahun); `regions` menunjuk induknya sendiri (provinsi → kabupaten/kota)
 - `users` 1—N `audit_logs` (pelaku) dan `rate_versions` (pembuat dan penerbit)
 
@@ -374,6 +391,37 @@ CREATE TABLE tool_relations (
   CHECK (tool_id <> related_tool_id)
 );
 
+CREATE TABLE tool_spec_versions (
+  id                 serial PRIMARY KEY,
+  tool_id            integer NOT NULL REFERENCES tools(id) ON DELETE CASCADE,
+  version            integer NOT NULL,
+  formula_definition jsonb NOT NULL,             -- variabel, satuan, dan langkah hitung
+  rounding_rule      jsonb NOT NULL,              -- tahap, metode, presisi
+  exception_rules    jsonb NOT NULL DEFAULT '{}',
+  source_refs        jsonb NOT NULL,              -- sumber, URL, pasal, diperiksa, masa berlaku
+  effective_from     date NOT NULL,
+  effective_to       date,
+  owner_team         text NOT NULL,
+  created_by         uuid REFERENCES users(id),
+  reviewed_by        uuid REFERENCES users(id),
+  reviewed_at        timestamptz,
+  source_checked_at  date NOT NULL,
+  review_due_at      date,
+  status             publish_st NOT NULL DEFAULT 'draft',
+  published_by       uuid REFERENCES users(id),
+  published_at       timestamptz,
+  created_at         timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (tool_id, version),
+  CHECK (effective_to IS NULL OR effective_to >= effective_from),
+  CHECK (jsonb_typeof(source_refs) = 'array'),
+  CHECK (status <> 'published' OR (
+    created_by IS NOT NULL AND reviewed_by IS NOT NULL
+    AND reviewed_by <> created_by AND reviewed_at IS NOT NULL
+    AND published_by IS NOT NULL AND published_at IS NOT NULL
+    AND jsonb_array_length(source_refs) > 0
+  ))
+);
+
 CREATE TABLE rate_versions (
   id             serial PRIMARY KEY,
   rate_key       text NOT NULL,                  -- 'pph21_ter','ptkp','bpjs',...
@@ -383,13 +431,28 @@ CREATE TABLE rate_versions (
   data           jsonb NOT NULL,
   source_url     text NOT NULL,
   source_note    text NOT NULL DEFAULT '',
+  source_refs    jsonb NOT NULL DEFAULT '[]',     -- sumber tambahan, pasal, tanggal diperiksa
+  source_checked_at date NOT NULL,
+  formula_type   text NOT NULL DEFAULT 'standard',
+  rounding_rule  jsonb NOT NULL DEFAULT '{}',
+  exception_rules jsonb NOT NULL DEFAULT '{}',
+  owner_team     text NOT NULL,
+  reviewed_by    uuid REFERENCES users(id),
+  reviewed_at    timestamptz,
+  review_due_at  date,
   status         publish_st NOT NULL DEFAULT 'draft',
   created_by     uuid REFERENCES users(id),
   published_by   uuid REFERENCES users(id),
   published_at   timestamptz,
   created_at     timestamptz NOT NULL DEFAULT now(),
   UNIQUE (rate_key, version),
-  CHECK (effective_to IS NULL OR effective_to >= effective_from)
+  CHECK (effective_to IS NULL OR effective_to >= effective_from),
+  CHECK (jsonb_typeof(source_refs) = 'array'),
+  CHECK (status <> 'published' OR (
+    created_by IS NOT NULL AND reviewed_by IS NOT NULL
+    AND reviewed_by <> created_by AND reviewed_at IS NOT NULL
+    AND published_by IS NOT NULL AND published_at IS NOT NULL
+  ))
 );
 -- satu tarif terbit per tanggal berlaku (tumpang tindih dicek juga di service)
 CREATE UNIQUE INDEX rate_pub_uq ON rate_versions (rate_key, effective_from)
@@ -399,11 +462,17 @@ CREATE TABLE rate_test_cases (
   id         serial PRIMARY KEY,
   rate_key   text NOT NULL,
   tool_id    integer NOT NULL REFERENCES tools(id) ON DELETE CASCADE,
+  spec_version_id integer NOT NULL REFERENCES tool_spec_versions(id),
+  rate_version_id integer REFERENCES rate_versions(id),
   name       text NOT NULL,
   input      jsonb NOT NULL,
   expected   jsonb NOT NULL,
   source_ref text NOT NULL,                      -- tautan atau pasal rujukan
-  tolerance  numeric NOT NULL DEFAULT 0          -- 0 = harus persis sama
+  regulation_ref text NOT NULL DEFAULT '',       -- peraturan/pasal atau kebijakan platform
+  is_edge_case boolean NOT NULL DEFAULT false,
+  last_verified_at timestamptz,
+  verified_by uuid REFERENCES users(id),
+  tolerance  numeric NOT NULL DEFAULT 0          -- toleransi dalam satuan hasil (mis. rupiah)
 );
 
 CREATE TABLE regions (
@@ -744,19 +813,23 @@ Pengujian dipusatkan pada dua hal: angka kalkulator harus benar menurut sumber r
 ### Presisi kalkulator (inti kepercayaan)
 
 - **Kasus uji baku bersumber:** tiap kasus di `rate_test_cases` dan `tests/fixtures` mencantumkan `source_ref` (contoh resmi DJP, BPJS, OJK, atau hitungan spreadsheet independen). Hasil harus **persis sama** (toleransi 0) untuk rupiah; pengecualian hanya bila sumber resmi memakai pembulatan lain.
+- **Jejak sumber wajib:** setiap fixture mencatat alat dan versi aturan/spesifikasi yang diuji, sumber primer dan pasal/kebijakan, tanggal sumber diperiksa, tanggal efektif, aturan pembulatan, status kasus batas, tanggal dan pemeriksa verifikasi. Kasus tanpa jejak ini tidak dihitung untuk memenuhi target minimum.
+- **Pemeriksaan independen:** penyusun perubahan tarif tidak boleh menjadi satu-satunya pemeriksa. Publikasi diblokir bila sumber primer, masa berlaku, peninjau kedua, atau pengujian versi baru belum lengkap; versi lama tetap tersimpan agar hitungan terdahulu dapat direproduksi.
 - **Uji sifat (property-based):** misalnya jumlah seluruh angsuran = pokok + total bunga; sisa pokok akhir = 0; gaji bersih = gaji kotor − semua potongan; hasil tidak turun saat input naik di luar titik ambang; tidak ada `NaN`, `Infinity`, atau angka negatif tak sah.
 - **Uji batas:** tepat di ambang tiap lapisan tarif, batas upah BPJS, PTKP berubah status, tahun kabisat, tenor 1 bulan dan 30 tahun, input nol.
 - **Dua sumber independen:** selain contoh resmi, tiap alat keuangan diverifikasi terhadap rumus spreadsheet; selisih nol rupiah dipersyaratkan.
 - **Tarif sebagai data:** uji berjalan dengan tarif tahun lalu dan tahun ini, memastikan mesin tidak menyimpan angka tarif di kode.
 - **Gerbang tarif:** skrip `verify-rates.mjs` menjalankan seluruh kasus uji pada `data/rates`; CI gagal jika ada selisih, dan tombol terbitkan di admin menolak tarif yang uji-nya gagal.
+- **Pemicu uji ulang:** perubahan undang-undang/peraturan, keputusan BPJS, tabel upah, suku bunga/biaya bank, atau kebijakan marketplace mewajibkan versi sumber dan spesifikasi baru serta menjalankan ulang seluruh fixture terdampak sebelum publikasi. Tanggal efektif masa lalu tidak boleh menimpa versi historis.
 
 | Alat | Kasus uji minimum | Fokus |
 | --- | --- | --- |
-| Gaji bersih / PPh 21 TER | 30 | Kategori TER A/B/C, bulan Desember (penghitungan ulang tahunan), batas BPJS |
-| PPh 21 freelancer | 20 | Dasar pengenaan 50%, tarif progresif, NPWP vs tanpa NPWP |
-| KPR dan cicilan | 25 | Anuitas, flat, efektif, masa bunga berjenjang, pelunasan dipercepat |
+| Gaji bersih / PPh 21 TER | 30 | Kategori TER A/B/C, kategori/status dan ambang tarif, masa pajak terakhir (rekonsiliasi setahun), pegawai masuk/keluar di tengah tahun |
+| Iuran BPJS Kesehatan & Ketenagakerjaan | 20 | Uji batas upah di bawah/pada/di atas batas efektif, dasar dan porsi tiap program, kelas risiko, tanggungan, serta aturan pengecualian yang berlaku |
+| PPh 21 freelancer / tenaga ahli | 20 | Klasifikasi penerima dan kesinambungan, dasar pengenaan sesuai ketentuan, lapisan progresif, pembayaran kumulatif, dan status identitas pajak |
+| KPR dan cicilan | 25 | Anuitas, flat, efektif, konversi bunga, transisi fixed-floating, pelunasan dipercepat, sisa pokok dan angsuran terakhir |
 | HPP, margin, BEP | 20 | Susut bahan, overhead, biaya tetap nol, laba negatif |
-| Biaya marketplace | 15 | Tiap tingkat komisi, voucher, ongkir, pembulatan |
+| Biaya marketplace | 20 | Tarif per platform/kategori/program, dasar komisi, voucher, ongkir, biaya pesanan, pembatalan/retur, batas, dan pembulatan invoice |
 | Terbilang | 40 | 0, ribuan, jutaan, triliun, desimal, angka besar |
 | Libur nasional | 10 | Tahun berjalan dan berikutnya, cuti bersama |
 | Kompres foto/PDF | 12 | Ukuran target tercapai atau pesan galat jelas; tanpa mengubah rasio |
