@@ -1066,7 +1066,7 @@ Sebuah fase dianggap selesai hanya jika **semua** butir di bawahnya terpenuhi da
 ### Fase 1 — Mesin hitung dan 12 alat inti
 
 - [ ] 12 alat di bagian 2 tersedia sebagai fungsi murni di `packages/engine`, tanpa impor dari `apps/`
-- [ ] Seluruh kasus uji baku bagian 9 lulus (minimal 170 kasus) dengan selisih 0 rupiah
+- [ ] Seluruh kasus uji baku bagian 9 lulus (minimal 197 kasus) dengan selisih sesuai toleransi per alat
 - [ ] Mengubah nilai di `data/rates/*.json` mengubah hasil tanpa mengubah kode (dibuktikan tes)
 - [ ] Input rupiah menerima `1.500.000` dan `1500000`; input tidak valid menampilkan pesan jelas berbahasa Indonesia
 - [ ] Hasil muncul < 100 ms setelah input pada ponsel kelas menengah; tampilan benar di 320 px tanpa gulir horizontal
@@ -1080,7 +1080,8 @@ Sebuah fase dianggap selesai hanya jika **semua** butir di bawahnya terpenuhi da
 - [ ] E2E lulus: daftar → verifikasi email → masuk → simpan hitungan → ekspor data → hapus akun
 - [ ] Penguncian akun (5 gagal) dan semua pembatasan laju terbukti oleh tes
 - [ ] Editor/admin tidak bisa masuk tanpa TOTP; editor tidak bisa menerbitkan tarif
-- [ ] Alur tarif: draf → uji → uji gagal memblokir terbit (422) → uji lulus → terbit → `/rates/{key}/current` memakai versi baru pada tanggal berlaku; semuanya tercatat di `audit_logs`
+- [ ] Setiap spesifikasi/tarif menyimpan rumus, sumber, tanggal diperiksa dan berlaku, pembulatan, pengecualian, serta tim pemilik; pemeriksa berbeda dari pembuat
+- [ ] Alur tarif: draf → uji → uji gagal memblokir terbit (422) → pemeriksaan independen → terbit → `/rates/{key}/current` memakai versi baru pada tanggal berlaku; semuanya tercatat di `audit_logs`
 - [ ] Tes otomatis membuktikan `password_hash`, token, dan sandi tidak pernah muncul di respons maupun log
 - [ ] Pekerjaan Cron `retention.js` menghapus akun yang lewat 7 hari dan semua datanya, dibuktikan tes
 
@@ -1119,3 +1120,172 @@ Sebuah fase dianggap selesai hanya jika **semua** butir di bawahnya terpenuhi da
 - [ ] Versi bahasa Inggris dengan `hreflang` valid, tanpa penurunan Core Web Vitals
 - [ ] Peralihan jaringan iklan tanpa penurunan skor kecepatan; RPM diukur per kategori
 - [ ] Indikator: 500 ribu–1 juta sesi per bulan pada bulan 9–12, dengan keandalan ≥ 99,5%
+
+## 12. Prompt eksekusi fase (implementasi nyata, bertahap, hemat kredit)
+
+Repositori saat ini berisi dokumen rencana, belum berisi aplikasi JOBENAPP. Bagian ini adalah urutan prompt untuk membangun aplikasi sesuai PRD; bukan bukti bahwa aplikasinya sudah dibuat. Fase hanya boleh diberi status **COMPLETED** setelah kriteria penerimaannya benar-benar dijalankan dan bukti hasilnya tersedia. Status lain yang diperbolehkan: `NOT_STARTED`, `IN_PROGRESS`, atau `BLOCKED`.
+
+### Cara pakai agar pengerjaan tuntas dan hemat kredit
+
+1. Gunakan **Prompt induk** sekali pada sesi implementasi. Lalu berikan satu prompt fase pada satu waktu; jangan meminta semua fase sekaligus.
+2. Berikan fase berikutnya hanya setelah fase aktif berstatus `COMPLETED`. Jika diblokir oleh akses/secrets/keputusan bisnis, minta daftar input minimum yang diperlukan; lanjutkan pekerjaan lain yang tidak bergantung padanya.
+3. Prompt merujuk ke PRD ini agar spesifikasi tidak perlu ditempel ulang. Jangan membuat ulang struktur, mengganti stack, atau menambah dependensi besar tanpa alasan yang dibuktikan.
+4. Agent harus mengerjakan perubahan di repositori, menjalankan pemeriksaan yang relevan, memperbaiki kegagalan dalam fase itu, dan melaporkan hasil faktual. Jawaban berupa rencana, mockup, stub, TODO, atau kode yang belum diuji tidak memenuhi fase.
+
+### Prompt induk — tempel sekali
+
+```text
+Anda adalah engineer implementasi JOBENAPP. Baca dokumen
+doc/JOBENAPP_Rencana_Teknis_joben.cloud_1793015363469.md, khususnya Bagian 2
+dan 4–12, lalu kerjakan Fase [NOMOR DAN NAMA FASE] saja sampai tuntas.
+
+Kerjakan produk nyata langsung di repositori; jangan hanya memberi rencana,
+contoh kode, mockup, atau placeholder. Ikuti stack dan batasan yang sudah
+dipilih dalam PRD. Pertahankan struktur yang ada dan jangan mengganti teknologi
+atau melakukan refactor luas di luar kebutuhan fase.
+
+Setiap jalur pengguna harus berfungsi end-to-end: validasi, loading, hasil,
+empty state, galat yang dapat dipahami, dan persistence/API nyata bila
+disyaratkan. Jangan menganggap tombol, formulir, endpoint, migrasi, atau tes
+selesai jika masih dummy/TODO. Nilai tarif hanya boleh dipakai dengan sumber
+primer dan masa berlaku yang tercatat. Jangan mengarang tarif, secrets, hasil
+tes, atau bukti deployment.
+
+Sebelum mengubah kode, periksa struktur dan pola yang sudah ada. Setelah satu
+batch perubahan yang koheren, jalankan lint/tipe/tes/build yang relevan,
+perbaiki kegagalan, lalu lakukan pemeriksaan akhir fase. Hindari menjalankan
+ulang pemeriksaan yang tidak terpengaruh. Gunakan ulang dependensi dan
+komponen; jangan menambah paket jika fitur dapat dibuat dengan stack yang ada.
+Jangan bypass tes, menurunkan ambang, atau menghapus fitur lama demi membuat
+build hijau.
+
+Untuk secrets, database, layanan email, akun bank/marketplace, atau akses
+cPanel yang belum tersedia: jangan hardcode atau berpura-pura terhubung.
+Selesaikan semua pekerjaan lokal yang tidak terhalang, siapkan integrasi yang
+benar, tandai hanya bagian yang benar-benar menunggu akses sebagai BLOCKED,
+dan minta tepat daftar input minimum. Jangan menjalankan deployment atau
+migrasi produksi tanpa izin.
+
+Status fase hanya COMPLETED bila semua kriteria fase terkait dalam Bagian 11
+dan prompt ini lulus serta ada bukti nyata. Jika belum, laporkan IN_PROGRESS
+atau BLOCKED dengan alasan dan pekerjaan tersisa. Akhiri laporan dengan:
+status; fitur/berkas yang benar-benar dikerjakan; perintah pemeriksaan dan
+hasilnya; bukti UI/API yang relevan; serta satu daftar singkat hambatan/input
+yang memang masih diperlukan. Jangan mengklaim tes atau fitur yang tidak
+dijalankan.
+```
+
+### Prompt Fase 0 — fondasi dan uji kelayakan
+
+```text
+Jalankan Fase 0 sesuai Prompt induk dan kriteria Bagian 11. Repo saat ini
+hanya berisi PRD; temukan dahulu konvensi/workflow yang tersedia. Buat fondasi
+proyek minimum sesuai struktur dan stack PRD: workspace/package setup, aplikasi
+Astro dan Express yang bisa dijalankan, TypeScript, lint, pemeriksaan tipe,
+tes awal, konfigurasi lingkungan tervalidasi, health endpoint, serta migrasi
+awal PostgreSQL dan seed yang aman. Tambahkan workflow preview Replit untuk
+pengembangan lokal tanpa mengubah target deployment cPanel. Jangan membangun
+seluruh fitur fase lain di sini.
+
+Buktikan dari kondisi bersih bahwa instalasi, tes, dan build berjalan; buka
+preview dan periksa halaman yang tampil; uji health endpoint dan status
+koneksi database yang benar-benar tersedia. Jika layanan cPanel tidak dapat
+diakses, jangan mengarang hasil uji cPanel: dokumentasikan blokirnya, tetapi
+pastikan aplikasi lokal/preview berfungsi penuh untuk fondasi ini.
+```
+
+### Prompt Fase 1 — mesin hitung dan 12 alat
+
+```text
+Jalankan Fase 1 sesuai Prompt induk dan kriteria Bagian 11. Implementasikan
+seluruh mesin hitung murni TypeScript serta UI kalkulator yang dapat digunakan
+untuk 12 alat di Bagian 2. Pastikan rupiah deterministik (hindari galat float
+yang memengaruhi hasil), aturan dan tarif dibaca dari data versi, setiap hasil
+memperlihatkan langkah, asumsi, rujukan, masa berlaku, serta pembulatan.
+Lengkapi validasi Indonesia, format rupiah, salin, bagikan, cetak/PDF, dan
+pemrosesan foto/PDF tetap di browser sesuai PRD.
+
+Untuk PPh 21, BPJS, KPR, dan marketplace, gunakan sumber resmi terkini,
+kategorisasi, pengecualian, dan tanggal efektif; jangan menanam tarif contoh
+yang belum diverifikasi. Buat fixture bersumber untuk seluruh minimum Bagian 9
+(197 kasus), kasus batas, pembulatan, dan uji sifat. Jalankan uji mesin dan
+E2E widget; periksa semua 12 alat pada viewport mobile dan desktop. Jangan
+menandai fase selesai jika tarif inti belum punya sumber/pemeriksa atau hasil
+perhitungan belum cocok.
+```
+
+### Prompt Fase 2 — API, akun, riwayat, dan admin
+
+```text
+Jalankan Fase 2 sesuai Prompt induk dan kriteria Bagian 11. Implementasikan
+API Express dan PostgreSQL nyata menurut kontrak Bagian 6–8: validasi Zod,
+akun/sesi aman, verifikasi email sesuai konfigurasi, TOTP untuk editor/admin,
+otorisasi semua peran, riwayat dan proyek pengguna, ekspor/penghapusan data,
+rate limiting, audit log, dan endpoint tarif.
+
+Bangun panel admin fungsional untuk konten dan versi tarif/spesifikasi:
+draf → validasi sumber → pratinjau semua fixture → pemeriksaan oleh orang
+berbeda dari pembuat → publikasi sesuai tanggal berlaku. Uji gagal harus
+mencegah publikasi; versi historis tidak boleh tertimpa. Buat dan uji seluruh
+migrasi dari database kosong, tes integrasi/otorisasi, serta E2E untuk alur
+akun dan admin. Jangan mengganti penyimpanan dengan data memory/mock.
+```
+
+### Prompt Fase 3 — hub, SEO, konten, dan persetujuan
+
+```text
+Jalankan Fase 3 sesuai Prompt induk dan kriteria Bagian 11. Bangun beranda,
+kategori, pencarian, 12 halaman alat, halaman legal, navigasi responsif,
+konten rumus/contoh/FAQ, metadata SEO, schema, sitemap, robots, dan halaman 404
+yang benar-benar tersambung ke API/mesin hitung yang telah dibangun.
+
+Implementasikan persetujuan cookie: skrip iklan dan analitik tidak boleh
+dimuat sebelum izin yang sesuai. Jangan menampilkan klaim legal atau tarif
+tanpa sumber/tanggal pada spesifikasi. Isi konten harus unik dan informatif,
+bukan teks SEO berulang. Uji navigasi keyboard, kontras, axe, pencarian tiga
+hasil teratas, metadata/schema, dan Lighthouse mobile sesuai target Bagian 11.
+```
+
+### Prompt Fase 4 — integrasi, uji rilis, keamanan, dan deployment
+
+```text
+Jalankan Fase 4 sesuai Prompt induk dan kriteria Bagian 11. Jangan menambah
+fitur baru sebelum menyelesaikan seluruh journey aplikasi. Jalankan rangkaian
+CI penuh: lint/tipe, 197+ fixture, migrasi, integrasi dan matriks otorisasi,
+E2E, aksesibilitas, performa, audit dependensi, serta uji beban yang
+direncanakan. Perbaiki temuan yang bisa diperbaiki dalam repo; jangan
+menonaktifkan pemeriksaan.
+
+Uji backup/pemulihan dan prosedur deploy/rollback pada lingkungan nonproduksi.
+Siapkan paket dan petunjuk Passenger/cPanel yang dapat direproduksi; verifikasi
+preview Replit dan hasil build. Deployment produksi, DNS, email, bank, dan
+cPanel hanya boleh dinyatakan selesai jika benar-benar ada akses dan hasil
+nyata. Jika belum tersedia, fase rilis tetap BLOCKED, tetapi semua pemeriksaan
+lokal dan staging yang mungkin harus COMPLETED dan bukti serta daftar akses
+yang dibutuhkan dilaporkan.
+```
+
+### Prompt Fase 5 — skala konten dan halaman programmatic
+
+```text
+Jalankan Fase 5 sesuai Prompt induk dan kriteria Bagian 11 hanya setelah MVP
+Fase 0–4 COMPLETED. Implementasikan alat tambahan dan halaman programmatic
+berdasarkan dataset tervalidasi (bukan halaman hasil duplikasi). Buat pipeline
+build yang menolak konten tipis/duplikat, setiap halaman menyertakan nilai
+spesifik, sumber, tanggal, FAQ, canonical, dan schema yang benar. Jalankan
+tes kualitas konten dan sitemap sebelum mengindeks; jangan mengirimkan
+permintaan indexing massal atau mengklaim hasil indeks tanpa bukti Search
+Console.
+```
+
+### Prompt Fase 6 — fitur lanjutan dan ekspansi
+
+```text
+Jalankan Fase 6 sesuai Prompt induk dan kriteria Bagian 11 hanya setelah MVP
+stabil. Bangun perbandingan skenario, ekspor Excel, widget embed dengan
+origin-check dan batas payload, lokalisasi bahasa Inggris/hreflang, serta
+optimasi performa/iklan yang tetap menghormati persetujuan pengguna. Sertakan
+validasi, error state, kontrol privasi, tes keamanan dan E2E untuk setiap
+fitur. Ukur trafik/RPM hanya dari data nyata; jangan mengarang metrik atau
+mengorbankan akurasi kalkulator dan Core Web Vitals demi target pertumbuhan.
+```
