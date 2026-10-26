@@ -1,6 +1,7 @@
-modules = ["web", "nodejs-22"]
+modules = ["web", "nodejs-22", "python-base-3.13"]
 [nix]
 channel = "stable-25_05"
+packages = ["freetype", "gumbo", "harfbuzz", "jbig2dec", "libjpeg_turbo", "mupdf", "openjpeg", "swig", "xcbuild"]
 
 [agent]
 expertMode = true
