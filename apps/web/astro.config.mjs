@@ -7,6 +7,11 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     environments: {
+      ssr: {
+        resolve: {
+          noExternal: ["@astrojs/preact"],
+        },
+      },
       prerender: {
         resolve: {
           noExternal: ["@astrojs/preact"],
