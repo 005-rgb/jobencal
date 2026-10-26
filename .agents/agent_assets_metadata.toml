@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "MP8aSZahtcAPGVQ4iXMbw"
+uri = "file://research/notes.md"
+type = "text"
+title = "Rencana Riset: Trafik dan AdSense JOBENAPP"
+description = "Ruang lingkup riset dan daftar pertanyaan yang akan dijawab laporan."
+logical_id = "44625608-eb47-41e5-8e1b-89f741e4f6bb"
+content_hash = "sha256:0ce704a437fc182dccf96c7177a799d82d8397f182f2f537e2b0a1eed5e85b9d"
+size = 3584
+mtime_ms = 1793025193453
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:008533df-f43b-43f1-b2ad-9b1401d45639/44625608-eb47-41e5-8e1b-89f741e4f6bb/6ce71bf6-a850-4a65-aa56-efd3fc1332a9"
+storage_version_token = "1793025206942427"
+content_type = "text/markdown"
