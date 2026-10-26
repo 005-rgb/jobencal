@@ -1,0 +1,14 @@
+{
+  "name": "@jobenapp/web",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@jobenapp/shared": "0.1.0",
+    "preact": "^11.0.2"
+  },
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0 --port 5000",
+    "build": "astro build",
+    "typecheck": "astro check"
+  }
+}

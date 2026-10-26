@@ -1,0 +1,21 @@
+import request from "supertest";
+import { describe, expect, it, vi } from "vitest";
+import { createApp } from "./app.js";
+
+describe("GET /api/v1/health", () => {
+  it("returns healthy only after a database query succeeds", async () => {
+    const database = { query: vi.fn().mockResolvedValue({ rows: [{ "?column?": 1 }] }) };
+    const response = await request(createApp(database)).get("/api/v1/health");
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ status: "ok", db: "ok" });
+    expect(database.query).toHaveBeenCalledWith("SELECT 1");
+  });
+
+  it("returns a sanitized 503 when PostgreSQL is unavailable", async () => {
+    const database = { query: vi.fn().mockRejectedValue(new Error("private connection detail")) };
+    const response = await request(createApp(database)).get("/api/v1/health");
+    expect(response.status).toBe(503);
+    expect(response.body).toEqual({ status: "error", db: "unavailable" });
+    expect(JSON.stringify(response.body)).not.toContain("private connection detail");
+  });
+});

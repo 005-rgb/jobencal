@@ -1,0 +1,16 @@
+# JOBENAPP
+
+JOBENAPP is an Indonesian calculator and tools project. The product and
+deployment specification lives in
+[`doc/JOBENAPP_Rencana_Teknis_joben.cloud_1793015363469.md`](doc/JOBENAPP_Rencana_Teknis_joben.cloud_1793015363469.md).
+
+## Run in Replit
+
+See [`replit.md`](replit.md) for the development workflow, database setup,
+migrations, tests, and production database boundary.
+
+## Current implementation phase
+
+The repository is being built in verified phases. The current code provides
+the Phase 0 foundation; the 12 production calculator flows are specified for
+Phase 1 and are not claimed to be complete yet.

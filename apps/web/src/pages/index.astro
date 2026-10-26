@@ -1,0 +1,52 @@
+---
+import { ServiceHealth } from "../components/ServiceHealth";
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="JOBENAPP menyiapkan alat hitung Indonesia dengan rumus, sumber, dan masa berlaku yang jelas."
+    />
+    <meta name="theme-color" content="#f5f8fb" />
+    <title>JOBENAPP — Alat Hitung Indonesia</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="JOBENAPP, halaman utama">JOBENAPP</a>
+      <span>Fondasi sistem</span>
+    </header>
+    <main class="site-main">
+      <section class="hero" aria-labelledby="hero-title">
+        <p class="eyebrow">Alat hitung Indonesia</p>
+        <h1 id="hero-title">Hitung dengan jelas. Periksa sumbernya.</h1>
+        <p class="hero-copy">
+          JOBENAPP dibangun agar setiap hasil dapat ditelusuri: cara hitung,
+          aturan yang dipakai, masa berlaku, dan sumbernya.
+        </p>
+        <ServiceHealth client:load />
+      </section>
+      <section class="principles" aria-label="Prinsip JOBENAPP">
+        <article class="principle-card">
+          <h2>Rumus transparan</h2>
+          <p>Setiap alat akan menjelaskan input, langkah hitung, dan pembulatan.</p>
+        </article>
+        <article class="principle-card">
+          <h2>Sumber bertanggal</h2>
+          <p>Tarif harus terkait sumber primer dan tanggal berlakunya.</p>
+        </article>
+        <article class="principle-card">
+          <h2>Privasi lebih baik</h2>
+          <p>Perhitungan dirancang berjalan di browser kecuali Anda memilih menyimpannya.</p>
+        </article>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <p>JOBENAPP sedang dibangun bertahap. Kalkulator belum dinyatakan tersedia sebelum lolos verifikasi.</p>
+    </footer>
+  </body>
+</html>

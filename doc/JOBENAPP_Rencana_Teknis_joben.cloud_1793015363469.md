@@ -188,7 +188,7 @@ Pengunjung anonim hanya memanggil Apache; API dipanggil untuk tarif, peristiwa a
 
 ### Database
 
-- PostgreSQL 13 atau lebih baru, 19 tabel (bagian 6), pool koneksi maksimum 5, batas waktu kueri 5 detik.
+- PostgreSQL 13 atau lebih baru, 20 tabel (bagian 6), pool koneksi maksimum 5, batas waktu kueri 5 detik.
 - Migrasi SQL berurutan dengan `node-pg-migrate`, hanya maju, dijalankan dengan pengguna database terpisah.
 - Tarif disimpan sebagai versi bertanggal berlaku; hitungan tersimpan menunjuk versi tarif yang dipakai, sehingga hasil lama dapat direproduksi.
 - JSONB dipakai untuk input, ringkasan hasil, dan isi tarif; kolom yang sering difilter (pengguna, alat, waktu) tetap kolom biasa dengan indeks.
