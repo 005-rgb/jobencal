@@ -1,0 +1,513 @@
+.kpr-module-card {
+  max-width: 1120px;
+}
+
+.kpr-module-card .module-detail-heading {
+  margin-bottom: 22px;
+}
+
+.kpr-module-card .tool-status {
+  border: 1px solid #cfe4dc;
+  border-radius: 999px;
+  background: #effaf5;
+  color: #17664f;
+  font-weight: 700;
+}
+
+.kpr-module-content {
+  display: grid;
+  margin-top: 26px;
+}
+
+.kpr-calculator {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+}
+
+.kpr-local-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid #cfe4dc;
+  border-radius: 13px;
+  background: #f1faf6;
+  color: #295a4b;
+}
+
+.kpr-local-notice > span {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  place-items: center;
+  border-radius: 50%;
+  background: #d8eee4;
+  font-weight: 800;
+}
+
+.kpr-local-notice p {
+  margin: 1px 0 0;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.kpr-form,
+.kpr-result {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+  padding: clamp(16px, 3vw, 26px);
+  border: 1px solid #e1e6ef;
+  border-radius: 17px;
+  background: #fff;
+}
+
+.kpr-form {
+  background: #fbfcfe;
+}
+
+.kpr-section {
+  display: grid;
+  min-width: 0;
+  gap: 14px;
+  margin: 0;
+  padding: 0 0 18px;
+  border: 0;
+  border-bottom: 1px solid #e7eaf1;
+}
+
+.kpr-section > legend {
+  width: 100%;
+  margin-bottom: 13px;
+  color: #1d2940;
+  font-size: 15px;
+  font-weight: 780;
+}
+
+.kpr-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.kpr-field {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 7px;
+  color: #27344b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.kpr-field input,
+.kpr-field select,
+.kpr-rate-control {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid #cfd6e2;
+  border-radius: 9px;
+  background: #fff;
+  color: #17243a;
+  font: inherit;
+}
+
+.kpr-field input,
+.kpr-field select {
+  padding: 10px 12px;
+}
+
+.kpr-field input:focus-visible,
+.kpr-field select:focus-visible,
+.kpr-checkbox-field input:focus-visible,
+.kpr-result-actions a:focus-visible,
+.kpr-result-actions button:focus-visible,
+.kpr-submit:focus-visible {
+  outline: 3px solid #8c83f5;
+  outline-offset: 2px;
+}
+
+.kpr-field input::placeholder {
+  color: #8892a3;
+  font-weight: 400;
+}
+
+.kpr-field small,
+.kpr-hint {
+  color: #687386;
+  font-size: 11px;
+  font-weight: 450;
+  line-height: 1.6;
+}
+
+.kpr-rate-control {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.kpr-rate-control input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline-offset: -3px;
+}
+
+.kpr-rate-control > span {
+  padding: 0 10px;
+  color: #687386;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.kpr-checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+  color: #27344b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.kpr-checkbox-field input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #5b52cd;
+}
+
+.kpr-hint {
+  margin: 0;
+}
+
+.kpr-quote-details {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.kpr-quote-details summary {
+  color: #344158;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.kpr-quote-details .kpr-hint {
+  margin-top: 4px;
+}
+
+.kpr-error {
+  padding: 12px 14px;
+  border: 1px solid #efc8c8;
+  border-radius: 10px;
+  background: #fff5f5;
+  color: #922c2c;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.kpr-submit {
+  justify-self: start;
+  min-height: 46px;
+  padding: 0 20px;
+}
+
+.kpr-result {
+  scroll-margin-top: 24px;
+}
+
+.kpr-result-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kpr-result-header .section-kicker {
+  margin: 0;
+}
+
+.kpr-result-header h2 {
+  margin: 6px 0;
+  color: #1d2940;
+  font-size: clamp(19px, 2.5vw, 24px);
+  letter-spacing: -0.03em;
+}
+
+.kpr-result-header p:not(.section-kicker) {
+  margin: 0;
+  color: #687386;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.kpr-result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.kpr-result-actions button,
+.kpr-result-actions a {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 11px;
+  border: 1px solid #d8dce7;
+  border-radius: 8px;
+  background: #fff;
+  color: #353d78;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.kpr-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin: 0;
+}
+
+.kpr-summary > div,
+.kpr-cost-list > div {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #e8ebf2;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.kpr-summary dt,
+.kpr-cost-list dt {
+  color: #657084;
+  font-size: 11px;
+}
+
+.kpr-summary dd,
+.kpr-cost-list dd {
+  margin: 0;
+  color: #29344a;
+  font-size: 11px;
+  font-weight: 750;
+  text-align: right;
+}
+
+.kpr-summary .kpr-total {
+  border-color: #d9d6ff;
+  background: #f5f4ff;
+}
+
+.kpr-summary .kpr-total dt,
+.kpr-summary .kpr-total dd {
+  color: #4238a7;
+  font-weight: 850;
+}
+
+.kpr-report-section {
+  display: grid;
+  min-width: 0;
+  gap: 9px;
+}
+
+.kpr-report-section h3 {
+  margin: 0;
+  color: #29344a;
+  font-size: 13px;
+}
+
+.kpr-report-section > p {
+  margin: 0;
+  color: #596579;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.kpr-report-section .kpr-warning {
+  color: #805516;
+}
+
+.kpr-report-section .kpr-provenance {
+  padding-top: 8px;
+  border-top: 1px solid #e7eaf1;
+  color: #687386;
+}
+
+.kpr-cost-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.kpr-table-scroll {
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid #e8ebf2;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.kpr-table {
+  width: 100%;
+  min-width: 780px;
+  border-collapse: collapse;
+  color: #344158;
+  font-size: 10px;
+}
+
+.kpr-table caption {
+  padding: 10px;
+  color: #687386;
+  font-size: 10px;
+  text-align: left;
+}
+
+.kpr-table th,
+.kpr-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid #edf0f5;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.kpr-table thead th {
+  background: #f6f7fb;
+  color: #687386;
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.kpr-table tbody th {
+  color: #344158;
+  font-weight: 650;
+}
+
+.kpr-table tbody tr:last-child th,
+.kpr-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.kpr-notice {
+  margin: 0;
+  color: #17664f;
+  font-size: 12px;
+}
+
+@media (max-width: 650px) {
+  .kpr-module-content {
+    margin-top: 20px;
+  }
+
+  .kpr-form,
+  .kpr-result {
+    padding: 16px;
+  }
+
+  .kpr-grid,
+  .kpr-summary,
+  .kpr-cost-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kpr-result-header {
+    flex-direction: column;
+  }
+
+  .kpr-result-actions {
+    justify-content: flex-start;
+  }
+
+  .kpr-summary > div,
+  .kpr-cost-list > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .kpr-summary dd,
+  .kpr-cost-list dd {
+    text-align: left;
+  }
+
+  .kpr-submit {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media print {
+  body {
+    background: #fff !important;
+  }
+
+  .site-header,
+  .site-footer,
+  .access-back-link,
+  .kpr-local-notice,
+  .kpr-form,
+  .module-detail-heading,
+  .module-detail-actions,
+  .module-trust-points,
+  .no-print {
+    display: none !important;
+  }
+
+  .page-shell,
+  .module-page,
+  .kpr-module-card,
+  .kpr-module-content,
+  .kpr-result {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .kpr-result {
+    display: grid;
+    gap: 12px;
+  }
+
+  .kpr-table-scroll {
+    overflow: visible;
+  }
+
+  .kpr-table {
+    min-width: 0;
+    font-size: 7pt;
+  }
+
+  .kpr-table th,
+  .kpr-table td {
+    padding: 4px;
+  }
+
+  .kpr-table tr,
+  .kpr-summary > div,
+  .kpr-report-section {
+    break-inside: avoid;
+  }
+
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+}

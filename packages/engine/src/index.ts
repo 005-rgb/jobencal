@@ -42,3 +42,15 @@ export type {
   TaxBracket,
   VersionedPayrollRules,
 } from "./payroll.js";
+export {
+  calculateKpr,
+  getKprModelLabel,
+  KprCalculationError,
+  KPR_MONTHS_PER_YEAR,
+} from "./kpr.js";
+export type {
+  KprCalculation,
+  KprCalculationInput,
+  KprInstallment,
+  KprModel,
+} from "./kpr.js";

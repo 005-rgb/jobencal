@@ -128,13 +128,20 @@ import { tools } from "../data/tools";
                     <svg viewBox="0 0 24 24"><path d={tool.icon} /></svg>
                   </span>
                   <span class="tool-category">{tool.category}</span>
-                  <span class="tool-status">Belum tersedia</span>
+                  <span class="tool-status">
+                    {tool.slug === "simulasi-kpr"
+                      ? "Simulasi asumsi aktif"
+                      : "Belum tersedia"}
+                  </span>
                 </div>
                 <h3>{tool.name}</h3>
                 <p>{tool.description}</p>
                 <div class="tool-card-foot">
                   <span class="foot-dot" aria-hidden="true"></span>
-                  <span>Pelajari status modul <span aria-hidden="true">→</span></span>
+                  <span>
+                    {tool.slug === "simulasi-kpr" ? "Buka simulasi lokal" : "Pelajari status modul"}
+                    <span aria-hidden="true"> →</span>
+                  </span>
                 </div>
               </a>
             ))}
