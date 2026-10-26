@@ -1,6 +1,92 @@
 ---
-import { ServiceHealth } from "../components/ServiceHealth";
 import "../styles/global.css";
+
+const tools = [
+  {
+    name: "Gaji Bersih",
+    category: "Pajak & gaji",
+    description: "Estimasi gaji setelah PPh 21 TER dan iuran BPJS yang berlaku.",
+    icon: "M12 2v20m5-15H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6",
+    tone: "violet",
+  },
+  {
+    name: "PPh 21 Freelancer",
+    category: "Pajak & gaji",
+    description: "Perhitungan pajak tenaga ahli sesuai klasifikasi dan cara pembayaran.",
+    icon: "M8 7V3m8 4V3M5 11h14M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2Z",
+    tone: "blue",
+  },
+  {
+    name: "Simulasi KPR",
+    category: "Keuangan",
+    description: "Bandingkan metode anuitas, flat, dan efektif dengan tabel angsuran.",
+    icon: "M3 10.5 12 3l9 7.5M5 9v11h14V9M9 20v-6h6v6",
+    tone: "indigo",
+  },
+  {
+    name: "Kalkulator HPP",
+    category: "Usaha",
+    description: "Susun biaya pokok dari komponen produksi yang Anda masukkan.",
+    icon: "M4 5h16M4 12h16M4 19h16M8 2v6m8 4v6m-8 1v6",
+    tone: "green",
+  },
+  {
+    name: "Harga Jual & Margin",
+    category: "Usaha",
+    description: "Tentukan harga jual dengan membedakan margin dan markup.",
+    icon: "M20 13 11 4H4v7l9 9a2 2 0 0 0 3 0l4-4a2 2 0 0 0 0-3ZM7.5 7.5h.01",
+    tone: "teal",
+  },
+  {
+    name: "Break-even Point",
+    category: "Usaha",
+    description: "Cari titik impas dari biaya tetap dan kontribusi per unit.",
+    icon: "M3 3v18h18M7 14l4-4 3 3 6-7",
+    tone: "orange",
+  },
+  {
+    name: "Biaya Marketplace",
+    category: "Marketplace",
+    description: "Rinci biaya berdasarkan platform, kategori, dan program penjual.",
+    icon: "M3 8h18l-2 12H5L3 8Zm4 0a5 5 0 0 1 10 0M8 12v.01M16 12v.01",
+    tone: "amber",
+  },
+  {
+    name: "Cicilan Kendaraan",
+    category: "Keuangan",
+    description: "Simulasikan angsuran dengan asumsi bunga dan biaya yang jelas.",
+    icon: "M5 17h14l1-7-2-5H6l-2 5 1 7Zm-1-7h16M7 17v2m10-2v2M7 14h.01M17 14h.01",
+    tone: "cyan",
+  },
+  {
+    name: "Terbilang",
+    category: "Teks",
+    description: "Ubah angka menjadi tulisan terbilang untuk kebutuhan dokumen.",
+    icon: "M5 4h14M5 10h14M5 16h8M5 22h14",
+    tone: "purple",
+  },
+  {
+    name: "Kompres & Resize Foto/PDF",
+    category: "Berkas",
+    description: "Proses foto dan PDF langsung di browser tanpa unggah berkas.",
+    icon: "M4 4h16v16H4zM8 9h.01M20 15l-5-5L5 20",
+    tone: "pink",
+  },
+  {
+    name: "Invoice & Kwitansi",
+    category: "Usaha",
+    description: "Susun dokumen transaksi dan unduh hasilnya.",
+    icon: "M6 3h12v18l-3-2-3 2-3-2-3 2V3Zm3 5h6m-6 4h6m-6 4h3",
+    tone: "rose",
+  },
+  {
+    name: "Kalender Libur",
+    category: "Kalender",
+    description: "Lihat libur nasional dan cuti bersama berdasarkan keputusan resmi.",
+    icon: "M7 3v4m10-4v4M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Zm3 8h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01",
+    tone: "slate",
+  },
+];
 ---
 
 <!doctype html>
@@ -10,44 +96,186 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="JOBENAPP menyiapkan alat hitung Indonesia dengan rumus, sumber, dan masa berlaku yang jelas."
+      content="JOBENAPP menyiapkan 12 alat hitung Indonesia dengan metode, sumber, dan masa berlaku yang jelas."
     />
-    <meta name="theme-color" content="#f5f8fb" />
+    <meta name="theme-color" content="#f4f6fa" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>JOBENAPP — Alat Hitung Indonesia</title>
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="/" aria-label="JOBENAPP, halaman utama">JOBENAPP</a>
-      <span>Fondasi sistem</span>
-    </header>
-    <main class="site-main">
-      <section class="hero" aria-labelledby="hero-title">
-        <p class="eyebrow">Alat hitung Indonesia</p>
-        <h1 id="hero-title">Hitung dengan jelas. Periksa sumbernya.</h1>
-        <p class="hero-copy">
-          JOBENAPP dibangun agar setiap hasil dapat ditelusuri: cara hitung,
-          aturan yang dipakai, masa berlaku, dan sumbernya.
-        </p>
-        <ServiceHealth client:load />
-      </section>
-      <section class="principles" aria-label="Prinsip JOBENAPP">
-        <article class="principle-card">
-          <h2>Rumus transparan</h2>
-          <p>Setiap alat akan menjelaskan input, langkah hitung, dan pembulatan.</p>
-        </article>
-        <article class="principle-card">
-          <h2>Sumber bertanggal</h2>
-          <p>Tarif harus terkait sumber primer dan tanggal berlakunya.</p>
-        </article>
-        <article class="principle-card">
-          <h2>Privasi lebih baik</h2>
-          <p>Perhitungan dirancang berjalan di browser kecuali Anda memilih menyimpannya.</p>
-        </article>
-      </section>
-    </main>
-    <footer class="site-footer">
-      <p>JOBENAPP sedang dibangun bertahap. Kalkulator belum dinyatakan tersedia sebelum lolos verifikasi.</p>
-    </footer>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="JOBENAPP, halaman utama">
+          <span class="brand-mark" aria-hidden="true">J</span>
+          <span>JOBEN<span class="brand-accent">APP</span></span>
+        </a>
+        <nav class="main-nav" aria-label="Navigasi utama">
+          <a href="#modul">Modul</a>
+          <a href="#prinsip">Cara kerja</a>
+          <a href="#tentang">Tentang</a>
+        </nav>
+        <a class="header-cta" href="#modul">Lihat modul <span aria-hidden="true">↗</span></a>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <div class="status-pill">
+              <span class="status-dot" aria-hidden="true"></span>
+              Fondasi platform siap · kalkulator belum aktif
+            </div>
+            <h1 id="hero-title">
+              Kalkulator Pajak &amp; <span>Keuangan Indonesia</span>
+            </h1>
+            <p class="hero-description">
+              Satu tempat untuk alat bantu keuangan dan bisnis dengan metode,
+              aturan, dan sumber yang dapat ditelusuri.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#modul">
+                Lihat rencana modul <span aria-hidden="true">→</span>
+              </a>
+              <a class="button button-secondary" href="#prinsip">Prinsip akurasi</a>
+            </div>
+            <p class="hero-note">
+              Modul akan ditampilkan sebagai tersedia setelah rumus dan sumbernya lolos pemeriksaan.
+            </p>
+          </div>
+
+          <div class="hero-visual" aria-label="Alur alat hitung JOBENAPP">
+            <div class="visual-topline">
+              <span>ALUR PERHITUNGAN</span>
+              <span class="visual-indicator"><i></i> Terstruktur</span>
+            </div>
+            <div class="flow-diagram" aria-hidden="true">
+              <div class="flow-node node-input">
+                <span class="node-icon">
+                  <svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h5M8 16h3" /></svg>
+                </span>
+                <span>Input</span>
+              </div>
+              <div class="flow-node node-rule">
+                <span class="node-icon">
+                  <svg viewBox="0 0 24 24"><path d="M12 3 20 7v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7l8-4Zm-3 9 2 2 4-4" /></svg>
+                </span>
+                <span>Aturan</span>
+              </div>
+              <div class="flow-node node-method">
+                <span class="node-icon">
+                  <svg viewBox="0 0 24 24"><path d="M6 4h12M6 9h12M6 14h7M6 19h12M16 13l2 2 3-4" /></svg>
+                </span>
+                <span>Metode</span>
+              </div>
+              <div class="flow-node node-result">
+                <span class="node-icon">
+                  <svg viewBox="0 0 24 24"><path d="M5 19V9m7 10V5m7 14v-7M3 19h18" /></svg>
+                </span>
+                <span>Hasil</span>
+              </div>
+              <svg class="flow-lines" viewBox="0 0 430 170" fill="none">
+                <path d="M92 84h73M192 84h55M275 84h63" />
+                <circle cx="165" cy="84" r="3" />
+                <circle cx="247" cy="84" r="3" />
+                <circle cx="338" cy="84" r="3" />
+              </svg>
+            </div>
+            <div class="visual-footer">
+              <span><b>01</b> Masukkan data</span>
+              <span><b>02</b> Periksa metode</span>
+              <span><b>03</b> Tinjau hasil</span>
+            </div>
+            <div class="visual-decoration decoration-one"></div>
+            <div class="visual-decoration decoration-two"></div>
+          </div>
+        </section>
+
+        <section class="module-section" id="modul" aria-labelledby="module-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">RENCANA MVP</p>
+              <h2 id="module-title">Modul fitur utama</h2>
+              <p class="section-description">
+                12 alat bantu sesuai ruang lingkup produk. Seluruh modul masih disiapkan.
+              </p>
+            </div>
+            <span class="module-count">12 <span>rencana alat</span></span>
+          </div>
+
+          <div class="tool-grid">
+            {tools.map((tool) => (
+              <article class={`tool-card tone-${tool.tone}`}>
+                <div class="tool-card-top">
+                  <span class="tool-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d={tool.icon} /></svg>
+                  </span>
+                  <span class="tool-category">{tool.category}</span>
+                  <span class="tool-status">Belum tersedia</span>
+                </div>
+                <h3>{tool.name}</h3>
+                <p>{tool.description}</p>
+                <div class="tool-card-foot">
+                  <span class="foot-dot" aria-hidden="true"></span>
+                  <span>Menunggu implementasi &amp; verifikasi</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="principles-section" id="prinsip" aria-labelledby="principles-title">
+          <div class="principles-heading">
+            <p class="section-kicker">DIBANGUN UNTUK DIPERCAYA</p>
+            <h2 id="principles-title">Angka jelas. Dasarnya juga.</h2>
+            <p>Setiap alat mengikuti prinsip produk yang sama sebelum dinyatakan siap digunakan.</p>
+          </div>
+          <div class="principle-list">
+            <article class="principle-item">
+              <span class="principle-number">01</span>
+              <div>
+                <h3>Metode transparan</h3>
+                <p>Langkah hitung, asumsi, dan pembulatan dijelaskan.</p>
+              </div>
+            </article>
+            <article class="principle-item">
+              <span class="principle-number">02</span>
+              <div>
+                <h3>Sumber bertanggal</h3>
+                <p>Aturan dan data harus mencantumkan sumber serta masa berlaku.</p>
+              </div>
+            </article>
+            <article class="principle-item">
+              <span class="principle-number">03</span>
+              <div>
+                <h3>Privasi sejak awal</h3>
+                <p>Data hitungan dirancang tetap di browser kecuali Anda memilih menyimpannya.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="closing-banner" id="tentang" aria-labelledby="closing-title">
+          <div>
+            <p class="closing-kicker">JOBENAPP · ALAT HITUNG INDONESIA</p>
+            <h2 id="closing-title">Dibangun bertahap, dengan akurasi sebagai dasar.</h2>
+            <p>Fitur kalkulator akan tersedia setelah implementasi dan verifikasi selesai.</p>
+          </div>
+          <a href="#modul" class="closing-link">Lihat rencana fitur <span aria-hidden="true">→</span></a>
+          <div class="banner-orb banner-orb-one"></div>
+          <div class="banner-orb banner-orb-two"></div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <a class="footer-brand" href="/">JOBEN<span>APP</span></a>
+        <p>© 2026 JOBENAPP · Platform alat bantu keuangan dan bisnis Indonesia.</p>
+        <span class="footer-note">Tahap fondasi · Kalkulator belum tersedia</span>
+      </footer>
+    </div>
   </body>
 </html>

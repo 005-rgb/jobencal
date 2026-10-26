@@ -1,1 +1,2 @@
 - [Astro and Preact dev runtime](astro-preact-dev-runtime.md) — Astro 7/Vite 8 needs Preact server modules bundled in both SSR and prerender environments.
+- [PDF rendering in this workspace](pdf-rendering.md) — If PyMuPDF is unavailable in the shell runtime, use the preinstalled `pdftoppm` for visual inspection.

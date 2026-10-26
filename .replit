@@ -1,4 +1,4 @@
-modules = ["web", "nodejs-22", "python-base-3.13"]
+modules = ["web", "python-3.12", "nodejs-22"]
 [nix]
 channel = "stable-25_05"
 packages = ["freetype", "gumbo", "harfbuzz", "jbig2dec", "libjpeg_turbo", "mupdf", "openjpeg", "swig", "xcbuild"]
