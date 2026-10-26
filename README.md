@@ -11,10 +11,11 @@ migrations, tests, and production database boundary.
 
 ## Current implementation phase
 
-The repository is being built in verified phases. The current code provides
-the Phase 0 foundation, and the local checks and preview are verified. The
-cPanel staging feasibility checks remain pending until staging access is
-available. The 12 production calculator flows are specified for Phase 1 and
-are not claimed to be complete yet; see
-[`doc/FASE0_VERIFICATION.md`](doc/FASE0_VERIFICATION.md) for the current evidence
-and blockers.
+The Phase 1.0 shared calculation core is implemented and locally tested; the
+interactive percentage demo uses exact integer arithmetic and does not send
+inputs to the API. This does **not** mean the 12 production calculator flows
+(Phase 1.1–1.12) are complete. No unverified tax, insurance, bank, or
+marketplace rates are published. See
+[`doc/FASE1_0_CORE_SYSTEM.md`](doc/FASE1_0_CORE_SYSTEM.md) for scope and
+evidence, and [`doc/FASE0_VERIFICATION.md`](doc/FASE0_VERIFICATION.md) for
+staging blockers.

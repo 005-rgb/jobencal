@@ -1,10 +1,18 @@
 import tailwindcss from "@tailwindcss/vite";
 import preact from "@astrojs/preact";
 import { defineConfig } from "astro/config";
+import { fileURLToPath } from "node:url";
 
 export default defineConfig({
   integrations: [preact()],
   vite: {
+    resolve: {
+      alias: {
+        "@jobenapp/engine": fileURLToPath(
+          new URL("../../packages/engine/src/index.ts", import.meta.url),
+        ),
+      },
+    },
     plugins: [tailwindcss()],
     environments: {
       ssr: {

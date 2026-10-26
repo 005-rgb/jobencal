@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import CoreSystemPlayground from "../components/CoreSystemPlayground";
 
 const tools = [
   {
@@ -128,7 +129,7 @@ const tools = [
           <div class="hero-copy">
             <div class="status-pill">
               <span class="status-dot" aria-hidden="true"></span>
-              Fondasi platform siap · kalkulator belum aktif
+              Fase 1.0 · mesin presisi aktif
             </div>
             <h1 id="hero-title">
               Kalkulator Pajak &amp; <span>Keuangan Indonesia</span>
@@ -138,13 +139,13 @@ const tools = [
               aturan, dan sumber yang dapat ditelusuri.
             </p>
             <div class="hero-actions">
-              <a class="button button-primary" href="#modul">
-                Lihat rencana modul <span aria-hidden="true">→</span>
+              <a class="button button-primary" href="#core">
+                Coba mesin hitung <span aria-hidden="true">→</span>
               </a>
               <a class="button button-secondary" href="#prinsip">Prinsip akurasi</a>
             </div>
             <p class="hero-note">
-              Modul akan ditampilkan sebagai tersedia setelah rumus dan sumbernya lolos pemeriksaan.
+              Demo ini menguji mesin umum; kalkulator bertarif menunggu sumber dan verifikasi masing-masing.
             </p>
           </div>
 
@@ -195,13 +196,30 @@ const tools = [
           </div>
         </section>
 
+        <section class="core-section" id="core" aria-labelledby="core-title">
+          <div class="core-section-heading">
+            <div>
+              <p class="section-kicker">FASE 1.0 · CORE SYSTEM</p>
+              <h2 id="core-title">Hitung dengan aturan yang terlihat.</h2>
+              <p>
+                Coba kontrak kalkulasi presisi: input, metode, pembulatan, dan hasil
+                yang dapat direproduksi.
+              </p>
+            </div>
+            <span class="core-private-label">
+              <span aria-hidden="true">●</span> Dihitung lokal
+            </span>
+          </div>
+          <CoreSystemPlayground client:load />
+        </section>
+
         <section class="module-section" id="modul" aria-labelledby="module-title">
           <div class="section-heading">
             <div>
               <p class="section-kicker">RENCANA MVP</p>
               <h2 id="module-title">Modul fitur utama</h2>
               <p class="section-description">
-                12 alat bantu sesuai ruang lingkup produk. Seluruh modul masih disiapkan.
+                12 alat bantu sesuai ruang lingkup produk. Setiap alat akan aktif setelah aturan dan sumbernya diverifikasi.
               </p>
             </div>
             <span class="module-count">12 <span>rencana alat</span></span>
@@ -262,8 +280,8 @@ const tools = [
         <section class="closing-banner" id="tentang" aria-labelledby="closing-title">
           <div>
             <p class="closing-kicker">JOBENAPP · ALAT HITUNG INDONESIA</p>
-            <h2 id="closing-title">Dibangun bertahap, dengan akurasi sebagai dasar.</h2>
-            <p>Fitur kalkulator akan tersedia setelah implementasi dan verifikasi selesai.</p>
+            <h2 id="closing-title">Mesin hitung kini siap diuji. Aturan tetap harus terverifikasi.</h2>
+            <p>Demo persentase memakai input Anda; 12 alat resmi tetap menunggu implementasi dan pemeriksaan masing-masing.</p>
           </div>
           <a href="#modul" class="closing-link">Lihat rencana fitur <span aria-hidden="true">→</span></a>
           <div class="banner-orb banner-orb-one"></div>
@@ -274,7 +292,7 @@ const tools = [
       <footer class="site-footer">
         <a class="footer-brand" href="/">JOBEN<span>APP</span></a>
         <p>© 2026 JOBENAPP · Platform alat bantu keuangan dan bisnis Indonesia.</p>
-        <span class="footer-note">Tahap fondasi · Kalkulator belum tersedia</span>
+        <span class="footer-note">Core system aktif · 12 alat menunggu verifikasi</span>
       </footer>
     </div>
   </body>

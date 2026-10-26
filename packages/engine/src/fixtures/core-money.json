@@ -1,0 +1,70 @@
+[
+  {
+    "id": "percentage-1500000-at-2_50",
+    "specVersion": "1.0.0",
+    "methodVersion": "core-percentage/1.0.0",
+    "input": {
+      "amountRupiah": "1500000",
+      "rateBasisPoints": "250",
+      "rounding": "half-away-from-zero"
+    },
+    "expectedRupiah": "37500",
+    "comparison": "1500000 * 250 / 10000 = 37500, evaluated with integer multiplication and division",
+    "checkedAt": "2026-10-26",
+    "effectiveFrom": "2026-10-26",
+    "roundingRule": "Nearest whole Rupiah; exact halves away from zero",
+    "boundaryStatus": "ordinary",
+    "reviewStatus": "internal arithmetic fixture; not an externally published rate"
+  },
+  {
+    "id": "half-rupiah-rounds-away-from-zero",
+    "specVersion": "1.0.0",
+    "methodVersion": "core-percentage/1.0.0",
+    "input": {
+      "amountRupiah": "1",
+      "rateBasisPoints": "5000",
+      "rounding": "half-away-from-zero"
+    },
+    "expectedRupiah": "1",
+    "comparison": "1 * 5000 / 10000 = 0.5; half-away-from-zero gives 1",
+    "checkedAt": "2026-10-26",
+    "effectiveFrom": "2026-10-26",
+    "roundingRule": "Nearest whole Rupiah; exact halves away from zero",
+    "boundaryStatus": "rounding-boundary",
+    "reviewStatus": "internal arithmetic fixture; not an externally published rate"
+  },
+  {
+    "id": "zero-base-stays-zero",
+    "specVersion": "1.0.0",
+    "methodVersion": "core-percentage/1.0.0",
+    "input": {
+      "amountRupiah": "0",
+      "rateBasisPoints": "10000",
+      "rounding": "half-away-from-zero"
+    },
+    "expectedRupiah": "0",
+    "comparison": "0 * 10000 / 10000 = 0",
+    "checkedAt": "2026-10-26",
+    "effectiveFrom": "2026-10-26",
+    "roundingRule": "Nearest whole Rupiah; exact halves away from zero",
+    "boundaryStatus": "zero-boundary",
+    "reviewStatus": "internal arithmetic fixture; not an externally published rate"
+  },
+  {
+    "id": "maximum-base-at-zero-rate",
+    "specVersion": "1.0.0",
+    "methodVersion": "core-percentage/1.0.0",
+    "input": {
+      "amountRupiah": "999999999999999999",
+      "rateBasisPoints": "0",
+      "rounding": "ceiling"
+    },
+    "expectedRupiah": "0",
+    "comparison": "maximum supported amount * 0 / 10000 = 0",
+    "checkedAt": "2026-10-26",
+    "effectiveFrom": "2026-10-26",
+    "roundingRule": "Ceiling to whole Rupiah",
+    "boundaryStatus": "maximum-input-boundary",
+    "reviewStatus": "internal arithmetic fixture; not an externally published rate"
+  }
+]

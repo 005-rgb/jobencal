@@ -5,7 +5,8 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "paths": {
-      "@jobenapp/shared": ["../../packages/shared/src/index.ts"]
+      "@jobenapp/shared": ["../../packages/shared/src/index.ts"],
+      "@jobenapp/engine": ["../../packages/engine/src/index.ts"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],

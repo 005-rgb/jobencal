@@ -5,6 +5,9 @@
 - Runtime: Node.js 22 LTS (22.23.4 target).
 - Run the Replit **Start application** workflow, or run `npm run dev`.
 - Astro preview: port 5000. Express API: port 3001; Astro proxies `/api` to it.
+- The Fase 1.0 percentage playground calculates in the browser and does not
+  require the API or database. The API still requires a development
+  `DATABASE_URL` before its health endpoint can report `db: "ok"`.
 - Configure `DATABASE_URL` as a Replit development PostgreSQL connection string.
   Never put database credentials in the repository or frontend.
 - The Replit database is development-only. Production remains the PostgreSQL
@@ -31,3 +34,7 @@ schema operation.
 - `npm test`
 - `npm run build`
 - `npm run check` runs all four checks.
+
+See [`doc/FASE1_0_CORE_SYSTEM.md`](doc/FASE1_0_CORE_SYSTEM.md) for the
+implemented calculation contract and the boundary between the core demo and
+the 12 calculator modules that remain unverified.

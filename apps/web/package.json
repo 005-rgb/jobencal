@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "devDependencies": {
+    "@jobenapp/engine": "0.1.0",
     "@jobenapp/shared": "0.1.0",
     "preact": "^11.0.2"
   },
