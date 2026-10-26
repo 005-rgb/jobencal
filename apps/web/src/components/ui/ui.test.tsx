@@ -35,6 +35,32 @@ describe("Phase 0 accessible UI primitives", () => {
     expect(results.violations).toEqual([]);
   });
 
+  it("keeps labels, errors, table empty states, and toast announcements accessible", () => {
+    render(
+      <main>
+        <h1>Komponen</h1>
+        <Field id="email" label="Email" error="Email wajib diisi.">
+          <input id="email" aria-invalid="true" aria-describedby="email-error" />
+        </Field>
+        <Button>Simpan</Button>
+        <Table
+          caption="Daftar kosong"
+          columns={[{ key: "name", header: "Nama", render: () => "" }]}
+          rows={[]}
+          rowKey={() => "empty"}
+        />
+        <Toast tone="alert">Gagal menyimpan.</Toast>
+      </main>,
+    );
+
+    expect(screen.getByLabelText("Email").getAttribute("aria-describedby")).toBe("email-error");
+    const alerts = screen.getAllByRole("alert").map((element) => element.textContent);
+    expect(alerts).toContain("Email wajib diisi.");
+    expect(alerts).toContain("Gagal menyimpan.");
+    expect(screen.getByText("Belum ada data.")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Simpan" }).getAttribute("type")).toBe("button");
+  });
+
   it("parses localized rupiah input as an exact integer", () => {
     const onValueChange = vi.fn();
     render(

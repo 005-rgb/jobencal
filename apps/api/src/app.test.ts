@@ -11,6 +11,13 @@ describe("GET /api/v1/health", () => {
     expect(database.query).toHaveBeenCalledWith("SELECT 1");
   });
 
+  it("also supports Passenger stripping the configured mount path", async () => {
+    const database = { query: vi.fn().mockResolvedValue({ rows: [{ "?column?": 1 }] }) };
+    const response = await request(createApp(database, "/jobenapp/api")).get("/v1/health");
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ status: "ok", db: "ok" });
+  });
+
   it("returns a sanitized 503 when PostgreSQL is unavailable", async () => {
     const database = { query: vi.fn().mockRejectedValue(new Error("private connection detail")) };
     const response = await request(createApp(database)).get("/api/v1/health");

@@ -7,7 +7,7 @@
     "preact": "^11.0.2"
   },
   "scripts": {
-    "dev": "astro dev --host 0.0.0.0 --port 5000",
+    "dev": "astro dev --host 0.0.0.0 --port 5000 --ignore-lock",
     "build": "astro build",
     "typecheck": "astro check"
   }

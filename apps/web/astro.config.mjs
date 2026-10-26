@@ -6,6 +6,13 @@ export default defineConfig({
   integrations: [preact()],
   vite: {
     plugins: [tailwindcss()],
+    environments: {
+      prerender: {
+        resolve: {
+          noExternal: ["@astrojs/preact"],
+        },
+      },
+    },
     server: {
       host: "0.0.0.0",
       port: 5000,

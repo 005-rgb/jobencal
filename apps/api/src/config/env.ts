@@ -3,6 +3,10 @@ import { z } from "zod";
 const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   PORT: z.coerce.number().int().min(1).max(65_535).default(3001),
+  BASE_PATH: z
+    .string()
+    .regex(/^\/[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*$/, "must be an absolute URL path")
+    .default("/api"),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 });
 

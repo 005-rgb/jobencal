@@ -22,7 +22,7 @@ async function start(): Promise<void> {
     return;
   }
 
-  const server = createApp(pool).listen(env.PORT, "0.0.0.0", () => {
+  const server = createApp(pool, env.BASE_PATH).listen(env.PORT, "0.0.0.0", () => {
     console.log(`JOBENAPP API listening on port ${env.PORT}`);
   });
 
