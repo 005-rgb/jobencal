@@ -397,6 +397,9 @@ Fase 1 hanya boleh dinyatakan selesai jika seluruh syarat berikut terpenuhi:
 - Semua alat lulus komponen/E2E dan pemeriksaan viewport/aksesibilitas sesuai
   kriteria rencana utama; hasil hitung memenuhi sasaran <100 ms dan halaman
   tidak meluber pada lebar 320 px.
+- Beranda hanya menjadi katalog; 12 kartu menuju halaman modul masing-masing
+  melalui gerbang akses yang sesuai persetujuan iklan. Gerbang hasil dan unduhan
+  lulus uji satu-eksekusi, privasi, aksesibilitas, dan jalur tanpa iklan.
 - Pemrosesan berkas tetap sepenuhnya lokal; target kompres foto/PDF memenuhi
   toleransi ±5% atau gagal secara eksplisit.
 - Sumber yang tidak lengkap, kedaluwarsa, belum efektif, atau belum ditinjau
@@ -406,3 +409,89 @@ Fase 1 hanya boleh dinyatakan selesai jika seluruh syarat berikut terpenuhi:
 Kelulusan Fase 1 berarti alat memenuhi cakupan yang dinyatakan dan lulus
 gerbangnya. Itu bukan pengganti verifikasi staging, review hukum, persetujuan
 konten, atau kriteria Fase 2 dan rilis produksi.
+
+## 6. Navigasi, halaman alat, dan gerbang iklan Fase 1
+
+### 6.1 Beranda sebagai katalog
+
+- Beranda berfungsi sebagai halaman pengenalan dan katalog. Beranda boleh
+  menampilkan nama, kategori, deskripsi singkat, status, dan tautan setiap alat;
+  beranda **tidak** memuat formulir input modul, mesin kalkulasi, hasil,
+  pratinjau dokumen, pemrosesan berkas, atau tombol unduh modul.
+- Demo kontrak Fase 1.0 yang bukan salah satu dari 12 alat berada pada URL dan
+  halaman tersendiri. Keberadaan demo tersebut tidak menandai salah satu
+  subfase 1.1–1.12 selesai.
+- Setiap kartu adalah satu tautan yang dapat dioperasikan dengan mouse, sentuh,
+  dan keyboard. Tautan mengarah ke gerbang `/iklan` dengan tujuan modul unik
+  `/modul/{slug}`; tidak boleh memakai `href="#"`, tombol tanpa aksi, atau kartu
+  duplikat. Slug tidak berubah saat judul tampil dilokalkan atau diperbaiki.
+- Semua halaman modul dapat dibuka langsung melalui URL, dimuat ulang, dan
+  dibagikan. Gerbang akses hanya perantara navigasi dari katalog; akses langsung
+  tidak boleh menyebabkan loop redirect atau kehilangan halaman.
+
+### 6.2 Halaman mandiri untuk setiap modul
+
+- Satu URL mandiri dibuat per alat: `/modul/gaji-bersih`,
+  `/modul/pph-21-freelancer`, `/modul/simulasi-kpr`,
+  `/modul/kalkulator-hpp`, `/modul/harga-jual-margin`,
+  `/modul/break-even-point`, `/modul/biaya-marketplace`,
+  `/modul/cicilan-kendaraan`, `/modul/terbilang`,
+  `/modul/kompres-resize-foto-pdf`, `/modul/invoice-kwitansi`, dan
+  `/modul/kalender-libur`.
+- Setiap halaman berisi judul alat, tujuan/cakupan, status ketersediaan,
+  navigasi kembali ke katalog, dan keterangan privasi. Jika subfase belum lulus,
+  tampilkan status “belum tersedia/dalam persiapan”; jangan merender form palsu,
+  angka contoh seolah hasil, tarif yang belum terverifikasi, atau tombol
+  kalkulasi/unduh yang tidak bekerja.
+- Ketika alat siap, formulir, validasi, langkah, asumsi, sumber/versi, hasil,
+  aksi salin/bagikan/cetak/unduh, serta peringatan ditempatkan hanya di halaman
+  alat yang bersangkutan. Modul tidak boleh menumpang di halaman utama.
+- Halaman placeholder, tautan, kerangka UI, maupun halaman iklan bukan bukti
+  implementasi kalkulator dan tidak menutup gerbang fixture, sumber, uji, atau
+  kriteria penerimaan subfase.
+
+### 6.3 Aturan gerbang iklan
+
+Gerbang iklan adalah prasyarat UX, bukan fungsi kalkulasi dan bukan syarat untuk
+mengakses produk. Detail persetujuan, provider, daftar slot, dan larangan kategori
+mengikuti [Addendum Monetisasi Fase 0-M](MONETISASI_FASE0M.md).
+
+| Tindakan pengguna | Alur yang disyaratkan | Slot |
+| --- | --- | --- |
+| Membuka kartu dari katalog | Tautan menuju halaman pengantar `/iklan?tujuan=/modul/{slug}`; pengguna memilih “Lanjut ke modul” untuk membuka halaman alat | `module-entry-gate` |
+| Meminta hasil hitung | Tindakan ditahan sementara di halaman modul; gerbang muncul sebelum hasil dibuka. “Lihat hasil” melanjutkan kalkulasi tepat satu kali | `results-gate` |
+| Mengunduh hasil/berkas | Gerbang muncul sebelum pembuatan/pengiriman unduhan. “Unduh” meneruskan proses tepat satu kali | `download-gate` |
+
+Gerbang hanya menampilkan konten iklan bila **semua** kondisi benar: backend
+mengirim `adsEnabled: true`, cookie persetujuan yang valid menunjukkan `ads:
+true`, dan provider/slot telah disetujui serta terkonfigurasi untuk halaman dan
+format tersebut. Nilai awal `ADS_ENABLED=false`, kegagalan backend, consent
+kosong/kedaluwarsa/ditolak, provider atau slot kosong, blocker jaringan, atau
+gagal memuat iklan membuat jalur tanpa iklan langsung tersedia. Jangan menunggu
+impresi, membuat hitung mundur, menyembunyikan tombol lanjut, atau mengulang
+gerbang tanpa tindakan pengguna. Akses hasil dan unduhan tidak boleh dikunci oleh
+consent iklan.
+
+Gerbang hasil dan unduhan harus berada di halaman yang sama (dialog/panel yang
+aksesibel atau pola setara) sehingga input tetap berada hanya di memori browser.
+Lanjutkan menjalankan aksi yang diminta satu kali; tutup, batal, atau gagal
+memuat iklan tidak boleh mengubah input, mereset halaman, menghitung dua kali,
+atau membuat unduhan duplikat. Jangan menaruh input, output, nama, nomor
+dokumen, metadata berkas, atau URL blob pada query string, penyimpanan yang tidak
+disetujui, referer, permintaan iklan, tracking, atau analytics. Transformasi
+foto/PDF dan pembentukan dokumen tetap lokal sesuai subfase masing-masing.
+
+### 6.4 Verifikasi dan status
+
+- E2E memastikan semua 12 kartu punya tautan unik yang cocok dengan daftar
+  slug, setiap URL modul memuat halaman mandiri, dan tidak ada formulir
+  kalkulator/hasil/unduh pada beranda.
+- Uji gerbang dengan kombinasi backend aktif/nonaktif, consent diterima/ditolak/
+  belum diberikan, provider terdaftar/tidak ada, dan pemuatan gagal. Uji bahwa
+  jalur tanpa iklan selalu dapat dipakai dan aksi hasil/unduhan hanya terjadi
+  sekali.
+- Periksa tab order, fokus setelah membuka/menutup panel, label tombol, pembaca
+  layar, serta lebar 320 px dan desktop. Pastikan data input dan berkas tidak
+  muncul di URL atau permintaan jaringan pihak ketiga dalam semua kondisi.
+- Saat ini semua 12 halaman modul masih berstatus belum tersedia. Pembuatan
+  halaman dan gerbang katalog tidak mengubah status implementasi alat Fase 1.

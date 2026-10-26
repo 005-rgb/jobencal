@@ -1,0 +1,87 @@
+---
+import "../../styles/global.css";
+import ConsentManager from "../../components/ConsentManager";
+import { tools } from "../../data/tools";
+
+export function getStaticPaths() {
+  return tools.map((tool) => ({
+    params: { slug: tool.slug },
+    props: { tool },
+  }));
+}
+
+const { tool } = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={`${tool.name}: status, cakupan, dan informasi sebelum kalkulator ini tersedia.`} />
+    <meta name="theme-color" content="#f4f6fa" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{tool.name} · JOBENAPP</title>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="JOBENAPP, halaman utama">
+          <span class="brand-mark" aria-hidden="true">J</span>
+          <span>JOBEN<span class="brand-accent">APP</span></span>
+        </a>
+        <nav class="main-nav" aria-label="Navigasi halaman">
+          <a href="/">Beranda</a>
+          <a href="/#modul">Semua modul</a>
+        </nav>
+        <a class="header-cta" href="/#modul">Katalog <span aria-hidden="true">↗</span></a>
+      </header>
+      <main class="module-page">
+        <a class="access-back-link" href="/#modul">← Kembali ke semua modul</a>
+        <section class={`module-detail-card tone-${tool.tone}`}>
+          <div class="module-detail-heading">
+            <span class="tool-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d={tool.icon} /></svg>
+            </span>
+            <span class="tool-category">{tool.category}</span>
+            <span class="tool-status">Dalam persiapan</span>
+          </div>
+          <p class="section-kicker">FASE {tool.phase}</p>
+          <h1>{tool.name}</h1>
+          <p class="module-detail-description">{tool.description}</p>
+
+          <div class="module-status-panel" role="status">
+            <span class="module-status-icon" aria-hidden="true">i</span>
+            <div>
+              <h2>Kalkulator belum tersedia</h2>
+              <p>
+                Halaman ini belum menjalankan perhitungan. Kalkulator hanya akan
+                diaktifkan setelah rumus, sumber, masa berlaku, pembulatan, dan
+                hasil uji diverifikasi. Tidak ada hasil contoh yang ditampilkan
+                sebagai hasil nyata.
+              </p>
+            </div>
+          </div>
+
+          <div class="module-detail-actions">
+            <a class="button button-primary" href="/#modul">
+              Kembali ke katalog <span aria-hidden="true">→</span>
+            </a>
+          </div>
+
+          <div class="module-trust-points">
+            <p><span aria-hidden="true">✓</span> Hasil harus dapat ditelusuri ke metode dan sumber.</p>
+            <p><span aria-hidden="true">✓</span> Data finansial dirancang tetap di perangkat Anda.</p>
+            <p><span aria-hidden="true">✓</span> Status ketersediaan tidak berarti kalkulator sudah lulus.</p>
+          </div>
+        </section>
+      </main>
+      <footer class="site-footer">
+        <a class="footer-brand" href="/">JOBEN<span>APP</span></a>
+        <p>Modul Fase {tool.phase} · status implementasi belum tersedia.</p>
+        <a class="footer-privacy-link" href="/lapor-iklan">Laporkan iklan tidak pantas</a>
+        <ConsentManager client:load />
+      </footer>
+    </div>
+  </body>
+</html>

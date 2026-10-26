@@ -21,6 +21,27 @@
       "minHeightMobile": 100,
       "minHeightDesktop": 100,
       "position": "bawah-hasil"
+    },
+    {
+      "id": "module-entry-gate",
+      "size": "medium-rectangle",
+      "minHeightMobile": 250,
+      "minHeightDesktop": 250,
+      "position": "sebelum-modul"
+    },
+    {
+      "id": "results-gate",
+      "size": "medium-rectangle",
+      "minHeightMobile": 210,
+      "minHeightDesktop": 250,
+      "position": "sebelum-hasil"
+    },
+    {
+      "id": "download-gate",
+      "size": "medium-rectangle",
+      "minHeightMobile": 210,
+      "minHeightDesktop": 250,
+      "position": "sebelum-unduh"
     }
   ]
 }

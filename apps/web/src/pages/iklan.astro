@@ -1,0 +1,36 @@
+---
+import "../styles/global.css";
+import ConsentManager from "../components/ConsentManager";
+import ModuleAccessGate from "../components/ModuleAccessGate";
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,follow" />
+    <meta name="description" content="Halaman pengantar sebelum membuka modul JOBENAPP." />
+    <meta name="theme-color" content="#f4f6fa" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Sebelum membuka modul · JOBENAPP</title>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="JOBENAPP, halaman utama">
+          <span class="brand-mark" aria-hidden="true">J</span>
+          <span>JOBEN<span class="brand-accent">APP</span></span>
+        </a>
+        <a class="header-cta" href="/">Beranda <span aria-hidden="true">↗</span></a>
+      </header>
+      <ModuleAccessGate client:load />
+      <footer class="site-footer">
+        <a class="footer-brand" href="/">JOBEN<span>APP</span></a>
+        <p>Anda dapat selalu melanjutkan tanpa iklan.</p>
+        <a class="footer-privacy-link" href="/lapor-iklan">Laporkan iklan tidak pantas</a>
+        <ConsentManager client:load />
+      </footer>
+    </div>
+  </body>
+</html>

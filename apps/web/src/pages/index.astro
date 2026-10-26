@@ -1,95 +1,7 @@
 ---
 import "../styles/global.css";
-import CoreSystemPlayground from "../components/CoreSystemPlayground";
-import AdSlot from "../components/AdSlot.astro";
 import ConsentManager from "../components/ConsentManager";
-
-const tools = [
-  {
-    name: "Gaji Bersih",
-    category: "Pajak & gaji",
-    description: "Estimasi gaji setelah PPh 21 TER dan iuran BPJS yang berlaku.",
-    icon: "M12 2v20m5-15H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6",
-    tone: "violet",
-  },
-  {
-    name: "PPh 21 Freelancer",
-    category: "Pajak & gaji",
-    description: "Perhitungan pajak tenaga ahli sesuai klasifikasi dan cara pembayaran.",
-    icon: "M8 7V3m8 4V3M5 11h14M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2Z",
-    tone: "blue",
-  },
-  {
-    name: "Simulasi KPR",
-    category: "Keuangan",
-    description: "Bandingkan metode anuitas, flat, dan efektif dengan tabel angsuran.",
-    icon: "M3 10.5 12 3l9 7.5M5 9v11h14V9M9 20v-6h6v6",
-    tone: "indigo",
-  },
-  {
-    name: "Kalkulator HPP",
-    category: "Usaha",
-    description: "Susun biaya pokok dari komponen produksi yang Anda masukkan.",
-    icon: "M4 5h16M4 12h16M4 19h16M8 2v6m8 4v6m-8 1v6",
-    tone: "green",
-  },
-  {
-    name: "Harga Jual & Margin",
-    category: "Usaha",
-    description: "Tentukan harga jual dengan membedakan margin dan markup.",
-    icon: "M20 13 11 4H4v7l9 9a2 2 0 0 0 3 0l4-4a2 2 0 0 0 0-3ZM7.5 7.5h.01",
-    tone: "teal",
-  },
-  {
-    name: "Break-even Point",
-    category: "Usaha",
-    description: "Cari titik impas dari biaya tetap dan kontribusi per unit.",
-    icon: "M3 3v18h18M7 14l4-4 3 3 6-7",
-    tone: "orange",
-  },
-  {
-    name: "Biaya Marketplace",
-    category: "Marketplace",
-    description: "Rinci biaya berdasarkan platform, kategori, dan program penjual.",
-    icon: "M3 8h18l-2 12H5L3 8Zm4 0a5 5 0 0 1 10 0M8 12v.01M16 12v.01",
-    tone: "amber",
-  },
-  {
-    name: "Cicilan Kendaraan",
-    category: "Keuangan",
-    description: "Simulasikan angsuran dengan asumsi bunga dan biaya yang jelas.",
-    icon: "M5 17h14l1-7-2-5H6l-2 5 1 7Zm-1-7h16M7 17v2m10-2v2M7 14h.01M17 14h.01",
-    tone: "cyan",
-  },
-  {
-    name: "Terbilang",
-    category: "Teks",
-    description: "Ubah angka menjadi tulisan terbilang untuk kebutuhan dokumen.",
-    icon: "M5 4h14M5 10h14M5 16h8M5 22h14",
-    tone: "purple",
-  },
-  {
-    name: "Kompres & Resize Foto/PDF",
-    category: "Berkas",
-    description: "Proses foto dan PDF langsung di browser tanpa unggah berkas.",
-    icon: "M4 4h16v16H4zM8 9h.01M20 15l-5-5L5 20",
-    tone: "pink",
-  },
-  {
-    name: "Invoice & Kwitansi",
-    category: "Usaha",
-    description: "Susun dokumen transaksi dan unduh hasilnya.",
-    icon: "M6 3h12v18l-3-2-3 2-3-2-3 2V3Zm3 5h6m-6 4h6m-6 4h3",
-    tone: "rose",
-  },
-  {
-    name: "Kalender Libur",
-    category: "Kalender",
-    description: "Lihat libur nasional dan cuti bersama berdasarkan keputusan resmi.",
-    icon: "M7 3v4m10-4v4M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Zm3 8h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01",
-    tone: "slate",
-  },
-];
+import { tools } from "../data/tools";
 ---
 
 <!doctype html>
@@ -135,7 +47,7 @@ const tools = [
               aturan, dan sumber yang dapat ditelusuri.
             </p>
             <div class="hero-actions">
-              <a class="button button-primary" href="#core">
+              <a class="button button-primary" href="/demo-mesin-hitung">
                 Coba mesin hitung <span aria-hidden="true">→</span>
               </a>
               <a class="button button-secondary" href="#prinsip">Prinsip akurasi</a>
@@ -192,37 +104,13 @@ const tools = [
           </div>
         </section>
 
-        <section class="core-section" id="core" aria-labelledby="core-title">
-          <div class="core-section-heading">
-            <div>
-              <p class="section-kicker">FASE 1.0 · CORE SYSTEM</p>
-              <h2 id="core-title">Hitung dengan aturan yang terlihat.</h2>
-              <p>
-                Coba kontrak kalkulasi presisi: input, metode, pembulatan, dan hasil
-                yang dapat direproduksi.
-              </p>
-            </div>
-            <span class="core-private-label">
-              <span aria-hidden="true">●</span> Dihitung lokal
-            </span>
-          </div>
-          <AdSlot slotId="tool-top" />
-          <div class="core-playground-ad-layout">
-            <div class="core-playground-main">
-              <CoreSystemPlayground client:load />
-            </div>
-            <AdSlot slotId="tool-sidebar" />
-          </div>
-          <AdSlot slotId="results-bottom" />
-        </section>
-
         <section class="module-section" id="modul" aria-labelledby="module-title">
           <div class="section-heading">
             <div>
-              <p class="section-kicker">RENCANA MVP</p>
-              <h2 id="module-title">Modul fitur utama</h2>
+              <p class="section-kicker">KATALOG ALAT</p>
+              <h2 id="module-title">Pilih modul yang Anda butuhkan</h2>
               <p class="section-description">
-                12 alat bantu sesuai ruang lingkup produk. Setiap alat akan aktif setelah aturan dan sumbernya diverifikasi.
+                Setiap modul memiliki halaman tersendiri. Modul baru aktif setelah perhitungan dan sumbernya diverifikasi.
               </p>
             </div>
             <span class="module-count">12 <span>rencana alat</span></span>
@@ -230,7 +118,11 @@ const tools = [
 
           <div class="tool-grid">
             {tools.map((tool) => (
-              <article class={`tool-card tone-${tool.tone}`}>
+              <a
+                class={`tool-card tone-${tool.tone}`}
+                href={`/iklan?tujuan=${encodeURIComponent(`/modul/${tool.slug}`)}`}
+                aria-label={`Buka modul ${tool.name}`}
+              >
                 <div class="tool-card-top">
                   <span class="tool-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24"><path d={tool.icon} /></svg>
@@ -242,9 +134,9 @@ const tools = [
                 <p>{tool.description}</p>
                 <div class="tool-card-foot">
                   <span class="foot-dot" aria-hidden="true"></span>
-                  <span>Menunggu implementasi &amp; verifikasi</span>
+                  <span>Pelajari status modul <span aria-hidden="true">→</span></span>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
         </section>
@@ -284,9 +176,9 @@ const tools = [
           <div>
             <p class="closing-kicker">JOBENAPP · ALAT HITUNG INDONESIA</p>
             <h2 id="closing-title">Mesin hitung kini siap diuji. Aturan tetap harus terverifikasi.</h2>
-            <p>Demo persentase memakai input Anda; 12 alat resmi tetap menunggu implementasi dan pemeriksaan masing-masing.</p>
+            <p>Demo mesin hitung tersedia terpisah; 12 alat resmi menunggu implementasi dan pemeriksaan masing-masing.</p>
           </div>
-          <a href="#modul" class="closing-link">Lihat rencana fitur <span aria-hidden="true">→</span></a>
+          <a href="/demo-mesin-hitung" class="closing-link">Coba demo mesin <span aria-hidden="true">→</span></a>
           <div class="banner-orb banner-orb-one"></div>
           <div class="banner-orb banner-orb-two"></div>
         </section>

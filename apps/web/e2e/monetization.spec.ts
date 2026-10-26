@@ -43,7 +43,7 @@ test("keeps placeholders stable and outside the input form at supported widths",
   await stubBackend(page);
   for (const width of widths) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/");
+    await page.goto("/demo-mesin-hitung");
     await expect(page.locator("[data-slot]")).toHaveCount(3);
     await expect(page.locator(".core-form [data-slot]")).toHaveCount(0);
     if (width > 900) {
@@ -72,7 +72,7 @@ test("makes no cross-origin request before consent and after rejection", async (
     }
   });
   await stubBackend(page);
-  await page.goto("/");
+  await page.goto("/demo-mesin-hitung");
   await expect(page.getByTestId("consent-banner")).toBeVisible();
   await page.getByRole("button", { name: "Tolak opsional" }).click();
   await expect(page.getByTestId("consent-banner")).toHaveCount(0);
@@ -89,7 +89,7 @@ test("keeps calculator input and output out of network requests", async ({
     seenRequests.push(`${request.url()} ${request.postData() ?? ""}`);
   });
   await stubBackend(page);
-  await page.goto("/");
+  await page.goto("/demo-mesin-hitung");
   await page.getByRole("button", { name: "Terima semua" }).click();
   await page.getByLabel("Nominal dasar").fill("987654321");
   await page.getByLabel("Persentase input").fill("6,75");
@@ -127,7 +127,7 @@ test("consent banner and ad placeholders have no serious axe violations", async 
   page,
 }) => {
   await stubBackend(page);
-  await page.goto("/");
+  await page.goto("/demo-mesin-hitung");
   const axePath = resolve(process.cwd(), "node_modules/axe-core/axe.min.js");
   test.skip(!existsSync(axePath), "axe-core browser bundle is not installed");
   await page.addScriptTag({ path: axePath });
@@ -144,4 +144,63 @@ test("consent banner and ad placeholders have no serious axe violations", async 
     ["serious", "critical"].includes(violation.impact ?? ""),
   );
   expect(serious).toEqual([]);
+});
+
+test("home cards open unique module pages through a skippable ad gate", async ({
+  page,
+}) => {
+  await stubBackend(page);
+  await page.goto("/");
+
+  const cards = page.locator("a.tool-card");
+  await expect(cards).toHaveCount(12);
+  await expect(page.locator("main form")).toHaveCount(0);
+  const destinations = await cards.evaluateAll((links) =>
+    links.map((link) => (link as HTMLAnchorElement).href),
+  );
+  expect(new Set(destinations).size).toBe(12);
+  expect(destinations.every((url) => url.includes("/iklan?tujuan="))).toBe(true);
+
+  await cards.first().click();
+  await expect(page).toHaveURL(/\/iklan\?tujuan=%2Fmodul%2Fgaji-bersih$/);
+  await expect(
+    page.getByRole("heading", { name: "Sebelum membuka Gaji Bersih" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Iklan tidak ditampilkan. Anda dapat melanjutkan."),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Lanjut ke Gaji Bersih" }).click();
+  await expect(page).toHaveURL(/\/modul\/gaji-bersih$/);
+  await expect(
+    page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
+  ).toBeVisible();
+  await expect(page.locator(".module-detail-card form")).toHaveCount(0);
+});
+
+test("all twelve module URLs render distinct standalone status pages", async ({
+  page,
+}) => {
+  await stubBackend(page);
+  const slugs = [
+    "gaji-bersih",
+    "pph-21-freelancer",
+    "simulasi-kpr",
+    "kalkulator-hpp",
+    "harga-jual-margin",
+    "break-even-point",
+    "biaya-marketplace",
+    "cicilan-kendaraan",
+    "terbilang",
+    "kompres-resize-foto-pdf",
+    "invoice-kwitansi",
+    "kalender-libur",
+  ];
+
+  for (const slug of slugs) {
+    await page.goto(`/modul/${slug}`);
+    await expect(page.locator("main h1")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
+    ).toBeVisible();
+  }
 });

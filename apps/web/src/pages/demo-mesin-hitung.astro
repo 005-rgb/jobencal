@@ -1,0 +1,60 @@
+---
+import "../styles/global.css";
+import CoreSystemPlayground from "../components/CoreSystemPlayground";
+import AdSlot from "../components/AdSlot.astro";
+import ConsentManager from "../components/ConsentManager";
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Demo Fase 1.0 JOBENAPP untuk menguji metode hitung, pembulatan, dan privasi." />
+    <meta name="theme-color" content="#f4f6fa" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Demo mesin hitung · JOBENAPP</title>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="JOBENAPP, halaman utama">
+          <span class="brand-mark" aria-hidden="true">J</span>
+          <span>JOBEN<span class="brand-accent">APP</span></span>
+        </a>
+        <a class="header-cta" href="/">Kembali ke beranda <span aria-hidden="true">↗</span></a>
+      </header>
+      <main class="core-demo-page">
+        <section class="core-section" id="core" aria-labelledby="core-title">
+          <div class="core-section-heading">
+            <div>
+              <p class="section-kicker">FASE 1.0 · DEMO MESIN</p>
+              <h1 id="core-title">Hitung dengan aturan yang terlihat.</h1>
+              <p>
+                Demo ini menguji kontrak kalkulasi presisi: input, metode,
+                pembulatan, dan hasil yang dapat direproduksi.
+              </p>
+            </div>
+            <span class="core-private-label">
+              <span aria-hidden="true">●</span> Dihitung lokal
+            </span>
+          </div>
+          <AdSlot slotId="tool-top" />
+          <div class="core-playground-ad-layout">
+            <div class="core-playground-main">
+              <CoreSystemPlayground client:load />
+            </div>
+            <AdSlot slotId="tool-sidebar" />
+          </div>
+          <AdSlot slotId="results-bottom" />
+        </section>
+      </main>
+      <footer class="site-footer">
+        <a class="footer-brand" href="/">JOBEN<span>APP</span></a>
+        <p>Demo mesin bersama · bukan salah satu dari 12 modul alat.</p>
+        <a class="footer-privacy-link" href="/lapor-iklan">Laporkan iklan tidak pantas</a>
+        <ConsentManager client:load />
+      </footer>
+    </div>
+  </body>
+</html>

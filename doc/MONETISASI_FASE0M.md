@@ -31,12 +31,39 @@ halaman inti:
 | `tool-top` | Di bawah judul alat, sebelum formulir | 90 px | 90 px |
 | `tool-sidebar` | Sisi kanan, desktop saja | 250 px | tersembunyi |
 | `results-bottom` | Setelah hasil, sebelum bagian berikutnya | 100 px | 100 px |
+| `module-entry-gate` | Halaman pengantar sebelum modul | 250 px | 250 px |
+| `results-gate` | Gerbang sebelum hasil ditampilkan | 250 px | 210 px |
+| `download-gate` | Gerbang sebelum berkas diunduh | 250 px | 210 px |
 
 Slot tidak boleh diletakkan di antara input, di antara input dan tombol hitung,
 atau tepat di bawah tombol hitung. Slot tetap berupa placeholder dan selalu
 memesan ukuran saat iklan mati/tidak disetujui. Label “Iklan” ditampilkan.
-Jangan memasang pop-under, interstitial, sticky overlay, atau slot yang
-menggeser fokus/alur hitung.
+Jangan memasang pop-under, sticky overlay, atau slot yang menggeser fokus/alur
+hitung. Gerbang akses Fase 1 hanya boleh menggunakan alur halaman/panel yang
+dijelaskan di [Adendum Fase 1](ADENDUM_FASE1_CORE_SYSTEM.md#6-navigasi-halaman-alat-dan-gerbang-iklan-fase-1);
+gerbang tidak boleh memaksa pengguna melihat iklan.
+
+## Gerbang iklan sebelum akses dan tindakan
+
+- Gerbang masuk modul memakai halaman `/iklan`; gerbang hasil dan unduhan
+  ditampilkan di halaman modul tanpa memuat ulang halaman agar input sementara
+  tetap berada di memori browser.
+- Iklan hanya boleh dimuat jika konfigurasi backend `ADS_ENABLED=true`,
+  persetujuan iklan perangkat saat ini `ads=true`, dan penyedia serta slot yang
+  disetujui benar-benar terkonfigurasi. Gagal membaca konfigurasi, tidak ada
+  consent, consent ditolak, penyedia/slot tidak tersedia, atau iklan gagal
+  dimuat berarti tindakan diteruskan tanpa iklan.
+- Tombol “Lanjutkan”/“Lihat hasil”/“Unduh” harus tetap tersedia tanpa hitung
+  mundur atau syarat impresi. Pengguna dapat melewati iklan; penolakan consent
+  tidak boleh membatasi akses kalkulator, hasil, atau unduhan.
+- Hasil/berkas ditampilkan atau dibuat setelah tindakan dilanjutkan, tepat satu
+  kali. Jangan menghitung ulang tanpa sengaja, mengeksekusi unduhan ganda, atau
+  menghapus input saat panel iklan dibuka/tutup.
+- Dilarang menaruh input, hasil, data invoice, nama, dokumen, atau konten berkas
+  pada URL, permintaan iklan, parameter pelacakan, beacon, maupun analytics.
+  Data input dan output tetap lokal sesuai aturan privasi modul.
+- Tombol tutup/lanjutkan memakai label yang jelas, fokus keyboard tetap terlihat,
+  dan halaman/panel dapat digunakan pada layar 320 px serta pembaca layar.
 
 ## Persetujuan dan pemuatan skrip
 

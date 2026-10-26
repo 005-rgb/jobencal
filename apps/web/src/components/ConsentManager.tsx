@@ -7,8 +7,7 @@ import {
   setConsent,
   type ConsentPreferences,
 } from "../lib/consent.js";
-
-const REGISTERED_AD_SCRIPTS = [] as const;
+import { REGISTERED_AD_SCRIPTS } from "../lib/ad-provider.js";
 
 export default function ConsentManager() {
   const [consent, setCurrentConsent] = useState<ConsentPreferences | null>(null);
