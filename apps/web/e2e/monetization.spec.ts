@@ -204,10 +204,45 @@ test("all twelve module URLs render standalone pages with shipped tools availabl
       await expect(
         page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
       ).toHaveCount(0);
+    } else if (slug === "break-even-point") {
+      await expect(page.locator("form.bep-form")).toBeVisible();
+      await expect(
+        page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
+      ).toHaveCount(0);
     } else {
       await expect(
         page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
       ).toBeVisible();
     }
   }
+});
+
+test("BEP calculation stays local and shows fractional and whole-unit results", async ({
+  page,
+}) => {
+  const submittedValuesInRequests: string[] = [];
+  page.on("request", (request) => {
+    const requestText = `${request.url()} ${request.postData() ?? ""}`;
+    if (requestText.includes("100000") || requestText.includes("60000")) {
+      submittedValuesInRequests.push(requestText);
+    }
+  });
+  await page.goto("/modul/break-even-point");
+  const rejectOptionalCookies = page.getByRole("button", {
+    name: "Tolak opsional",
+  });
+  if (await rejectOptionalCookies.isVisible()) {
+    await rejectOptionalCookies.click();
+  }
+
+  await page.getByLabel(/Biaya tetap untuk periode ini/).fill("100.000");
+  await page.getByLabel(/Harga jual per unit/).fill("60.000");
+  await page.getByLabel(/Biaya variabel per unit/).fill("20.000");
+  await page.getByRole("button", { name: "Hitung titik impas" }).click();
+
+  await expect(page.getByText("5 / 2 unit (≈ 2,5 unit)")).toBeVisible();
+  await expect(page.getByText("3 unit")).toBeVisible();
+  await expect(page.getByText("Rp 150.000")).toBeVisible();
+  await expect(page.getByText("Rp 180.000")).toBeVisible();
+  expect(submittedValuesInRequests).toEqual([]);
 });

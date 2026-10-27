@@ -76,3 +76,14 @@ export type {
   PriceMarginErrorCode,
   PriceMarginInput,
 } from "./price-margin.js";
+export {
+  BREAK_EVEN_METHOD_KEY,
+  BREAK_EVEN_METHOD_VERSION,
+  BreakEvenCalculationError,
+  calculateBreakEven,
+} from "./break-even.js";
+export type {
+  BreakEvenCalculation,
+  BreakEvenErrorCode,
+  BreakEvenInput,
+} from "./break-even.js";

@@ -1,0 +1,60 @@
+{
+  "tool": "break-even-point",
+  "methodVersion": "1.6.0",
+  "checkedOn": "2026-10-27",
+  "effective": "Definisi matematis; tidak memakai tarif eksternal.",
+  "reference": "Pembanding aritmetika manual independen: BEP unit = biaya tetap / (harga jual per unit - biaya variabel per unit); nilai penjualan BEP = BEP unit x harga jual per unit.",
+  "rounding": "Rasio unit tetap eksak; jumlah unit utuh minimum ceiling; nilai penjualan Rupiah dibulatkan half-away-from-zero.",
+  "reviewer": "Pemeriksa manusia kedua belum ditetapkan; jangan klaim tinjauan independen formal.",
+  "cases": [
+    {
+      "id": "bep-integral-five-units",
+      "scenario": "Kontribusi positif menghasilkan BEP tepat pada lima unit",
+      "boundary": "Kontribusi positif; BEP integer",
+      "input": { "fixedCostRupiah": "100000", "sellingPricePerUnitRupiah": "50000", "variableCostPerUnitRupiah": "30000" },
+      "expected": { "contributionPerUnitRupiah": "20000", "unitNumerator": "5", "unitDenominator": "1", "wholeUnits": "5", "salesAtExactBreakEvenRupiah": "250000", "salesAtWholeUnitThresholdRupiah": "250000", "profitOneUnitBeforeRupiah": "-20000", "profitAtWholeUnitThresholdRupiah": "0", "profitOneUnitAfterRupiah": "20000" }
+    },
+    {
+      "id": "bep-fraction-rounds-up",
+      "scenario": "BEP 2,5 unit memerlukan tiga unit utuh untuk menutup biaya tetap",
+      "boundary": "BEP pecahan; pembulatan unit ke atas",
+      "input": { "fixedCostRupiah": "100000", "sellingPricePerUnitRupiah": "60000", "variableCostPerUnitRupiah": "20000" },
+      "expected": { "contributionPerUnitRupiah": "40000", "unitNumerator": "5", "unitDenominator": "2", "wholeUnits": "3", "salesAtExactBreakEvenRupiah": "150000", "salesAtWholeUnitThresholdRupiah": "180000", "profitOneUnitBeforeRupiah": "-20000", "profitAtWholeUnitThresholdRupiah": "20000", "profitOneUnitAfterRupiah": "60000" }
+    },
+    {
+      "id": "bep-zero-fixed-cost",
+      "scenario": "Tanpa biaya tetap, titik impas sudah tercapai sebelum penjualan",
+      "boundary": "Biaya tetap nol; nol unit",
+      "input": { "fixedCostRupiah": "0", "sellingPricePerUnitRupiah": "25000", "variableCostPerUnitRupiah": "15000" },
+      "expected": { "contributionPerUnitRupiah": "10000", "unitNumerator": "0", "unitDenominator": "1", "wholeUnits": "0", "salesAtExactBreakEvenRupiah": "0", "salesAtWholeUnitThresholdRupiah": "0", "profitOneUnitBeforeRupiah": null, "profitAtWholeUnitThresholdRupiah": "0", "profitOneUnitAfterRupiah": "10000" }
+    },
+    {
+      "id": "bep-exactly-one-unit",
+      "scenario": "Satu unit tepat menutup biaya tetap dan kontribusi",
+      "boundary": "BEP tepat satu unit",
+      "input": { "fixedCostRupiah": "20000", "sellingPricePerUnitRupiah": "50000", "variableCostPerUnitRupiah": "30000" },
+      "expected": { "contributionPerUnitRupiah": "20000", "unitNumerator": "1", "unitDenominator": "1", "wholeUnits": "1", "salesAtExactBreakEvenRupiah": "50000", "salesAtWholeUnitThresholdRupiah": "50000", "profitOneUnitBeforeRupiah": "-20000", "profitAtWholeUnitThresholdRupiah": "0", "profitOneUnitAfterRupiah": "20000" }
+    },
+    {
+      "id": "bep-sales-round-half-away-from-zero",
+      "scenario": "Nilai penjualan BEP pecahan setengah Rupiah dibulatkan menjauhi nol",
+      "boundary": "Batas pembulatan half-away-from-zero",
+      "input": { "fixedCostRupiah": "1", "sellingPricePerUnitRupiah": "3", "variableCostPerUnitRupiah": "1" },
+      "expected": { "contributionPerUnitRupiah": "2", "unitNumerator": "1", "unitDenominator": "2", "wholeUnits": "1", "salesAtExactBreakEvenRupiah": "2", "salesAtWholeUnitThresholdRupiah": "3", "profitOneUnitBeforeRupiah": "-1", "profitAtWholeUnitThresholdRupiah": "1", "profitOneUnitAfterRupiah": "3" }
+    },
+    {
+      "id": "bep-zero-contribution",
+      "scenario": "Kontribusi nol tidak menghasilkan BEP",
+      "boundary": "Kontribusi nol; kalkulasi ditolak",
+      "input": { "fixedCostRupiah": "10000", "sellingPricePerUnitRupiah": "20000", "variableCostPerUnitRupiah": "20000" },
+      "expectedError": "unreachable_break_even"
+    },
+    {
+      "id": "bep-negative-contribution",
+      "scenario": "Kontribusi negatif tidak menghasilkan BEP",
+      "boundary": "Kontribusi negatif; kalkulasi ditolak",
+      "input": { "fixedCostRupiah": "10000", "sellingPricePerUnitRupiah": "15000", "variableCostPerUnitRupiah": "20000" },
+      "expectedError": "unreachable_break_even"
+    }
+  ]
+}

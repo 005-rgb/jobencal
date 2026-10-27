@@ -133,6 +133,8 @@ import { tools } from "../data/tools";
                       ? "Kalkulator tersedia · input pengguna"
                       : tool.slug === "kalkulator-hpp"
                         ? "Kalkulator tersedia · biaya input pengguna"
+                        : tool.slug === "break-even-point"
+                          ? "Kalkulator tersedia · review independen diperlukan"
                       : "Belum tersedia"}
                   </span>
                 </div>
@@ -145,6 +147,8 @@ import { tools } from "../data/tools";
                       ? "Buka simulasi KPR"
                       : tool.slug === "kalkulator-hpp"
                         ? "Hitung HPP"
+                        : tool.slug === "break-even-point"
+                          ? "Hitung BEP"
                         : "Pelajari status modul"}
                     <span aria-hidden="true"> →</span>
                   </span>
