@@ -28,7 +28,9 @@ fail() {
 
 restore_untracked_conflicts() {
   local backup_dir="$1"
+  local restore_list="$backup_dir/restore-files.list"
   [ -d "$backup_dir/untracked" ] || return 0
+  find "$backup_dir/untracked" -type f -print0 > "$restore_list"
   while IFS= read -r -d '' backup_file; do
     local relative_path="${backup_file#"$backup_dir/untracked/"}"
     local destination="$APP_DIR/$relative_path"
@@ -36,7 +38,7 @@ restore_untracked_conflicts() {
       mkdir -p "$(dirname "$destination")"
       mv "$backup_file" "$destination"
     fi
-  done < <(find "$backup_dir/untracked" -type f -print0)
+  done < "$restore_list"
   log WARN "File server lokal yang belum diganti dipulihkan dari cadangan."
 }
 
@@ -128,7 +130,9 @@ if [ "$PHASE" != "--post-reset" ]; then
 
   # cPanel may have generated untracked root files such as app.js or
   # package.json. Back up only files that collide with the GitHub release.
-  while IFS= read -r tracked_path; do
+  RELEASE_FILES="$BACKUP_DIR/release-files.list"
+  git -C "$APP_DIR" ls-tree -r --name-only -z "origin/$BRANCH" > "$RELEASE_FILES"
+  while IFS= read -r -d '' tracked_path; do
     case "$tracked_path" in
       .env|.htaccess) continue ;;
     esac
@@ -140,7 +144,7 @@ if [ "$PHASE" != "--post-reset" ]; then
       mkdir -p "$BACKUP_DIR/untracked/$(dirname "$tracked_path")"
       mv "$local_path" "$BACKUP_DIR/untracked/$tracked_path"
     fi
-  done < <(git -C "$APP_DIR" ls-tree -r --name-only "origin/$BRANCH")
+  done < "$RELEASE_FILES"
 
   COMMIT_BEFORE="$(git -C "$APP_DIR" rev-parse --short HEAD 2>/dev/null || printf 'none')"
   log INFO "Memperbarui kode ke origin/$BRANCH; perubahan lokal terlacak harus bersih."

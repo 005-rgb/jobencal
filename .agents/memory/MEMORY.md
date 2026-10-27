@@ -2,3 +2,4 @@
 - [Runtime version selection](runtime-version-selection.md) — Check the active Node version against the project's engine before installing or testing dependencies.
 - [PDF rendering in this workspace](pdf-rendering.md) — If PyMuPDF is unavailable in the shell runtime, use the preinstalled `pdftoppm` for visual inspection.
 - [UI test label queries](ui-test-label-queries.md) — Use partial accessible-name matching when `aria-describedby` hints appear in jsdom label queries.
+- [cPanel shell portability](cpanel-shell-portability.md) — Avoid Bash process substitution in cPanel deployment scripts; use private temporary files instead.
