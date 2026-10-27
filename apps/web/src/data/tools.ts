@@ -41,7 +41,7 @@ export const tools: readonly JobenTool[] = [
     phase: "1.4",
     name: "Kalkulator HPP",
     category: "Usaha",
-    description: "Susun biaya pokok dari komponen produksi yang Anda masukkan.",
+    description: "Hitung total biaya batch dan HPP per unit, termasuk susut bahan serta alokasi overhead dan penyusutan.",
     icon: "M4 5h16M4 12h16M4 19h16M8 2v6m8 4v6m-8 1v6",
     tone: "green",
   },

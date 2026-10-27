@@ -54,3 +54,16 @@ export type {
   KprInstallment,
   KprModel,
 } from "./kpr.js";
+export {
+  calculateHpp,
+  HppCalculationError,
+} from "./hpp.js";
+export type {
+  HppAllocationInput,
+  HppAllocationMethod,
+  HppCalculation,
+  HppCalculationErrorCode,
+  HppCalculationInput,
+  HppCostCategory,
+  HppCostLine,
+} from "./hpp.js";

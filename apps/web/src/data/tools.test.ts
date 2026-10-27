@@ -33,4 +33,11 @@ describe("tool catalogue", () => {
     expect(kpr?.description).toMatch(/bunga berjenjang/i);
     expect(kpr?.description).toMatch(/pelunasan tambahan/i);
   });
+
+  it("describes Phase 1.4 as batch and per-unit cost with explicit allocations", () => {
+    const hpp = getToolBySlug("kalkulator-hpp");
+    expect(hpp?.phase).toBe("1.4");
+    expect(hpp?.description).toMatch(/batch dan HPP per unit/i);
+    expect(hpp?.description).toMatch(/overhead dan penyusutan/i);
+  });
 });

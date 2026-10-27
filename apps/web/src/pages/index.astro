@@ -131,6 +131,8 @@ import { tools } from "../data/tools";
                   <span class="tool-status">
                     {tool.slug === "simulasi-kpr"
                       ? "Kalkulator tersedia · input pengguna"
+                      : tool.slug === "kalkulator-hpp"
+                        ? "Kalkulator tersedia · biaya input pengguna"
                       : "Belum tersedia"}
                   </span>
                 </div>
@@ -139,7 +141,11 @@ import { tools } from "../data/tools";
                 <div class="tool-card-foot">
                   <span class="foot-dot" aria-hidden="true"></span>
                   <span>
-                    {tool.slug === "simulasi-kpr" ? "Buka simulasi KPR" : "Pelajari status modul"}
+                    {tool.slug === "simulasi-kpr"
+                      ? "Buka simulasi KPR"
+                      : tool.slug === "kalkulator-hpp"
+                        ? "Hitung HPP"
+                        : "Pelajari status modul"}
                     <span aria-hidden="true"> →</span>
                   </span>
                 </div>

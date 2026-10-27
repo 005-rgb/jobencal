@@ -1,0 +1,126 @@
+{
+  "tool": "hpp",
+  "ruleVersion": "1.0.0",
+  "checkedOn": "2026-10-27",
+  "effectiveFrom": "2026-10-27",
+  "reference": "Pembanding aritmetika manual independen; tanpa tarif eksternal.",
+  "reviewer": "Belum ada tinjauan kedua; vektor perlu diperiksa sebelum klaim audit independen.",
+  "rounding": "Rupiah utuh, half-away-from-zero pada hasil alokasi dan HPP per unit.",
+  "cases": [
+    {
+      "id": "hpp-direct-costs",
+      "scenario": "Biaya bahan, tenaga kerja, biaya langsung lain, batch dan unit",
+      "input": {
+        "productionUnits": "10",
+        "materialCostRupiah": "100000",
+        "materialWasteBasisPoints": "0",
+        "directLaborRupiah": "50000",
+        "otherDirectCostRupiah": "10000",
+        "allocations": [],
+        "costsComplete": true
+      },
+      "expected": { "batchRupiah": "160000", "perUnitRupiah": "16000", "status": "complete" },
+      "boundary": "Biaya batch langsung"
+    },
+    {
+      "id": "hpp-material-waste",
+      "scenario": "Biaya susut bahan menaikkan bahan yang diperlukan untuk hasil jadi",
+      "input": {
+        "productionUnits": "10",
+        "materialCostRupiah": "90000",
+        "materialWasteBasisPoints": "1000",
+        "directLaborRupiah": "50000",
+        "otherDirectCostRupiah": "0",
+        "allocations": [],
+        "costsComplete": true
+      },
+      "expected": { "batchRupiah": "150000", "perUnitRupiah": "15000", "status": "complete" },
+      "boundary": "Susut bahan 10%"
+    },
+    {
+      "id": "hpp-batch-overhead-and-depreciation",
+      "scenario": "Overhead dan penyusutan dialokasikan langsung per batch",
+      "input": {
+        "productionUnits": "20",
+        "materialCostRupiah": "200000",
+        "materialWasteBasisPoints": "0",
+        "directLaborRupiah": "100000",
+        "otherDirectCostRupiah": "0",
+        "allocations": [
+          { "label": "Listrik", "category": "overhead", "method": "batch", "amountRupiah": "60000" },
+          { "label": "Penyusutan oven", "category": "depreciation", "method": "batch", "amountRupiah": "40000" }
+        ],
+        "costsComplete": true
+      },
+      "expected": { "batchRupiah": "400000", "perUnitRupiah": "20000", "status": "complete" },
+      "boundary": "Kedua kategori alokasi"
+    },
+    {
+      "id": "hpp-driver-allocation",
+      "scenario": "Overhead dan penyusutan memakai penggerak jam mesin",
+      "input": {
+        "productionUnits": "10",
+        "materialCostRupiah": "100000",
+        "materialWasteBasisPoints": "0",
+        "directLaborRupiah": "50000",
+        "otherDirectCostRupiah": "0",
+        "allocations": [
+          { "label": "Overhead pabrik", "category": "overhead", "method": "driver", "amountRupiah": "500000", "driverName": "jam mesin", "batchDriverUnits": "10", "totalDriverUnits": "50" },
+          { "label": "Penyusutan mesin", "category": "depreciation", "method": "driver", "amountRupiah": "1000000", "driverName": "jam mesin", "batchDriverUnits": "10", "totalDriverUnits": "100" }
+        ],
+        "costsComplete": true
+      },
+      "expected": { "batchRupiah": "350000", "perUnitRupiah": "35000", "status": "complete" },
+      "boundary": "Proporsi penggerak eksplisit"
+    },
+    {
+      "id": "hpp-per-unit-allocation",
+      "scenario": "Biaya overhead per unit dikalikan hasil produksi",
+      "input": {
+        "productionUnits": "8",
+        "materialCostRupiah": "80000",
+        "materialWasteBasisPoints": "0",
+        "directLaborRupiah": "40000",
+        "otherDirectCostRupiah": "0",
+        "allocations": [
+          { "label": "Kemasan", "category": "overhead", "method": "per_unit", "amountRupiah": "25" }
+        ],
+        "costsComplete": true
+      },
+      "expected": { "batchRupiah": "120200", "perUnitRupiah": "15025", "status": "complete" },
+      "boundary": "Per-unit allocation"
+    },
+    {
+      "id": "hpp-driver-rounding",
+      "scenario": "Alokasi pecahan dibulatkan half-away-from-zero ke Rupiah utuh",
+      "input": {
+        "productionUnits": "1",
+        "materialCostRupiah": "1000",
+        "materialWasteBasisPoints": "0",
+        "directLaborRupiah": "0",
+        "otherDirectCostRupiah": "0",
+        "allocations": [
+          { "label": "Biaya mesin", "category": "overhead", "method": "driver", "amountRupiah": "5", "driverName": "jam", "batchDriverUnits": "1", "totalDriverUnits": "2" }
+        ],
+        "costsComplete": true
+      },
+      "expected": { "batchRupiah": "1003", "perUnitRupiah": "1003", "status": "complete" },
+      "boundary": "Hasil alokasi 2,5 Rupiah"
+    },
+    {
+      "id": "hpp-provisional",
+      "scenario": "Biaya belum dikonfirmasi lengkap menghasilkan status sementara",
+      "input": {
+        "productionUnits": "5",
+        "materialCostRupiah": "50000",
+        "materialWasteBasisPoints": "0",
+        "directLaborRupiah": "25000",
+        "otherDirectCostRupiah": "0",
+        "allocations": [],
+        "costsComplete": false
+      },
+      "expected": { "batchRupiah": "75000", "perUnitRupiah": "15000", "status": "provisional" },
+      "boundary": "Biaya belum lengkap"
+    }
+  ]
+}
