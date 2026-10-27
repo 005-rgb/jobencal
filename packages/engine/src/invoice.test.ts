@@ -31,6 +31,22 @@ interface FixtureCase {
   readonly expectedError?: InvoiceCalculationErrorCode;
 }
 
+interface ValidationFixture {
+  readonly id: string;
+  readonly scenario: string;
+  readonly input: {
+    readonly documentNumber?: string;
+    readonly recipientName?: string;
+    readonly lines?: readonly {
+      readonly description: string;
+      readonly quantityThousandths: string;
+      readonly unit: string;
+      readonly unitPriceRupiah: string;
+    }[];
+  };
+  readonly expectedError: InvoiceCalculationErrorCode;
+}
+
 const validHeader = {
   documentNumber: "INV-2026-001",
   issueDate: "2026-10-27",
@@ -101,35 +117,32 @@ describe("Phase 1.11 invoice and receipt arithmetic", () => {
     });
   }
 
-  it("rejects invalid identities, numbers, descriptions, quantities, and lines", () => {
-    const base = inputFor(fixtures.cases[0] as FixtureCase);
-    expectDomainError(
-      () => calculateInvoiceReceipt({ ...base, documentNumber: " " }),
-      "invalid_document_number",
-    );
-    expectDomainError(
-      () => calculateInvoiceReceipt({ ...base, recipientName: "" }),
-      "invalid_identity",
-    );
-    expectDomainError(
-      () => calculateInvoiceReceipt({
-        ...base,
-        lines: [{ ...base.lines[0]!, description: " " }],
-      }),
-      "invalid_line_description",
-    );
-    expectDomainError(
-      () => calculateInvoiceReceipt({
-        ...base,
-        lines: [{ ...base.lines[0]!, quantityThousandths: 0n }],
-      }),
-      "invalid_quantity",
-    );
-    expectDomainError(
-      () => calculateInvoiceReceipt({ ...base, lines: [] }),
-      "invalid_lines",
-    );
-  });
+  for (const fixture of fixtures.validationCases as ValidationFixture[]) {
+    it(`validation ${fixture.id}: ${fixture.scenario}`, () => {
+      const base = inputFor(fixtures.cases[0] as FixtureCase);
+      const lines = fixture.input.lines?.map((line) => ({
+        ...line,
+        quantityThousandths: BigInt(line.quantityThousandths),
+        unitPriceRupiah: BigInt(line.unitPriceRupiah),
+      }));
+      const overrides = {
+        ...(fixture.input.documentNumber === undefined
+          ? {}
+          : { documentNumber: fixture.input.documentNumber }),
+        ...(fixture.input.recipientName === undefined
+          ? {}
+          : { recipientName: fixture.input.recipientName }),
+        ...(lines === undefined ? {} : { lines }),
+      };
+      expectDomainError(
+        () => calculateInvoiceReceipt({
+          ...base,
+          ...overrides,
+        }),
+        fixture.expectedError,
+      );
+    });
+  }
 
   it("returns visible reconciliation steps and never silently adds tax", () => {
     const result = calculateInvoiceReceipt(inputFor(fixtures.cases[8] as FixtureCase));

@@ -294,9 +294,11 @@ export default function InvoiceCalculator() {
       <div class="invoice-local-note">
         <span aria-hidden="true">i</span>
         <p>
-          Dokumen dihitung di browser dan tidak disimpan atau dikirim. Gunakan
-          tombol cetak lalu pilih <strong>Simpan sebagai PDF</strong>. Tidak
-          ada pajak atau biaya resmi yang ditambahkan.
+          Dokumen dihitung di browser dan tidak disimpan. Data tidak dikirim
+          untuk perhitungan; jika Anda memilih Bagikan WhatsApp, ringkasannya
+          akan dibuka di WhatsApp. Gunakan tombol cetak lalu pilih{" "}
+          <strong>Simpan sebagai PDF</strong>. Tidak ada pajak atau biaya resmi
+          yang ditambahkan.
         </p>
       </div>
 

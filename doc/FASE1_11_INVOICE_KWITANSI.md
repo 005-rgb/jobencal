@@ -36,10 +36,13 @@ fungsi produksi. Tes komponen dan E2E memeriksa validasi, rekonsiliasi UI, mode
 kwitansi, privasi request, dan tindakan cetak.
 
 **Batas klaim:** implementasi teknis dan fixture otomatis tersedia. Pemeriksaan
-manusia independen atas fixture, serta verifikasi PDF di browser/printer target,
-belum dilakukan. Karena itu modul belum boleh dinyatakan lulus gerbang formal
-Fase 1.11 sampai pemeriksaan tersebut dicatat. Tidak ada tarif hukum yang
-ditampilkan atau diklaim telah diverifikasi.
+manusia independen atas fixture belum dilakukan. E2E Chromium menghasilkan PDF
+A4 dan memeriksa mode cetak; teks PDF yang diekstrak juga sudah dicocokkan
+dengan nomor, nama penerima, jumlah baris, subtotal, diskon, total, dan
+peringatan pajak pada dokumen layar. Pengujian visual lintas browser dan
+pengaturan printer belum dilakukan. Karena itu modul belum boleh dinyatakan
+lulus gerbang formal Fase 1.11 sampai pemeriksaan independen dan target cetak
+dicatat. Tidak ada tarif hukum yang ditampilkan atau diklaim telah diverifikasi.
 
 Jalankan tes terkait dengan `npm test -- --run packages/engine/src/invoice.test.ts
 apps/web/src/components/InvoiceCalculator.test.tsx` setelah membangun workspace

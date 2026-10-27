@@ -1,4 +1,6 @@
 import { expect, test } from "@playwright/test";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 test("Fase 1.11 creates a reconciled invoice and prints the visible document", async ({ page }) => {
   const requestBodies: string[] = [];
@@ -38,9 +40,18 @@ test("Fase 1.11 creates a reconciled invoice and prints the visible document", a
   await page.emulateMedia({ media: "print" });
   await expect(page.locator(".invoice-form")).toBeHidden();
   await expect(document).toBeVisible();
-  const pdf = await page.pdf({ format: "A4" });
+  const pdf = await page.pdf({
+    path: join(tmpdir(), "jobenapp-phase-1-11-e2e.pdf"),
+    format: "A4",
+    preferCSSPageSize: true,
+  });
   expect(pdf.subarray(0, 5).toString()).toBe("%PDF-");
   expect(pdf.byteLength).toBeGreaterThan(1_000);
+  const mediaBox = pdf
+    .toString("latin1")
+    .match(/\/MediaBox \[0 0 ([\d.]+) ([\d.]+)\]/);
+  expect(mediaBox).not.toBeNull();
+  expect(Number(mediaBox![1])).toBeLessThan(Number(mediaBox![2]));
   expect(requestBodies.join("\n")).not.toContain("Pelanggan Uji");
   expect(requestBodies.join("\n")).not.toContain("INV-E2E-01");
 });

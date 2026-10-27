@@ -25,8 +25,9 @@
   Document math stays in the browser, rounds each item line to whole Rupiah,
   and offers copy, WhatsApp sharing, and browser print-to-PDF. It does not add
   tax, VAT, withholding, or stamp duty and is not a tax invoice. See
-  `doc/FASE1_11_INVOICE_KWITANSI.md`; independent fixture and target-browser
-  review are still needed for formal phase acceptance.
+  `doc/FASE1_11_INVOICE_KWITANSI.md`; Chromium PDF output is checked, while
+  independent fixture and cross-browser print review remain open for formal
+  phase acceptance.
 - Phase 1.1 includes a browser-local payroll form and reports that can be
   printed or downloaded as CSV after the release gate opens. The gate currently
   stays closed: reviewed effective PPh 21/BPJS datasets and 30 PPh 21/TER plus

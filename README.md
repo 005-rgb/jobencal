@@ -52,6 +52,6 @@ fully verified. See [`doc/FASE1_9_TERBILANG.md`](doc/FASE1_9_TERBILANG.md).
 The Phase 1.11 invoice and receipt builder is available at
 `/modul/invoice-kwitansi`. It calculates line totals locally using integer
 arithmetic and offers browser print-to-PDF. It does not apply taxes or claim to
-be a tax invoice. Independent fixture review and target-browser PDF verification
-are still required for formal phase acceptance. See
+be a tax invoice. Chromium PDF output is checked; independent fixture review and
+cross-browser print review are still required for formal phase acceptance. See
 [`doc/FASE1_11_INVOICE_KWITANSI.md`](doc/FASE1_11_INVOICE_KWITANSI.md).

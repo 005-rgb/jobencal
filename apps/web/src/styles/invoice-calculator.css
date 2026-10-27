@@ -630,4 +630,9 @@
     background: #f0f0f0 !important;
     print-color-adjust: exact;
   }
+
+  @page {
+    size: A4 portrait;
+    margin: 15mm;
+  }
 }

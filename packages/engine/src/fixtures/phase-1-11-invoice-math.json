@@ -113,23 +113,37 @@
   ],
   "validationCases": [
     {
-      "id": "missing-document-number-and-recipient",
-      "scenario": "Nomor dan identitas penerima wajib diisi",
-      "expectedErrors": ["invalid_document_number", "invalid_identity"]
+      "id": "missing-document-number",
+      "scenario": "Nomor dokumen kosong ditolak",
+      "input": { "documentNumber": "" },
+      "expectedError": "invalid_document_number"
+    },
+    {
+      "id": "missing-recipient",
+      "scenario": "Nama penerima kosong ditolak",
+      "input": { "recipientName": "" },
+      "expectedError": "invalid_identity"
     },
     {
       "id": "missing-item-description",
       "scenario": "Nama item wajib diisi",
+      "input": {
+        "lines": [{ "description": " ", "quantityThousandths": "1000", "unit": "pcs", "unitPriceRupiah": "12500" }]
+      },
       "expectedError": "invalid_line_description"
     },
     {
       "id": "zero-quantity",
       "scenario": "Kuantitas nol ditolak",
+      "input": {
+        "lines": [{ "description": "Barang", "quantityThousandths": "0", "unit": "pcs", "unitPriceRupiah": "12500" }]
+      },
       "expectedError": "invalid_quantity"
     },
     {
       "id": "empty-lines",
       "scenario": "Dokumen tanpa baris item ditolak",
+      "input": { "lines": [] },
       "expectedError": "invalid_lines"
     }
   ]
