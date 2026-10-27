@@ -146,7 +146,7 @@ test("consent banner and ad placeholders have no serious axe violations", async 
   expect(serious).toEqual([]);
 });
 
-test("home cards open unique module pages through a skippable ad gate", async ({
+test("home cards open their matching module pages directly", async ({
   page,
 }) => {
   await stubBackend(page);
@@ -159,18 +159,13 @@ test("home cards open unique module pages through a skippable ad gate", async ({
     links.map((link) => (link as HTMLAnchorElement).href),
   );
   expect(new Set(destinations).size).toBe(12);
-  expect(destinations.every((url) => url.includes("/iklan?tujuan="))).toBe(true);
+  expect(
+    destinations.every((url) => new URL(url).pathname.startsWith("/modul/")),
+  ).toBe(true);
 
   await cards.first().click();
-  await expect(page).toHaveURL(/\/iklan\?tujuan=%2Fmodul%2Fgaji-bersih$/);
-  await expect(
-    page.getByRole("heading", { name: "Sebelum membuka Gaji Bersih" }),
-  ).toBeVisible();
-  await expect(
-    page.getByText("Iklan tidak ditampilkan. Anda dapat melanjutkan."),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Lanjut ke Gaji Bersih" }).click();
   await expect(page).toHaveURL(/\/modul\/gaji-bersih$/);
+  await expect(page.getByRole("heading", { name: "Gaji Bersih" })).toBeVisible();
   await expect(
     page.getByText("Formulir dan laporan nyata masih dikunci"),
   ).toBeVisible();

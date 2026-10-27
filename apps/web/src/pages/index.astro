@@ -120,7 +120,7 @@ import { tools } from "../data/tools";
             {tools.map((tool) => (
               <a
                 class={`tool-card tone-${tool.tone}`}
-                href={`/iklan?tujuan=${encodeURIComponent(`/modul/${tool.slug}`)}`}
+                href={`/modul/${tool.slug}`}
                 aria-label={`Buka modul ${tool.name}`}
               >
                 <div class="tool-card-top">
