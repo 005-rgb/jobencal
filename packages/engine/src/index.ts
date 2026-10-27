@@ -87,3 +87,16 @@ export type {
   BreakEvenErrorCode,
   BreakEvenInput,
 } from "./break-even.js";
+export {
+  calculateMarketplaceFee,
+  MARKETPLACE_DYNAMIC_CATEGORIES,
+  MarketplaceFeeCalculationError,
+} from "./marketplace.js";
+export type {
+  DynamicCommissionInput,
+  MarketplaceFeeCalculation,
+  MarketplaceFeeErrorCode,
+  MarketplaceFeeInput,
+  MarketplaceFeeLine,
+  ShopeeOrderProcessingInput,
+} from "./marketplace.js";

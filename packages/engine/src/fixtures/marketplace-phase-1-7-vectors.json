@@ -1,0 +1,249 @@
+{
+  "tool": "biaya-marketplace",
+  "methodVersion": "1.7.0",
+  "checkedOn": "2026-10-27",
+  "reference": [
+    {
+      "title": "TikTok Shop by Tokopedia — Dynamic Commission Fee",
+      "url": "https://seller-id.tokopedia.com/university/essay?knowledge_id=6385751723132688&lang=en",
+      "effectiveFrom": "2026-09-16",
+      "ruleVersion": "2026-09-16",
+      "reference": "Tarif kategori, dasar item price dikurangi seller discount, cap Rp60.000 per item, pajak termasuk, dan perlakuan retur/refund."
+    },
+    {
+      "title": "Shopee Seller Centre — Biaya Proses Pesanan",
+      "url": "https://seller.shopee.co.id/edu/article/25787",
+      "effectiveFrom": "2025-07-20",
+      "ruleVersion": "2026-08-01",
+      "reference": "Rp1.250 per pesanan terselesaikan; pengecualian Non-Star sebelum 1 Agustus 2026 untuk 50 pesanan pertama; pajak termasuk."
+    }
+  ],
+  "rounding": "Estimasi half-away-from-zero per item; sumber tidak menetapkan pembulatan invoice untuk Dynamic Commission Fee. Biaya proses Shopee berupa Rupiah tetap.",
+  "reviewer": "Pemeriksa manusia kedua belum ditetapkan; fixture tidak menandakan tinjauan independen formal.",
+  "cases": [
+    {
+      "id": "marketplace-tiktok-phones",
+      "scenario": "Tarif 3% untuk satu item elektronik yang terkirim",
+      "boundary": "Tokopedia/TikTok; kategori tarif terendah; sukses terkirim",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-10-27", "categoryId": "phones-electronics", "itemPriceRupiah": "100000", "sellerDiscountRupiah": "10000", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "2700", "subtotalRupiah": "2700", "capApplied": false }
+    },
+    {
+      "id": "marketplace-tokopedia-phones",
+      "scenario": "Tarif dinamis sama berlaku untuk seller Tokopedia terintegrasi",
+      "boundary": "Tokopedia; aturan kategori bersama",
+      "input": { "platform": "tokopedia", "asOfDate": "2026-10-27", "categoryId": "phones-electronics", "itemPriceRupiah": "100000", "sellerDiscountRupiah": "10000", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "2700", "subtotalRupiah": "2700", "capApplied": false }
+    },
+    {
+      "id": "marketplace-computers-rate",
+      "scenario": "Kategori komputer memakai tarif 4%",
+      "boundary": "Tarif kategori kedua",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-10-27", "categoryId": "computers-office-equipment", "itemPriceRupiah": "100000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "4000", "subtotalRupiah": "4000", "capApplied": false }
+    },
+    {
+      "id": "marketplace-automotive-cap",
+      "scenario": "Komisi otomotif melewati cap dan dibatasi Rp60.000 per item",
+      "boundary": "Cap per item",
+      "input": { "platform": "tokopedia", "asOfDate": "2026-10-27", "categoryId": "automotive-motorcycle", "itemPriceRupiah": "1000000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "60000", "subtotalRupiah": "60000", "capApplied": true }
+    },
+    {
+      "id": "marketplace-cap-per-quantity",
+      "scenario": "Cap Rp60.000 diterapkan untuk tiap item, bukan tiap pesanan",
+      "boundary": "Dua item yang masing-masing mencapai cap",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-10-27", "categoryId": "automotive-motorcycle", "itemPriceRupiah": "1000000", "sellerDiscountRupiah": "0", "quantity": "2", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "60000", "subtotalRupiah": "120000", "capApplied": true }
+    },
+    {
+      "id": "marketplace-seller-discount-basis",
+      "scenario": "Komisi dihitung setelah diskon penjual",
+      "boundary": "Harga setelah diskon menjadi dasar; ongkir tidak dimasukkan",
+      "input": { "platform": "tokopedia", "asOfDate": "2026-10-27", "categoryId": "home-supplies", "itemPriceRupiah": "300000", "sellerDiscountRupiah": "50000", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "20000", "subtotalRupiah": "20000", "capApplied": false }
+    },
+    {
+      "id": "marketplace-food-beverages",
+      "scenario": "Kategori makanan dan minuman memakai tarif 6,5%",
+      "boundary": "Persentase kategori dengan satu angka desimal",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-10-27", "categoryId": "food-beverages", "itemPriceRupiah": "200000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "13000", "subtotalRupiah": "13000", "capApplied": false }
+    },
+    {
+      "id": "marketplace-jewelry-rate",
+      "scenario": "Aksesori perhiasan memakai tarif 4,5%",
+      "boundary": "Tarif khusus kategori",
+      "input": { "platform": "tokopedia", "asOfDate": "2026-10-27", "categoryId": "jewelry-accessories-derivatives", "itemPriceRupiah": "200000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "9000", "subtotalRupiah": "9000", "capApplied": false }
+    },
+    {
+      "id": "marketplace-return-after-delivery",
+      "scenario": "Komisi tetap dikenakan saat barang diretur setelah berhasil dikirim",
+      "boundary": "Refund setelah pengiriman berhasil",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-10-27", "categoryId": "fashion-accessories", "itemPriceRupiah": "200000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "returned_after_delivery" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "15000", "subtotalRupiah": "15000", "capApplied": false }
+    },
+    {
+      "id": "marketplace-undelivered-refunded",
+      "scenario": "Komisi dinamis tidak dikenakan untuk item yang tidak berhasil dikirim dan direfund",
+      "boundary": "Refund sebelum pengiriman berhasil",
+      "input": { "platform": "tokopedia", "asOfDate": "2026-10-27", "categoryId": "fashion-accessories", "itemPriceRupiah": "200000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "undelivered_refunded" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "0", "subtotalRupiah": "0", "capApplied": false }
+    },
+    {
+      "id": "marketplace-virtual-products",
+      "scenario": "Kategori produk virtual memakai tarif 6%",
+      "boundary": "Kategori produk virtual",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-10-27", "categoryId": "virtual-products", "itemPriceRupiah": "500000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "30000", "subtotalRupiah": "30000", "capApplied": false }
+    },
+    {
+      "id": "marketplace-exact-cap",
+      "scenario": "Nilai komisi tepat sama dengan cap Rp60.000",
+      "boundary": "Kesetaraan dengan cap",
+      "input": { "platform": "tokopedia", "asOfDate": "2026-10-27", "categoryId": "automotive-motorcycle", "itemPriceRupiah": "800000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "60000", "subtotalRupiah": "60000", "capApplied": false }
+    },
+    {
+      "id": "marketplace-per-item-half-rounding",
+      "scenario": "Biaya Rp1,5 per item dibulatkan ke atas sebagai estimasi",
+      "boundary": "Setengah Rupiah half-away-from-zero",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-10-27", "categoryId": "phones-electronics", "itemPriceRupiah": "50", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "2", "subtotalRupiah": "2", "capApplied": false }
+    },
+    {
+      "id": "marketplace-free-item",
+      "scenario": "Diskon penjual sebesar harga item menghasilkan dasar komisi nol",
+      "boundary": "Dasar komisi nol",
+      "input": { "platform": "tokopedia", "asOfDate": "2026-10-27", "categoryId": "phones-electronics", "itemPriceRupiah": "100000", "sellerDiscountRupiah": "100000", "quantity": "1", "orderStatus": "delivered" },
+      "expected": { "policyVersion": "2026-09-16", "feePerUnitRupiah": "0", "subtotalRupiah": "0", "capApplied": false }
+    },
+    {
+      "id": "marketplace-shopee-star-order",
+      "scenario": "Pesanan selesai Star dikenai biaya proses tetap",
+      "boundary": "Shopee; Star; pesanan selesai",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "star", "firstProductListedDate": "2026-06-01", "previousCompletedOrders": "100", "orderStatus": "completed" },
+      "expected": { "policyVersion": "2026-08-01", "feePerUnitRupiah": "1250", "subtotalRupiah": "1250", "capApplied": false }
+    },
+    {
+      "id": "marketplace-shopee-non-star-first-order",
+      "scenario": "Non-Star lama mendapat pengecualian pada pesanan selesai pertama",
+      "boundary": "Non-Star; unggah sebelum batas; urutan pesanan pertama",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "non_star", "firstProductListedDate": "2026-07-31", "previousCompletedOrders": "0", "orderStatus": "completed" },
+      "expected": { "policyVersion": "2026-08-01", "feePerUnitRupiah": "0", "subtotalRupiah": "0", "capApplied": false }
+    },
+    {
+      "id": "marketplace-shopee-non-star-order-50",
+      "scenario": "Pesanan selesai ke-50 masih dalam pengecualian Non-Star lama",
+      "boundary": "Batas pesanan 50",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "non_star", "firstProductListedDate": "2026-07-31", "previousCompletedOrders": "49", "orderStatus": "completed" },
+      "expected": { "policyVersion": "2026-08-01", "feePerUnitRupiah": "0", "subtotalRupiah": "0", "capApplied": false }
+    },
+    {
+      "id": "marketplace-shopee-order-51",
+      "scenario": "Pesanan selesai ke-51 Non-Star lama dikenai biaya proses",
+      "boundary": "Batas pesanan 51",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "non_star", "firstProductListedDate": "2026-07-31", "previousCompletedOrders": "50", "orderStatus": "completed" },
+      "expected": { "policyVersion": "2026-08-01", "feePerUnitRupiah": "1250", "subtotalRupiah": "1250", "capApplied": false }
+    },
+    {
+      "id": "marketplace-shopee-non-star-new-shop",
+      "scenario": "Non-Star yang mulai mengunggah pada 1 Agustus dikenai biaya",
+      "boundary": "Tanggal unggah tepat pada batas baru",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "non_star", "firstProductListedDate": "2026-08-01", "previousCompletedOrders": "0", "orderStatus": "completed" },
+      "expected": { "policyVersion": "2026-08-01", "feePerUnitRupiah": "1250", "subtotalRupiah": "1250", "capApplied": false }
+    },
+    {
+      "id": "marketplace-shopee-star-plus",
+      "scenario": "Star+ lama tidak memakai pengecualian Non-Star",
+      "boundary": "Seller Star+; tidak memenuhi pengecualian",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "star_plus", "firstProductListedDate": "2026-06-01", "previousCompletedOrders": "0", "orderStatus": "completed" },
+      "expected": { "policyVersion": "2026-08-01", "feePerUnitRupiah": "1250", "subtotalRupiah": "1250", "capApplied": false }
+    },
+    {
+      "id": "marketplace-shopee-mall",
+      "scenario": "Shopee Mall dikenai biaya proses pada pesanan selesai",
+      "boundary": "Seller Mall; pesanan selesai",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "mall", "firstProductListedDate": "2026-06-01", "previousCompletedOrders": "0", "orderStatus": "completed" },
+      "expected": { "policyVersion": "2026-08-01", "feePerUnitRupiah": "1250", "subtotalRupiah": "1250", "capApplied": false }
+    },
+    {
+      "id": "marketplace-shopee-cancelled",
+      "scenario": "Pesanan Shopee dibatalkan tidak dikenai biaya proses",
+      "boundary": "Status batal",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "star", "firstProductListedDate": "2026-06-01", "previousCompletedOrders": "100", "orderStatus": "cancelled" },
+      "expected": { "policyVersion": "2026-08-01", "feePerUnitRupiah": "0", "subtotalRupiah": "0", "capApplied": false }
+    },
+    {
+      "id": "marketplace-shopee-not-delivered",
+      "scenario": "Pesanan Shopee tidak berhasil dikirim tidak dikenai biaya proses",
+      "boundary": "Tidak terselesaikan",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "star", "firstProductListedDate": "2026-06-01", "previousCompletedOrders": "100", "orderStatus": "not_delivered" },
+      "expected": { "policyVersion": "2026-08-01", "feePerUnitRupiah": "0", "subtotalRupiah": "0", "capApplied": false }
+    },
+    {
+      "id": "marketplace-shopee-fixed-rate-no-product-price",
+      "scenario": "Biaya proses Shopee tidak bergantung pada harga atau kategori item",
+      "boundary": "Tarif tetap per pesanan",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "star", "firstProductListedDate": "2026-09-01", "previousCompletedOrders": "0", "orderStatus": "completed" },
+      "expected": { "policyVersion": "2026-08-01", "feePerUnitRupiah": "1250", "subtotalRupiah": "1250", "capApplied": false }
+    },
+    {
+      "id": "marketplace-dynamic-policy-not-yet-effective",
+      "scenario": "Tanggal sebelum kebijakan komisi dinamis tidak memakai rate baru",
+      "boundary": "Tanggal sebelum 16 September 2026",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-09-15", "categoryId": "phones-electronics", "itemPriceRupiah": "100000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expectedError": "policy_not_effective"
+    },
+    {
+      "id": "marketplace-dynamic-policy-future-unverified",
+      "scenario": "Tanggal setelah pemeriksaan kebijakan menolak ekstrapolasi tarif",
+      "boundary": "Tanggal belum diverifikasi",
+      "input": { "platform": "tokopedia", "asOfDate": "2026-10-28", "categoryId": "phones-electronics", "itemPriceRupiah": "100000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expectedError": "policy_not_verified_for_date"
+    },
+    {
+      "id": "marketplace-unknown-category",
+      "scenario": "Kategori tanpa data versi tidak memilih tarif rata-rata",
+      "boundary": "Parameter tarif tidak dikenal",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-10-27", "categoryId": "unknown-category", "itemPriceRupiah": "100000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expectedError": "unsupported_category"
+    },
+    {
+      "id": "marketplace-discount-above-price",
+      "scenario": "Diskon penjual melebihi harga item ditolak",
+      "boundary": "Diskon tidak valid",
+      "input": { "platform": "tokopedia", "asOfDate": "2026-10-27", "categoryId": "phones-electronics", "itemPriceRupiah": "100000", "sellerDiscountRupiah": "100001", "quantity": "1", "orderStatus": "delivered" },
+      "expectedError": "invalid_discount"
+    },
+    {
+      "id": "marketplace-zero-quantity",
+      "scenario": "Kuantitas nol ditolak",
+      "boundary": "Jumlah item tidak valid",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-10-27", "categoryId": "phones-electronics", "itemPriceRupiah": "100000", "sellerDiscountRupiah": "0", "quantity": "0", "orderStatus": "delivered" },
+      "expectedError": "invalid_quantity"
+    },
+    {
+      "id": "marketplace-shopee-before-effective",
+      "scenario": "Biaya proses tidak dihitung sebelum tanggal efektifnya",
+      "boundary": "Tanggal sebelum 20 Juli 2025",
+      "input": { "platform": "shopee", "orderDate": "2025-07-19", "sellerType": "star", "firstProductListedDate": "2025-06-01", "previousCompletedOrders": "0", "orderStatus": "completed" },
+      "expectedError": "policy_not_effective"
+    },
+    {
+      "id": "marketplace-invalid-date",
+      "scenario": "Tanggal ISO tidak valid ditolak",
+      "boundary": "Validasi tanggal kalender",
+      "input": { "platform": "tiktok_shop", "asOfDate": "2026-02-30", "categoryId": "phones-electronics", "itemPriceRupiah": "100000", "sellerDiscountRupiah": "0", "quantity": "1", "orderStatus": "delivered" },
+      "expectedError": "invalid_date"
+    },
+    {
+      "id": "marketplace-shopee-first-upload-after-order",
+      "scenario": "Tanggal unggah produk setelah transaksi ditolak",
+      "boundary": "Urutan tanggal tidak masuk akal",
+      "input": { "platform": "shopee", "orderDate": "2026-10-27", "sellerType": "non_star", "firstProductListedDate": "2026-10-28", "previousCompletedOrders": "0", "orderStatus": "completed" },
+      "expectedError": "invalid_product_date"
+    }
+  ]
+}
