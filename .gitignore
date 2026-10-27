@@ -8,3 +8,10 @@ coverage/
 *.log
 playwright-report/
 test-results/
+tmp/
+
+# cPanel release files are built in Replit and committed intentionally.
+!apps/api/dist/
+!apps/api/dist/**
+!apps/web/dist/
+!apps/web/dist/**

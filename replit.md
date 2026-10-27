@@ -62,6 +62,33 @@ schema operation.
 - `npm run build`
 - `npm run check` runs all four checks.
 
+## Production release to cPanel
+
+The production Passenger app serves both the built Astro site and the Express
+API from the domain root. The cPanel app uses Node.js 22, Production mode,
+application root `public_html/jobenapp`, and startup file `app.js`.
+
+1. In Replit, run `npm run build`. This creates the deployable site and API
+   outputs in `apps/web/dist/` and `apps/api/dist/`.
+2. Commit and push those build outputs to the GitHub branch used by cPanel.
+   They are intentionally allowed by `.gitignore`; cPanel does not build.
+3. In cPanel's Node.js App settings, set `NODE_ENV=production`,
+   `DATABASE_URL` and `BASE_PATH=/api`. Keep credentials in cPanel's
+   environment-variable settings, not in Git or a `.env` file under
+   `public_html`. `ADS_ENABLED` can remain `false`.
+4. Run **NPM Install** in cPanel on first setup and after dependency changes.
+   Then, from the application root, run `bash deploy.sh` (or
+   `bash deploy.sh main` for the `main` branch).
+5. Check `https://jobenapp.cloud/` and
+   `https://jobenapp.cloud/api/v1/health` after Passenger restarts.
+
+`deploy.sh` pulls the selected GitHub branch, checks for committed build
+outputs and runtime dependencies, and requests a Passenger restart. It does
+not build, install packages, migrate, or seed. Review and back up the cPanel
+PostgreSQL database before running any schema migration separately. The
+script preserves server `.env` and `.htaccess` files and does not run
+`git clean`.
+
 See [`doc/FASE1_0_CORE_SYSTEM.md`](doc/FASE1_0_CORE_SYSTEM.md) for the
 implemented calculation contract and the boundary between the core demo and
 the 12 calculator modules that remain unverified.

@@ -861,14 +861,14 @@ Pengujian dipusatkan pada dua hal: angka kalkulator harus benar menurut sumber r
 
 ## 10. Rencana deployment ke cPanel (JOBENAPP di jobenapp.cloud)
 
-Situs statis disajikan langsung oleh Apache dari `public_html`, sedangkan hanya API yang berjalan sebagai aplikasi Node.js bernama **JOBENAPP** lewat Passenger. Build dilakukan di CI atau komputer lokal, bukan di server, karena memori cPanel terbatas.
+Satu aplikasi Node.js bernama **JOBENAPP** berjalan lewat Passenger pada domain root. Aplikasi menyajikan hasil build statis Astro sekaligus API Express. Build dilakukan di Replit, bukan di server, karena memori cPanel terbatas.
 
 ### Pembagian tempat
 
 | Komponen | Lokasi di server | Disajikan oleh |
 | --- | --- | --- |
-| Situs statis (hasil build Astro) | `~/public_html/` | Apache |
-| Aplikasi API (Node.js) | `~/public_html/jobenapp/` (`/home/smknwon2/public_html/jobenapp`), dilindungi `.htaccess` | Passenger, URL aplikasi `jobenapp.cloud/api` |
+| Situs statis (hasil build Astro) | `apps/web/dist/` di root aplikasi | Express melalui Passenger |
+| Aplikasi situs dan API | `~/public_html/jobenapp/` (`/home/smknwon2/public_html/jobenapp`) | Passenger, URL aplikasi `jobenapp.cloud/` |
 | Database | PostgreSQL cPanel, `localhost:5432` | Layanan PostgreSQL |
 | Rilis dan cadangan | `~/releases/`, `~/backups/` | Tidak publik |
 | Staging | Subdomain `staging.jobenapp.cloud` dengan aplikasi dan database terpisah | Apache + Passenger |
@@ -883,13 +883,10 @@ Situs statis disajikan langsung oleh Apache dari `public_html`, sedangkan hanya 
    | Node.js version | **22.23.4** |
    | Application mode | **Production** |
    | Application root | `public_html/jobenapp` (lihat catatan perlindungan di bawah) |
-   | Application URL | pilih domain `jobenapp.cloud` di dropdown, lalu isi kolom jalur dengan `api` |
+   | Application URL | pilih domain `jobenapp.cloud` di dropdown, tanpa jalur tambahan |
    | Application startup file | `app.js` |
-   Setelah **Create**, tambahkan variabel di bagian *Environment variables* (tombol *Add variable*) sesuai tabel di bawah, lalu jalankan **Run NPM Install**.
-   > **Catatan Application root:** karena root berada di `public_html`, folder `public_html/jobenapp` bisa dijangkau Apache. Wajib dilakukan sebelum mengunggah kode:
-   > 1. Buat `public_html/jobenapp/.htaccess` berisi `Require all denied` untuk blok akses langsung ke berkas, tetapi **jangan** memblokir lalu lintas Passenger. Jika `Require all denied` ternyata ikut memutus `/api`, ganti dengan aturan `<FilesMatch "^(\.env|package(-lock)?\.json|.*\.(ts|map|sql|sh|md|log))$">Require all denied</FilesMatch>` dan `Options -Indexes`, lalu uji.
-   > 2. Uji dari luar: `https://jobenapp.cloud/jobenapp/package.json` dan `/jobenapp/.env` harus mengembalikan 403 atau 404.
-   > 3. Jangan menaruh `.env` di folder ini; isi variabel lewat menu Node.js App.
+   Setelah **Create**, isi `NODE_ENV=production`, `BASE_PATH=/api`, dan `DATABASE_URL` di bagian *Environment variables*. Jangan menaruh `.env` di `public_html`; jalankan **Run NPM Install** pada penyiapan awal dan setelah perubahan dependensi.
+   > cPanel membuat `.htaccess` untuk Passenger. Jangan menggantinya dengan aturan yang memblokir Passenger. Deploy memakai `bash deploy.sh`; script mempertahankan `.htaccess` dan tidak membangun ulang di server. Uji bahwa `https://jobenapp.cloud/package.json` dan `https://jobenapp.cloud/.env` tidak dapat dibaca dari browser.
    >
    > Lingkungan Node aplikasi ini aktif dengan: `source /home/smknwon2/nodevenv/public_html/jobenapp/22/bin/activate && cd /home/smknwon2/public_html/jobenapp`. Perintah ini dipakai untuk `npm ci --omit=dev`, `npm run migrate`, dan seed lewat Terminal. Jalur Node untuk Cron: `/home/smknwon2/nodevenv/public_html/jobenapp/22/bin/node`.
 4. **Variabel lingkungan:** isi di halaman aplikasi (tabel di bawah). Jangan menaruh berkas `.env` di `public_html`; jika sudah terlanjur ada, hapus dan pindahkan nilainya ke menu Node.js App.
@@ -902,21 +899,19 @@ Situs statis disajikan langsung oleh Apache dari `public_html`, sedangkan hanya 
 | Nama | Isi | Catatan |
 | --- | --- | --- |
 | `NODE_ENV` | `production` |  |
-| `APP_BASE_URL` | `https://jobenapp.cloud` | Dipakai untuk tautan email |
 | `BASE_PATH` | `/api` | Awalan jalur; diverifikasi di staging bahwa Passenger meneruskan jalur utuh |
-| `DATABASE_URL` | `postgresql://smknwon2_jobencal_user:<DB_PASSWORD>@localhost:5432/smknwon2_jobencal_db` | Pengguna aplikasi. Tanpa `?schema=public` (itu parameter Prisma; proyek ini memakai `pg`, skema bawaan sudah `public`). Jika sandi berisi simbol (`@ : / # ?`), ubah ke bentuk URL-encoded |
-| `MIGRATION_DATABASE_URL` | Awalnya sama dengan `DATABASE_URL`; nanti diganti pengguna migrasi terpisah | Hanya dipakai saat migrasi |
-| `SITE_URL` | `https://jobenapp.cloud` (nanti `https://joben.cloud`) | Dibaca saat build (Astro `site`), sitemap, canonical, schema, dan `robots.txt`. Satu-satunya tempat domain didefinisikan, sehingga pindah domain cukup ubah nilai ini lalu build ulang |
-| `SESSION_PEPPER` | Acak 48 byte | Tambahan untuk hash token sesi |
-| `TOTP_ENC_KEY` | Acak 32 byte (base64) | Enkripsi rahasia TOTP |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_FROM` | Dari akun email |  |
-| `TRUST_PROXY` | `1` | Wajib jika memakai Cloudflare atau proxy lain |
-| `DB_POOL_MAX` | `5` | Menjaga koneksi dalam batas hosting |
-| `LOG_LEVEL` | `info` |  |
+| `DATABASE_URL` | `postgresql://<user>:<password>@localhost:5432/<database>` | Gunakan kredensial produksi cPanel. Jangan menambahkan `?schema=public`; aplikasi memakai PostgreSQL `public` bawaan |
+| `NODE_ENV` | `production` | Wajib untuk startup Passenger |
+| `BASE_PATH` | `/api` | Awalan endpoint API |
+| `ADS_ENABLED` | `false` | Tetap nonaktif kecuali monetisasi memang sudah dikonfigurasi |
 
 ### Entri Passenger (`deploy/cpanel/app.js`)
 
-Berkas kecil yang memuat hasil build: `require('./dist/server.js')`. Server memanggil `app.listen()` sekali; Passenger mengatur port dan soketnya, sehingga tidak ada nomor port yang ditulis manual.
+Berkas `app.js` memuat `apps/api/dist/cpanel-server.js`. Server menyajikan `apps/web/dist/` dan API pada proses yang sama; Passenger menyediakan port aplikasi.
+
+### Rilis manual
+
+Di Replit jalankan `npm run build`, lalu commit dan push hasil build `apps/web/dist/` serta `apps/api/dist/` bersama kode ke branch GitHub yang dipakai cPanel. Di cPanel, jalankan `bash deploy.sh [branch]` dari root aplikasi. Script memeriksa hasil build, Node.js 22, dan dependensi runtime, kemudian meminta Passenger restart. Script tidak menjalankan build, pemasangan paket, migrasi database, atau seed. Migrasi PostgreSQL tetap harus ditinjau dan dicadangkan secara terpisah sebelum dijalankan.
 
 ### Paket rilis
 
