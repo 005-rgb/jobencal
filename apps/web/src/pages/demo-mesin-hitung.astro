@@ -3,6 +3,7 @@ import "../styles/global.css";
 import CoreSystemPlayground from "../components/CoreSystemPlayground";
 import AdSlot from "../components/AdSlot.astro";
 import ConsentManager from "../components/ConsentManager";
+import { canonicalUrl } from "../lib/seo";
 ---
 
 <!doctype html>
@@ -11,6 +12,7 @@ import ConsentManager from "../components/ConsentManager";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Demo Fase 1.0 JOBENAPP untuk menguji metode hitung, pembulatan, dan privasi." />
+    <link rel="canonical" href={canonicalUrl("/demo-mesin-hitung")} />
     <meta name="theme-color" content="#f4f6fa" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Demo mesin hitung · JOBENAPP</title>

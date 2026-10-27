@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import ConsentManager from "../components/ConsentManager";
 import { tools } from "../data/tools";
+import { canonicalUrl } from "../lib/seo";
 ---
 
 <!doctype html>
@@ -13,6 +14,7 @@ import { tools } from "../data/tools";
       name="description"
       content="JOBENAPP menyiapkan 12 alat hitung Indonesia dengan metode, sumber, dan masa berlaku yang jelas."
     />
+    <link rel="canonical" href={canonicalUrl("/")} />
     <meta name="theme-color" content="#f4f6fa" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>JOBENAPP — Alat Hitung Indonesia</title>

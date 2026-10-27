@@ -40,6 +40,33 @@
 - The Replit database is development-only. Production remains the PostgreSQL
   database on cPanel described in the technical plan.
 
+## Search indexing and Google Search Console
+
+- The canonical production origin is `https://jobenapp.cloud`. Keep generated
+  canonical links, `robots.txt`, and sitemap locations on this origin.
+- `apps/web/public/robots.txt` allows crawling and points to `/sitemap.xml`.
+  The generated sitemap contains the home page, the interactive core demo, and
+  only tool pages whose calculators are implemented. Do not block placeholder
+  pages in `robots.txt`: Google must be able to crawl them to read their
+  `noindex` directive.
+- The indexed-tool allowlist lives beside the tool catalogue. When a planned
+  tool passes its release gate, update that allowlist and verify its page before
+  adding it to the sitemap.
+- Search Console is not connected to this Replit workspace. Add a **Domain**
+  property for `jobenapp.cloud` in Google Search Console and verify it by adding
+  Google's TXT record at the DNS provider. Do not put verification records or
+  account credentials in the repository.
+- After building and deploying the site to cPanel, submit `sitemap.xml` in
+  Search Console and inspect the homepage plus each active module URL. Review
+  the Search results report by query and page; export clicks, impressions,
+  CTR, and position for a consistent date range to establish a baseline.
+- The live host was observed to serve HTTP and `www` variants as separate
+  successful responses. Canonical tags signal the preferred HTTPS non-`www`
+  URLs, but they do not replace server redirects. Normalize these variants to
+  `https://jobenapp.cloud` in the cPanel/Apache host configuration. The
+  deployment script preserves the server-owned `.htaccess`, so this redirect
+  cannot be safely applied from the Replit source alone.
+
 ## Database
 
 1. Configure `DATABASE_URL` in Replit Secrets for the development environment.

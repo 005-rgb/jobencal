@@ -8,6 +8,22 @@ export interface JobenTool {
   readonly tone: string;
 }
 
+export const INDEXABLE_TOOL_SLUGS = [
+  "simulasi-kpr",
+  "kalkulator-hpp",
+  "harga-jual-margin",
+  "break-even-point",
+  "cicilan-kendaraan",
+  "terbilang",
+  "invoice-kwitansi",
+] as const;
+
+const indexableToolSlugs: ReadonlySet<string> = new Set(INDEXABLE_TOOL_SLUGS);
+
+export function isToolIndexable(slug: string): boolean {
+  return indexableToolSlugs.has(slug);
+}
+
 export const tools: readonly JobenTool[] = [
   {
     slug: "gaji-bersih",

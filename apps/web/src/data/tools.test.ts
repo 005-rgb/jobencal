@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { getToolBySlug, tools } from "./tools.js";
+import {
+  getToolBySlug,
+  isToolIndexable,
+  INDEXABLE_TOOL_SLUGS,
+  tools,
+} from "./tools.js";
 
 describe("tool catalogue", () => {
   it("contains all twelve Phase 1 tools with unique stable slugs", () => {
@@ -24,6 +29,16 @@ describe("tool catalogue", () => {
   it("looks up known slugs and returns no fallback for unknown tools", () => {
     expect(getToolBySlug("terbilang")?.name).toBe("Terbilang");
     expect(getToolBySlug("not-a-tool")).toBeUndefined();
+  });
+
+  it("indexes only the seven tool pages with working calculators", () => {
+    expect(tools.filter((tool) => isToolIndexable(tool.slug)).map((tool) => tool.slug))
+      .toEqual(INDEXABLE_TOOL_SLUGS);
+    expect(isToolIndexable("gaji-bersih")).toBe(false);
+    expect(isToolIndexable("pph-21-freelancer")).toBe(false);
+    expect(isToolIndexable("biaya-marketplace")).toBe(false);
+    expect(isToolIndexable("kompres-resize-foto-pdf")).toBe(false);
+    expect(isToolIndexable("kalender-libur")).toBe(false);
   });
 
   it("describes Phase 1.3 as a user-input mortgage simulation, not a bank tariff", () => {
