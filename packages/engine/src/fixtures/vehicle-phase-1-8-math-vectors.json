@@ -1,0 +1,67 @@
+{
+  "method": "vehicle.installment-simulation@1.0.0",
+  "reference": {
+    "title": "Pembanding aritmetika pecahan rasional independen",
+    "method": "Python fractions.Fraction with explicit half-away-from-zero Rupiah rounding",
+    "reviewStatus": "Automated reference comparison; independent human review still required",
+    "effectiveDate": "2026-10-27"
+  },
+  "cases": [
+    {
+      "id": "annuity-midsize-10-5pct",
+      "input": { "price": "120000000", "down": "20000000", "months": 24, "model": "annuity", "rate": "1050" },
+      "expected": { "principal": "100000000", "interest": "11302499", "installments": "111302499", "first": "4637604", "last": "4637607", "cashAtSigning": "20000000", "totalOutflow": "131302499" }
+    },
+    {
+      "id": "flat-12pct",
+      "input": { "price": "60000000", "down": "10000000", "months": 24, "model": "flat", "rate": "1200" },
+      "expected": { "principal": "50000000", "interest": "12000000", "installments": "62000000", "first": "2583333", "last": "2583341", "cashAtSigning": "10000000", "totalOutflow": "72000000" }
+    },
+    {
+      "id": "effective-zero-rate",
+      "input": { "price": "24000000", "down": "0", "months": 12, "model": "effective", "rate": "0" },
+      "expected": { "principal": "24000000", "interest": "0", "installments": "24000000", "first": "2000000", "last": "2000000", "cashAtSigning": "0", "totalOutflow": "24000000" }
+    },
+    {
+      "id": "annuity-zero-rate-short",
+      "input": { "price": "3000000", "down": "0", "months": 3, "model": "annuity", "rate": "0" },
+      "expected": { "principal": "3000000", "interest": "0", "installments": "3000000", "first": "1000000", "last": "1000000", "cashAtSigning": "0", "totalOutflow": "3000000" }
+    },
+    {
+      "id": "effective-long-term",
+      "input": { "price": "120000000", "down": "20000000", "months": 60, "model": "effective", "rate": "950" },
+      "expected": { "principal": "100000000", "interest": "24145833", "installments": "124145833", "first": "2458334", "last": "1679860", "cashAtSigning": "20000000", "totalOutflow": "144145833" }
+    },
+    {
+      "id": "flat-seven-month",
+      "input": { "price": "10000000", "down": "0", "months": 7, "model": "flat", "rate": "1500" },
+      "expected": { "principal": "10000000", "interest": "875000", "installments": "10875000", "first": "1553571", "last": "1553574", "cashAtSigning": "0", "totalOutflow": "10875000" }
+    },
+    {
+      "id": "annuity-one-month-rounding",
+      "input": { "price": "1000001", "down": "0", "months": 1, "model": "annuity", "rate": "1200" },
+      "expected": { "principal": "1000001", "interest": "10000", "installments": "1010001", "first": "1010001", "last": "1010001", "cashAtSigning": "0", "totalOutflow": "1010001" }
+    },
+    {
+      "id": "annuity-financed-costs",
+      "input": {
+        "price": "15000000", "down": "3000000", "months": 12, "model": "annuity", "rate": "725",
+        "costs": { "administration": { "amount": "500000", "payment": "financed" }, "insurance": { "amount": "250000", "payment": "financed" } }
+      },
+      "expected": { "principal": "12750000", "interest": "506231", "installments": "13256231", "first": "1104686", "last": "1104685", "cashAtSigning": "3000000", "totalOutflow": "16256231" }
+    },
+    {
+      "id": "effective-upfront-costs",
+      "input": {
+        "price": "5000000", "down": "1000000", "months": 10, "model": "effective", "rate": "800",
+        "costs": { "administration": { "amount": "100000", "payment": "upfront" }, "insurance": { "amount": "250000", "payment": "upfront" } }
+      },
+      "expected": { "principal": "4000000", "interest": "146667", "installments": "4146667", "first": "426667", "last": "402667", "cashAtSigning": "1350000", "totalOutflow": "5496667" }
+    },
+    {
+      "id": "maximum-price-minimum-financing",
+      "input": { "price": "999999999999999999", "down": "999999999999999998", "months": 1, "model": "annuity", "rate": "0" },
+      "expected": { "principal": "1", "interest": "0", "installments": "1", "first": "1", "last": "1", "cashAtSigning": "999999999999999998", "totalOutflow": "999999999999999999" }
+    }
+  ]
+}

@@ -131,6 +131,8 @@ import { tools } from "../data/tools";
                   <span class="tool-status">
                     {tool.slug === "simulasi-kpr"
                       ? "Kalkulator tersedia · input pengguna"
+                      : tool.slug === "cicilan-kendaraan"
+                        ? "Simulasi tersedia · asumsi pengguna"
                       : tool.slug === "kalkulator-hpp"
                         ? "Kalkulator tersedia · biaya input pengguna"
                         : tool.slug === "break-even-point"
@@ -145,6 +147,8 @@ import { tools } from "../data/tools";
                   <span>
                     {tool.slug === "simulasi-kpr"
                       ? "Buka simulasi KPR"
+                      : tool.slug === "cicilan-kendaraan"
+                        ? "Simulasikan cicilan kendaraan"
                       : tool.slug === "kalkulator-hpp"
                         ? "Hitung HPP"
                         : tool.slug === "break-even-point"

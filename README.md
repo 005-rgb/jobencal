@@ -33,3 +33,12 @@ The Phase 1.5 price and margin calculator is available at
 user-entered discounts and fees. Its arithmetic fixtures still need a second
 human review before this subphase can be called independently verified. See
 [`doc/FASE1_5_HARGA_JUAL_MARGIN.md`](doc/FASE1_5_HARGA_JUAL_MARGIN.md).
+
+The Phase 1.8 vehicle-installment simulator is available at
+`/modul/cicilan-kendaraan`. It supports an annuity, flat, or effective schedule,
+separates down payment and individually entered costs, and permits each cost to
+be paid upfront or included in the financed principal. Rates and product costs
+are user assumptions, not lender quotes. Ten schedules are compared against an
+independent exact-rational reference; an independent human review is still
+required before calling the phase fully verified. See
+[`doc/FASE1_8_CICILAN_KENDARAAN.md`](doc/FASE1_8_CICILAN_KENDARAAN.md).

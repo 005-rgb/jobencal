@@ -104,6 +104,9 @@ describe("calculateMarketplaceFee", () => {
 
   it("rejects an unrecognized transaction status and out-of-range money", () => {
     const base = hydrate(vectors.cases[0] as MarketplaceFixture);
+    if (base.platform === "shopee") {
+      throw new Error("Boundary fixture must use a dynamic commission policy.");
+    }
     expect(() =>
       calculateMarketplaceFee({
         ...base,

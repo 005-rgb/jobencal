@@ -8,6 +8,12 @@
 - The Fase 1.0 percentage playground calculates in the browser and does not
   require the API or database. The API still requires a development
   `DATABASE_URL` before its health endpoint can report `db: "ok"`.
+- The Phase 1.8 vehicle-installment simulator is at
+  `/modul/cicilan-kendaraan`. It runs locally in the browser, uses Node 22 as
+  declared by the project, and does not need the API or database to calculate.
+  It uses user-entered rates and costs only; its ten rational-reference
+  fixtures still need independent human review. See
+  `doc/FASE1_8_CICILAN_KENDARAAN.md`.
 - Phase 1.1 includes a browser-local payroll form and reports that can be
   printed or downloaded as CSV after the release gate opens. The gate currently
   stays closed: reviewed effective PPh 21/BPJS datasets and 30 PPh 21/TER plus

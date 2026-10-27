@@ -11,7 +11,9 @@ afterEach(() => {
 });
 
 function enter(label: string | RegExp, value: string): void {
-  fireEvent.input(screen.getByLabelText(label), { target: { value } });
+  fireEvent.input(screen.getByLabelText(label, { exact: false }), {
+    target: { value },
+  });
 }
 
 describe("HPP calculator interface", () => {
@@ -28,8 +30,8 @@ describe("HPP calculator interface", () => {
     fireEvent.click(screen.getByRole("button", { name: "Hitung HPP" }));
 
     expect(screen.getByRole("heading", { name: "HPP produksi Anda" })).toBeTruthy();
-    expect(screen.getByText("Rp 1.611.111")).toBeTruthy();
-    expect(screen.getByText("Rp 16.111")).toBeTruthy();
+    expect(screen.getAllByText("Rp 1.611.111").length).toBeGreaterThan(1);
+    expect(screen.getAllByText("Rp 16.111").length).toBeGreaterThan(1);
     expect(screen.getByText(/Penyesuaian susut 10%/i)).toBeTruthy();
     expect(fetchSpy).not.toHaveBeenCalled();
   });

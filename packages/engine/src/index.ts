@@ -100,3 +100,13 @@ export type {
   MarketplaceFeeLine,
   ShopeeOrderProcessingInput,
 } from "./marketplace.js";
+export {
+  calculateVehicleInstallment,
+  VehicleInstallmentCalculationError,
+} from "./vehicle.js";
+export type {
+  VehicleCostInput,
+  VehicleCostKey,
+  VehicleInstallmentCalculation,
+  VehicleInstallmentInput,
+} from "./vehicle.js";

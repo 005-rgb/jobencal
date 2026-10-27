@@ -6,6 +6,7 @@ import KprCalculator from "../../components/KprCalculator";
 import PayrollCalculator from "../../components/PayrollCalculator";
 import PriceMarginCalculator from "../../components/PriceMarginCalculator";
 import BreakEvenCalculator from "../../components/BreakEvenCalculator";
+import VehicleInstallmentCalculator from "../../components/VehicleInstallmentCalculator";
 import { tools } from "../../data/tools";
 
 export function getStaticPaths() {
@@ -21,7 +22,8 @@ const isKprTool = tool.slug === "simulasi-kpr";
 const isHppTool = tool.slug === "kalkulator-hpp";
 const isPriceMarginTool = tool.slug === "harga-jual-margin";
 const isBepTool = tool.slug === "break-even-point";
-const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMarginTool || isBepTool;
+const isVehicleTool = tool.slug === "cicilan-kendaraan";
+const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMarginTool || isBepTool || isVehicleTool;
 ---
 
 <!doctype html>
@@ -31,6 +33,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={isKprTool
       ? "Simulasi KPR anuitas, flat, efektif, bunga tetap dan mengambang, biaya, serta pembayaran pokok tambahan. Tarif bank tidak disediakan."
+      : isVehicleTool
+        ? "Simulasi cicilan kendaraan dengan pilihan anuitas, flat, atau efektif. Masukkan bunga dan biaya sebagai asumsi Anda; tidak ada tarif lembaga pembiayaan yang diasumsikan."
       : isPriceMarginTool
         ? "Hitung harga jual dengan membedakan margin dan markup, serta tampilkan laba setelah diskon dan biaya yang Anda pilih."
         : isBepTool
@@ -74,6 +78,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                       ? "Kalkulator tersedia · tarif input pengguna"
                       : isBepTool
                         ? "Kalkulator tersedia · review independen diperlukan"
+                    : isVehicleTool
+                      ? "Simulasi tersedia · asumsi pengguna"
                   : "Dalam persiapan"}
             </span>
           </div>
@@ -90,6 +96,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                       ? "Bedakan margin dari markup dan hitung harga target atau periksa harga yang sudah ada. Diskon, biaya platform, pajak, dan biaya tetap hanya dihitung jika Anda memasukkannya."
                         : isBepTool
                           ? "Hitung kontribusi per unit, BEP matematis sebagai pecahan eksak, jumlah unit utuh minimum, nilai penjualan, serta laba/rugi di sekitarnya. Seluruh harga dan biaya berasal dari input Anda."
+                          : isVehicleTool
+                            ? "Simulasikan cicilan kendaraan dengan metode anuitas, flat, atau efektif. Harga kendaraan, uang muka, bunga, tenor, serta biaya awal atau pembiayaan berasal dari input Anda; hasil bukan penawaran lembaga pembiayaan."
                 : tool.description}
           </p>
 
@@ -112,6 +120,10 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
           ) : isBepTool ? (
             <div class="bep-module-content">
               <BreakEvenCalculator client:load />
+            </div>
+          ) : isVehicleTool ? (
+            <div class="vehicle-module-content">
+              <VehicleInstallmentCalculator client:load />
             </div>
           ) : (
             <div class="module-status-panel" role="status">
@@ -147,6 +159,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                   ? "Diskon dan biaya dihitung pada dasar yang dinyatakan; tarif pajak atau platform tidak diverifikasi."
                   : isBepTool
                     ? "BEP memakai asumsi biaya dan harga dari Anda; tidak ada tarif resmi atau biaya tersembunyi."
+                    : isVehicleTool
+                      ? "Metode, pembulatan, biaya yang dibiayai, dan biaya awal ditampilkan terpisah; suku bunga tidak disediakan sebagai tarif pasar."
                 : "Status ketersediaan tidak berarti kalkulator sudah lulus."}</p>
           </div>
         </section>
@@ -158,6 +172,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
             ? "Modul Fase 1.1 · engine tersedia, dataset aturan menunggu tinjauan."
             : isKprTool
               ? "Modul Fase 1.3 · simulasi memakai asumsi pengguna, bukan kutipan bank."
+              : isVehicleTool
+                ? "Modul Fase 1.8 · simulasi lokal dengan asumsi pengguna, bukan penawaran pembiayaan."
               : isHppTool
                 ? "Modul Fase 1.4 · kalkulasi lokal dengan alokasi biaya yang dinyatakan."
                 : isPriceMarginTool

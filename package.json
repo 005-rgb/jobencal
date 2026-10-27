@@ -10,7 +10,7 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "npm run build --workspace @jobenapp/shared && concurrently --names API,WEB \"npm run dev --workspace @jobenapp/api\" \"npm run dev --workspace @jobenapp/web\"",
+    "dev": "npm run build --workspace @jobenapp/shared && npm run build --workspace @jobenapp/engine && concurrently --names API,WEB \"npm run dev --workspace @jobenapp/api\" \"npm run dev --workspace @jobenapp/web\"",
     "build": "npm run build --workspace @jobenapp/shared && npm run verify:ad-policy && npm run build --workspace @jobenapp/engine && npm run build --workspace @jobenapp/api && npm run build --workspace @jobenapp/web",
     "typecheck": "npm run build --workspace @jobenapp/shared && npm run typecheck --workspace @jobenapp/engine && npm run typecheck --workspace @jobenapp/shared && npm run typecheck --workspace @jobenapp/api && npm run typecheck --workspace @jobenapp/web",
     "lint": "eslint apps packages scripts vitest.config.ts",
