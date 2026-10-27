@@ -172,9 +172,9 @@ test("home cards open unique module pages through a skippable ad gate", async ({
   await page.getByRole("button", { name: "Lanjut ke Gaji Bersih" }).click();
   await expect(page).toHaveURL(/\/modul\/gaji-bersih$/);
   await expect(
-    page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
+    page.getByText("Formulir dan laporan nyata masih dikunci"),
   ).toBeVisible();
-  await expect(page.locator(".module-detail-card form")).toHaveCount(0);
+  await expect(page.locator("form.payroll-input-form")).toHaveCount(0);
 });
 
 test("all twelve module URLs render standalone pages with shipped tools available", async ({
@@ -195,17 +195,26 @@ test("all twelve module URLs render standalone pages with shipped tools availabl
     "invoice-kwitansi",
     "kalender-libur",
   ];
+  const activeForms: Record<string, string> = {
+    "simulasi-kpr": "form.kpr-form",
+    "kalkulator-hpp": "form.hpp-form",
+    "harga-jual-margin": "form.price-margin-form",
+    "break-even-point": "form.bep-form",
+    "cicilan-kendaraan": "form.vehicle-form",
+    terbilang: "form.terbilang-form",
+  };
 
   for (const slug of slugs) {
     await page.goto(`/modul/${slug}`);
     await expect(page.locator("main h1")).toBeVisible();
-    if (slug === "harga-jual-margin") {
-      await expect(page.locator("form.price-margin-form")).toBeVisible();
+    const activeForm = activeForms[slug];
+    if (slug === "gaji-bersih") {
       await expect(
-        page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
-      ).toHaveCount(0);
-    } else if (slug === "break-even-point") {
-      await expect(page.locator("form.bep-form")).toBeVisible();
+        page.getByText("Formulir dan laporan nyata masih dikunci"),
+      ).toBeVisible();
+      await expect(page.locator("form.payroll-input-form")).toHaveCount(0);
+    } else if (activeForm) {
+      await expect(page.locator(activeForm)).toBeVisible();
       await expect(
         page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
       ).toHaveCount(0);

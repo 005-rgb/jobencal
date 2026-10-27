@@ -110,3 +110,15 @@ export type {
   VehicleInstallmentCalculation,
   VehicleInstallmentInput,
 } from "./vehicle.js";
+export {
+  calculateTerbilang,
+  TERBILANG_METHOD_KEY,
+  TERBILANG_METHOD_VERSION,
+  TerbilangError,
+} from "./terbilang.js";
+export type {
+  TerbilangCalculation,
+  TerbilangErrorCode,
+  TerbilangFormat,
+  TerbilangInput,
+} from "./terbilang.js";

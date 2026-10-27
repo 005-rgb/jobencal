@@ -7,6 +7,7 @@ import PayrollCalculator from "../../components/PayrollCalculator";
 import PriceMarginCalculator from "../../components/PriceMarginCalculator";
 import BreakEvenCalculator from "../../components/BreakEvenCalculator";
 import VehicleInstallmentCalculator from "../../components/VehicleInstallmentCalculator";
+import TerbilangCalculator from "../../components/TerbilangCalculator";
 import { tools } from "../../data/tools";
 
 export function getStaticPaths() {
@@ -23,7 +24,8 @@ const isHppTool = tool.slug === "kalkulator-hpp";
 const isPriceMarginTool = tool.slug === "harga-jual-margin";
 const isBepTool = tool.slug === "break-even-point";
 const isVehicleTool = tool.slug === "cicilan-kendaraan";
-const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMarginTool || isBepTool || isVehicleTool;
+const isTerbilangTool = tool.slug === "terbilang";
+const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMarginTool || isBepTool || isVehicleTool || isTerbilangTool;
 ---
 
 <!doctype html>
@@ -35,6 +37,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
       ? "Simulasi KPR anuitas, flat, efektif, bunga tetap dan mengambang, biaya, serta pembayaran pokok tambahan. Tarif bank tidak disediakan."
       : isVehicleTool
         ? "Simulasi cicilan kendaraan dengan pilihan anuitas, flat, atau efektif. Masukkan bunga dan biaya sebagai asumsi Anda; tidak ada tarif lembaga pembiayaan yang diasumsikan."
+        : isTerbilangTool
+          ? "Ubah angka menjadi kata Bahasa Indonesia dengan format angka atau nominal Rupiah, termasuk desimal dan bilangan negatif."
       : isPriceMarginTool
         ? "Hitung harga jual dengan membedakan margin dan markup, serta tampilkan laba setelah diskon dan biaya yang Anda pilih."
         : isBepTool
@@ -61,7 +65,7 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
       </header>
       <main class="module-page">
         <a class="access-back-link" href="/#modul">← Kembali ke semua modul</a>
-        <section class:list={["module-detail-card", `tone-${tool.tone}`, isPayrollTool && "payroll-module-card", isKprTool && "kpr-module-card", isHppTool && "hpp-module-card", isPriceMarginTool && "price-margin-module-card", isBepTool && "bep-module-card"]}>
+        <section class:list={["module-detail-card", `tone-${tool.tone}`, isPayrollTool && "payroll-module-card", isKprTool && "kpr-module-card", isHppTool && "hpp-module-card", isPriceMarginTool && "price-margin-module-card", isBepTool && "bep-module-card", isTerbilangTool && "terbilang-module-card"]}>
           <div class="module-detail-heading">
             <span class="tool-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d={tool.icon} /></svg>
@@ -80,6 +84,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                         ? "Kalkulator tersedia · review independen diperlukan"
                     : isVehicleTool
                       ? "Simulasi tersedia · asumsi pengguna"
+                      : isTerbilangTool
+                        ? "Kalkulator tersedia · review bahasa diperlukan"
                   : "Dalam persiapan"}
             </span>
           </div>
@@ -98,6 +104,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                           ? "Hitung kontribusi per unit, BEP matematis sebagai pecahan eksak, jumlah unit utuh minimum, nilai penjualan, serta laba/rugi di sekitarnya. Seluruh harga dan biaya berasal dari input Anda."
                           : isVehicleTool
                             ? "Simulasikan cicilan kendaraan dengan metode anuitas, flat, atau efektif. Harga kendaraan, uang muka, bunga, tenor, serta biaya awal atau pembiayaan berasal dari input Anda; hasil bukan penawaran lembaga pembiayaan."
+                            : isTerbilangTool
+                              ? "Ubah bilangan bulat, desimal, angka negatif, dan nominal Rupiah menjadi kata Bahasa Indonesia. Pemisah, batas angka, pelestarian digit, dan konvensi pembacaan dijelaskan pada hasil."
                 : tool.description}
           </p>
 
@@ -124,6 +132,10 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
           ) : isVehicleTool ? (
             <div class="vehicle-module-content">
               <VehicleInstallmentCalculator client:load />
+            </div>
+          ) : isTerbilangTool ? (
+            <div class="terbilang-module-content">
+              <TerbilangCalculator client:load />
             </div>
           ) : (
             <div class="module-status-panel" role="status">
@@ -161,6 +173,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                     ? "BEP memakai asumsi biaya dan harga dari Anda; tidak ada tarif resmi atau biaya tersembunyi."
                     : isVehicleTool
                       ? "Metode, pembulatan, biaya yang dibiayai, dan biaya awal ditampilkan terpisah; suku bunga tidak disediakan sebagai tarif pasar."
+                      : isTerbilangTool
+                        ? "Hasil deterministik tetap di browser; sumber bahasa dan konvensi ejaan ditampilkan bersama hasil."
                 : "Status ketersediaan tidak berarti kalkulator sudah lulus."}</p>
           </div>
         </section>
@@ -180,6 +194,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                   ? "Modul Fase 1.5 · margin, markup, dan tarif berdasarkan input pengguna."
                   : isBepTool
                     ? "Modul Fase 1.6 · BEP matematis dan unit utuh dengan input pengguna; review independen masih diperlukan."
+                    : isTerbilangTool
+                      ? "Modul Fase 1.9 · konversi lokal; tinjauan bahasa independen masih diperlukan."
               : `Modul Fase ${tool.phase} · status implementasi belum tersedia.`}
         </p>
         <a class="footer-privacy-link" href="/lapor-iklan">Laporkan iklan tidak pantas</a>

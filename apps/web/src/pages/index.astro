@@ -137,6 +137,8 @@ import { tools } from "../data/tools";
                         ? "Kalkulator tersedia · biaya input pengguna"
                         : tool.slug === "break-even-point"
                           ? "Kalkulator tersedia · review independen diperlukan"
+                        : tool.slug === "terbilang"
+                          ? "Kalkulator tersedia · review bahasa diperlukan"
                       : "Belum tersedia"}
                   </span>
                 </div>
@@ -153,6 +155,8 @@ import { tools } from "../data/tools";
                         ? "Hitung HPP"
                         : tool.slug === "break-even-point"
                           ? "Hitung BEP"
+                          : tool.slug === "terbilang"
+                            ? "Ubah angka menjadi terbilang"
                         : "Pelajari status modul"}
                     <span aria-hidden="true"> →</span>
                   </span>

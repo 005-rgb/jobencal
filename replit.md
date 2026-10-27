@@ -14,6 +14,13 @@
   It uses user-entered rates and costs only; its ten rational-reference
   fixtures still need independent human review. See
   `doc/FASE1_8_CICILAN_KENDARAAN.md`.
+- The Phase 1.9 Indonesian number-to-words tool is at `/modul/terbilang`.
+  It runs locally in the browser, supports number and Rupiah wording, uses
+  Indonesian dot/comma input, preserves decimal digits without rounding, and
+  rejects integer values above 999,999,999,999,999,999. Static golden vectors
+  and implementation checks are included; an independent language review is
+  still required for formal phase acceptance. See
+  `doc/FASE1_9_TERBILANG.md`.
 - Phase 1.1 includes a browser-local payroll form and reports that can be
   printed or downloaded as CSV after the release gate opens. The gate currently
   stays closed: reviewed effective PPh 21/BPJS datasets and 30 PPh 21/TER plus

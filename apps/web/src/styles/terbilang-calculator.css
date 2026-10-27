@@ -1,0 +1,418 @@
+.terbilang-module-card {
+  max-width: 1120px;
+}
+
+.terbilang-module-card .tool-status {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  border: 1px solid #dfd4f6;
+  border-radius: 999px;
+  background: #f7f3ff;
+  color: #6742a2;
+  font-weight: 700;
+}
+
+.terbilang-module-content,
+.terbilang-calculator {
+  display: grid;
+  min-width: 0;
+  gap: 16px;
+}
+
+.terbilang-local-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px 15px;
+  border: 1px solid #d9d1ef;
+  border-radius: 12px;
+  background: #f8f6fd;
+  color: #49396b;
+}
+
+.terbilang-local-note > span {
+  display: grid;
+  width: 23px;
+  height: 23px;
+  flex: 0 0 23px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9e1fa;
+  font-weight: 800;
+}
+
+.terbilang-local-note p {
+  margin: 1px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.terbilang-form,
+.terbilang-result {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+  padding: clamp(15px, 3vw, 25px);
+  border: 1px solid #e1e6ef;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.terbilang-form {
+  background: #fbfcfe;
+}
+
+.terbilang-section {
+  min-width: 0;
+  margin: 0;
+  padding: 0 0 18px;
+  border: 0;
+  border-bottom: 1px solid #e7eaf1;
+}
+
+.terbilang-section legend {
+  width: 100%;
+  margin-bottom: 12px;
+  color: #1d2940;
+  font-size: 14px;
+  font-weight: 780;
+}
+
+.terbilang-field {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+  color: #27344b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.terbilang-field input {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid #cfd6e2;
+  border-radius: 9px;
+  background: #fff;
+  color: #17243a;
+  font: inherit;
+}
+
+.terbilang-field input:focus-visible {
+  outline: 3px solid rgb(112 78 169 / 22%);
+  border-color: #7656a8;
+}
+
+.terbilang-field small {
+  color: #67758b;
+  font-size: 11px;
+  font-weight: 450;
+  line-height: 1.55;
+}
+
+.terbilang-format-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.terbilang-format-options label {
+  display: flex;
+  min-width: 0;
+  min-height: 68px;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #dbe1eb;
+  border-radius: 11px;
+  background: #fff;
+  color: #26334a;
+  cursor: pointer;
+}
+
+.terbilang-format-options input {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  margin: 2px 0 0;
+  accent-color: #7656a8;
+}
+
+.terbilang-format-options label:has(input:checked) {
+  border-color: #a78dce;
+  background: #faf8ff;
+  box-shadow: 0 0 0 2px rgb(118 86 168 / 10%);
+}
+
+.terbilang-format-options label > span {
+  display: grid;
+  gap: 5px;
+}
+
+.terbilang-format-options strong {
+  font-size: 12px;
+}
+
+.terbilang-format-options small {
+  color: #67758b;
+  font-size: 11px;
+  font-weight: 450;
+  line-height: 1.45;
+}
+
+.terbilang-submit {
+  min-height: 46px;
+  justify-self: start;
+}
+
+.terbilang-error,
+.terbilang-notice {
+  margin: 0;
+  padding: 11px 13px;
+  border: 1px solid #efcaca;
+  border-radius: 10px;
+  background: #fff6f6;
+  color: #8a2b2b;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.terbilang-notice {
+  border-color: #cce7e0;
+  background: #f1faf7;
+  color: #295a4b;
+}
+
+.terbilang-result {
+  scroll-margin-top: 18px;
+}
+
+.terbilang-result-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.terbilang-result-header .section-kicker {
+  margin: 0 0 7px;
+  color: #6742a2;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+.terbilang-result-header h2 {
+  margin: 0;
+  color: #19263b;
+  font-size: clamp(20px, 3vw, 27px);
+  letter-spacing: -0.035em;
+}
+
+.terbilang-result-header > div:first-child > p:not(.section-kicker) {
+  margin: 8px 0 0;
+  color: #647187;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.terbilang-input-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.terbilang-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.terbilang-actions button {
+  min-height: 36px;
+  padding: 7px 11px;
+  border: 1px solid #d7deea;
+  border-radius: 8px;
+  background: #fff;
+  color: #26334a;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.terbilang-actions button:hover,
+.terbilang-actions button:focus-visible {
+  border-color: #a78dce;
+  outline: 3px solid rgb(118 86 168 / 17%);
+}
+
+.terbilang-word-output {
+  display: grid;
+  gap: 9px;
+  padding: clamp(17px, 3vw, 26px);
+  border: 1px solid #e0d8ef;
+  border-radius: 13px;
+  background: linear-gradient(125deg, #fbf9ff, #fff);
+}
+
+.terbilang-word-output > span {
+  color: #6742a2;
+  font-size: 11px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.terbilang-word-output p {
+  margin: 0;
+  color: #211b30;
+  font-size: clamp(21px, 4vw, 32px);
+  font-weight: 760;
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+
+.terbilang-breakdown {
+  display: grid;
+  gap: 11px;
+}
+
+.terbilang-breakdown h3 {
+  margin: 0;
+  color: #1d2940;
+  font-size: 14px;
+}
+
+.terbilang-breakdown dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.terbilang-breakdown dl > div {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.55fr) minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #edf0f4;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.terbilang-breakdown dt {
+  color: #617087;
+}
+
+.terbilang-breakdown dd {
+  margin: 0;
+  color: #27344b;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.terbilang-method {
+  padding: 13px 15px;
+  border: 1px solid #e2e7ef;
+  border-radius: 11px;
+  color: #39465b;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.terbilang-method summary {
+  color: #26334a;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.terbilang-method li {
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+
+.terbilang-method a {
+  color: #6742a2;
+}
+
+@media (max-width: 680px) {
+  .terbilang-result-header {
+    display: grid;
+  }
+
+  .terbilang-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .terbilang-format-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .terbilang-breakdown dl > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .terbilang-submit {
+    width: 100%;
+    justify-self: stretch;
+  }
+}
+
+@media print {
+  body {
+    background: #fff !important;
+  }
+
+  .site-header,
+  .site-footer,
+  .access-back-link,
+  .module-detail-heading,
+  .module-detail-description,
+  .module-trust-points,
+  .module-detail-card > .section-kicker,
+  .module-detail-card > h1 {
+    display: none !important;
+  }
+
+  .terbilang-local-note,
+  .terbilang-form,
+  .terbilang-actions,
+  [data-slot="download-gate"],
+  .terbilang-notice {
+    display: none !important;
+  }
+
+  .module-detail-card {
+    max-width: none;
+    border: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .terbilang-calculator,
+  .terbilang-result,
+  .terbilang-word-output {
+    display: block;
+    border: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .terbilang-word-output {
+    margin: 20px 0;
+  }
+
+  .terbilang-method {
+    display: block;
+  }
+
+  .terbilang-method:not([open]) > :not(summary) {
+    display: block !important;
+  }
+}

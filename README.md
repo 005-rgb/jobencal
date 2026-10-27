@@ -42,3 +42,9 @@ are user assumptions, not lender quotes. Ten schedules are compared against an
 independent exact-rational reference; an independent human review is still
 required before calling the phase fully verified. See
 [`doc/FASE1_8_CICILAN_KENDARAAN.md`](doc/FASE1_8_CICILAN_KENDARAAN.md).
+
+The Phase 1.9 Indonesian number-to-words tool is available at `/modul/terbilang`.
+It supports negative values, exact decimal digit reading, Rupiah wording, and a
+fixed 18-digit integer limit. Its 57 static gold vectors are checked in, but an
+independent language review is still required before the phase can be declared
+fully verified. See [`doc/FASE1_9_TERBILANG.md`](doc/FASE1_9_TERBILANG.md).

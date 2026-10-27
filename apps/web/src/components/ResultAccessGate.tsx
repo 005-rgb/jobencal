@@ -11,8 +11,10 @@ import { hasConfiguredAdProvider } from "../lib/ad-provider.js";
 
 export default function ResultAccessGate({
   onContinue,
+  intent = "results",
 }: {
   readonly onContinue: () => void;
+  readonly intent?: "results" | "download";
 }) {
   const [consent, setCurrentConsent] = useState<ConsentPreferences | null>(null);
   const [adsEnabled, setAdsEnabled] = useState(
@@ -41,24 +43,28 @@ export default function ResultAccessGate({
     consent?.ads === true,
     hasConfiguredAdProvider(),
   );
+  const isDownload = intent === "download";
+  const title = isDownload ? "Unduhan siap dibuat" : "Hasil siap dihitung";
 
   return (
     <section
       class="price-margin-access-gate"
-      aria-labelledby="price-margin-gate-title"
-      data-slot="results-gate"
+      aria-labelledby="result-access-gate-title"
+      data-slot={isDownload ? "download-gate" : "results-gate"}
     >
       <div>
         <p class="section-kicker">SATU LANGKAH LAGI</p>
-        <h2 id="price-margin-gate-title">Hasil siap dihitung</h2>
+        <h2 id="result-access-gate-title">{title}</h2>
         <p>
-          Input tetap di perangkat ini. Lanjutkan untuk menampilkan hasil satu kali.
+          {isDownload
+            ? "Hasil teks dibuat hanya setelah Anda melanjutkan. Isi tetap di perangkat ini."
+            : "Input tetap di perangkat ini. Lanjutkan untuk menampilkan hasil satu kali."}
         </p>
       </div>
       <div
         class="price-margin-gate-ad"
         role="region"
-        aria-label="Slot iklan sebelum hasil"
+        aria-label={isDownload ? "Slot iklan sebelum unduhan" : "Slot iklan sebelum hasil"}
       >
         <span>Iklan</span>
         <p>
@@ -72,7 +78,7 @@ export default function ResultAccessGate({
         type="button"
         onClick={onContinue}
       >
-        Lihat hasil
+        {isDownload ? "Lanjutkan unduhan" : "Lihat hasil"}
       </button>
     </section>
   );

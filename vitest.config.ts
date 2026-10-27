@@ -16,7 +16,11 @@ export default defineConfig({
     restoreMocks: true,
     coverage: {
       provider: "v8",
-      include: ["packages/engine/src/money.ts", "packages/engine/src/rules.ts"],
+      include: [
+        "packages/engine/src/money.ts",
+        "packages/engine/src/rules.ts",
+        "packages/engine/src/terbilang.ts",
+      ],
       reporter: ["text"],
       thresholds: {
         lines: 95,
