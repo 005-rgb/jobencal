@@ -14,3 +14,17 @@ mtime_ms = 1793025193453
 storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:008533df-f43b-43f1-b2ad-9b1401d45639/44625608-eb47-41e5-8e1b-89f741e4f6bb/6ce71bf6-a850-4a65-aa56-efd3fc1332a9"
 storage_version_token = "1793025206942427"
 content_type = "text/markdown"
+
+[[outputs]]
+id = "tAlzMqRqZ7XP9vav51yNE"
+uri = "file://research/module-demand-2026-notes.md"
+type = "text"
+title = "Catatan Riset: Kebutuhan Modul JOBENAPP"
+description = "Ruang lingkup, daftar pemeriksaan, dan log temuan awal untuk analisis kebutuhan 12 modul."
+logical_id = "86259adc-cf0b-4317-8fcb-a0fa54518e4c"
+content_hash = "sha256:2a86f1faeb2e2d9cb38de85ea2d16f2b318655b87a6479e00e8f01912f27d674"
+size = 3850
+mtime_ms = 1793103717532
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:48295a8d-8482-4e2f-968a-c61ffd99c00e/86259adc-cf0b-4317-8fcb-a0fa54518e4c/70c1af70-8652-461b-9e81-366d44fc7d55"
+storage_version_token = "1793103725224596"
+content_type = "text/markdown"
