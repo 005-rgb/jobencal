@@ -23,7 +23,9 @@ const isCalculatorTool = isPayrollTool || isKprTool;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={`${tool.name}: status, cakupan, dan informasi sebelum kalkulator ini tersedia.`} />
+    <meta name="description" content={isKprTool
+      ? "Simulasi KPR anuitas, flat, efektif, bunga tetap dan mengambang, biaya, serta pembayaran pokok tambahan. Tarif bank tidak disediakan."
+      : `${tool.name}: status, cakupan, dan informasi sebelum kalkulator ini tersedia.`} />
     <meta name="theme-color" content="#f4f6fa" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{tool.name} · JOBENAPP</title>
@@ -53,7 +55,7 @@ const isCalculatorTool = isPayrollTool || isKprTool;
               {isPayrollTool
                 ? "Engine tersedia · aturan belum ditinjau"
                 : isKprTool
-                  ? "Simulasi asumsi aktif · tanpa tarif bank"
+                  ? "Kalkulator tersedia · tanpa tarif bank"
                   : "Dalam persiapan"}
             </span>
           </div>
@@ -63,7 +65,7 @@ const isCalculatorTool = isPayrollTool || isKprTool;
             {isPayrollTool
               ? "Rincian PPh 21 dan enam program BPJS dengan aturan berversi. Perhitungan nyata menunggu dataset yang ditinjau independen."
               : isKprTool
-                ? "Bandingkan metode amortisasi dengan input suku bunga dan biaya Anda sendiri. Hasil bukan penawaran bank."
+                ? "Kalkulator lengkap untuk membandingkan anuitas, flat, dan efektif, mengatur perubahan bunga, mencatat biaya, dan menghitung pembayaran pokok tambahan. Seluruh suku bunga dan biaya adalah input Anda; hasil bukan penawaran bank."
                 : tool.description}
           </p>
 
@@ -101,7 +103,9 @@ const isCalculatorTool = isPayrollTool || isKprTool;
           <div class="module-trust-points">
             <p><span aria-hidden="true">✓</span> Hasil harus dapat ditelusuri ke metode dan sumber.</p>
             <p><span aria-hidden="true">✓</span> Data finansial dirancang tetap di perangkat Anda.</p>
-            <p><span aria-hidden="true">✓</span> Status ketersediaan tidak berarti kalkulator sudah lulus.</p>
+            <p><span aria-hidden="true">✓</span> {isKprTool
+              ? "Ketersediaan simulasi tidak berarti suku bunga atau biaya telah diverifikasi oleh bank."
+              : "Status ketersediaan tidak berarti kalkulator sudah lulus."}</p>
           </div>
         </section>
       </main>

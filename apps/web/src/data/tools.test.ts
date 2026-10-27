@@ -25,4 +25,12 @@ describe("tool catalogue", () => {
     expect(getToolBySlug("terbilang")?.name).toBe("Terbilang");
     expect(getToolBySlug("not-a-tool")).toBeUndefined();
   });
+
+  it("describes Phase 1.3 as a user-input mortgage simulation, not a bank tariff", () => {
+    const kpr = getToolBySlug("simulasi-kpr");
+    expect(kpr?.phase).toBe("1.3");
+    expect(kpr?.description).toMatch(/anuitas, flat, dan efektif/i);
+    expect(kpr?.description).toMatch(/bunga berjenjang/i);
+    expect(kpr?.description).toMatch(/pelunasan tambahan/i);
+  });
 });

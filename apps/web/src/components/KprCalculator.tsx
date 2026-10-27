@@ -157,10 +157,17 @@ function buildShareText(result: KprCalculation): string {
     "Simulasi KPR JOBENAPP",
     `Model: ${modelLabels[result.method.model]}`,
     `Pokok: ${rupiah(result.totals.principalRupiah)}`,
+    `Tenor: ${result.input.termMonths} bulan`,
+    result.input.floatingRate
+      ? `Bunga asumsi pengguna: ${formatPercentage(result.input.annualRateBasisPoints)}% per tahun hingga bulan ${result.input.floatingRate.fixedMonths}, lalu ${formatPercentage(result.input.floatingRate.annualRateBasisPoints)}% per tahun.`
+      : `Bunga asumsi pengguna: ${formatPercentage(result.input.annualRateBasisPoints)}% per tahun.`,
     `Bunga: ${rupiah(result.totals.interestRupiah)}`,
+    `Angsuran pertama / terakhir: ${rupiah(result.totals.firstInstallmentRupiah)} / ${rupiah(result.totals.lastInstallmentRupiah)}`,
+    `Tenor aktual: ${result.totals.actualTermMonths} bulan`,
+    `Pelunasan pokok tambahan: ${rupiah(result.totals.extraRepaymentsRupiah)}`,
     `Total biaya terpisah: ${rupiah(result.totals.feesRupiah)}`,
     `Total pengeluaran simulasi: ${rupiah(result.totals.totalCashOutflowRupiah)}`,
-    "Hasil adalah simulasi berdasarkan asumsi pengguna, bukan penawaran bank.",
+    "Hasil adalah simulasi berdasarkan input pengguna, bukan kutipan atau penawaran bank.",
   ].join("\n");
 }
 
@@ -296,7 +303,7 @@ export default function KprCalculator() {
               label="Pokok pinjaman"
               value={draft.principal}
               placeholder="Contoh: 500.000.000"
-              hint="Masukkan angka Rupiah utuh."
+              hint="Masukkan angka Rupiah utuh, maksimal 18 digit."
               onInput={(principal) => updateDraft({ principal })}
             />
             <NumberField
@@ -388,7 +395,8 @@ export default function KprCalculator() {
             />
           </div>
           <p class="kpr-hint">
-            Pembayaran tambahan diterapkan setelah angsuran pada bulan itu.
+            Pilih bulan sebelum angsuran terakhir. Pembayaran tambahan
+            diterapkan setelah angsuran pada bulan itu.
             Tidak ada penalti atau pengembalian bunga yang diasumsikan.
           </p>
         </fieldset>

@@ -32,7 +32,7 @@ export const tools: readonly JobenTool[] = [
     phase: "1.3",
     name: "Simulasi KPR",
     category: "Keuangan",
-    description: "Bandingkan metode anuitas, flat, dan efektif dengan tabel angsuran.",
+    description: "Simulasikan anuitas, flat, dan efektif, termasuk bunga berjenjang, biaya, serta pelunasan tambahan.",
     icon: "M3 10.5 12 3l9 7.5M5 9v11h14V9M9 20v-6h6v6",
     tone: "indigo",
   },

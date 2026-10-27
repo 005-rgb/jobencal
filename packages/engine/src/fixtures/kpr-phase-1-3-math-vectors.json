@@ -1,0 +1,447 @@
+{
+  "provenance": "Expected values were computed independently with Python Decimal and ROUND_HALF_UP using the published model definitions; this fixture does not call the JOBENAPP calculation engine.",
+  "scheduleRowFormat": [
+    "month",
+    "annualRateBasisPoints",
+    "openingBalanceRupiah",
+    "installmentRupiah",
+    "interestRupiah",
+    "principalRupiah",
+    "extraPrincipalRupiah",
+    "closingBalanceRupiah",
+    "isFinalAdjustment"
+  ],
+  "vectors": [
+    {
+      "name": "annuity_standard",
+      "input": {
+        "principalRupiah": "1200000",
+        "termMonths": 4,
+        "model": "annuity",
+        "annualRateBasisPoints": "1200"
+      },
+      "scheduleRows": [
+        [1, "1200", "1200000", "307537", "12000", "295537", "0", "904463", false],
+        [2, "1200", "904463", "307537", "9045", "298492", "0", "605971", false],
+        [3, "1200", "605971", "307537", "6060", "301477", "0", "304494", false],
+        [4, "1200", "304494", "307539", "3045", "304494", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "1200000",
+        "interestRupiah": "30150",
+        "repaidPrincipalRupiah": "1200000",
+        "installmentsRupiah": "1230150",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "1230150",
+        "firstInstallmentRupiah": "307537",
+        "lastInstallmentRupiah": "307539",
+        "actualTermMonths": 4
+      }
+    },
+    {
+      "name": "flat_standard",
+      "input": {
+        "principalRupiah": "1200000",
+        "termMonths": 4,
+        "model": "flat",
+        "annualRateBasisPoints": "1200"
+      },
+      "scheduleRows": [
+        [1, "1200", "1200000", "312000", "12000", "300000", "0", "900000", false],
+        [2, "1200", "900000", "312000", "12000", "300000", "0", "600000", false],
+        [3, "1200", "600000", "312000", "12000", "300000", "0", "300000", false],
+        [4, "1200", "300000", "312000", "12000", "300000", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "1200000",
+        "interestRupiah": "48000",
+        "repaidPrincipalRupiah": "1200000",
+        "installmentsRupiah": "1248000",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "1248000",
+        "firstInstallmentRupiah": "312000",
+        "lastInstallmentRupiah": "312000",
+        "actualTermMonths": 4
+      }
+    },
+    {
+      "name": "effective_standard",
+      "input": {
+        "principalRupiah": "1200000",
+        "termMonths": 4,
+        "model": "effective",
+        "annualRateBasisPoints": "1200"
+      },
+      "scheduleRows": [
+        [1, "1200", "1200000", "312000", "12000", "300000", "0", "900000", false],
+        [2, "1200", "900000", "309000", "9000", "300000", "0", "600000", false],
+        [3, "1200", "600000", "306000", "6000", "300000", "0", "300000", false],
+        [4, "1200", "300000", "303000", "3000", "300000", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "1200000",
+        "interestRupiah": "30000",
+        "repaidPrincipalRupiah": "1200000",
+        "installmentsRupiah": "1230000",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "1230000",
+        "firstInstallmentRupiah": "312000",
+        "lastInstallmentRupiah": "303000",
+        "actualTermMonths": 4
+      }
+    },
+    {
+      "name": "annuity_zero_rate_final_adjustment",
+      "input": {
+        "principalRupiah": "100",
+        "termMonths": 3,
+        "model": "annuity",
+        "annualRateBasisPoints": "0"
+      },
+      "scheduleRows": [
+        [1, "0", "100", "33", "0", "33", "0", "67", false],
+        [2, "0", "67", "33", "0", "33", "0", "34", false],
+        [3, "0", "34", "34", "0", "34", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "100",
+        "interestRupiah": "0",
+        "repaidPrincipalRupiah": "100",
+        "installmentsRupiah": "100",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "100",
+        "firstInstallmentRupiah": "33",
+        "lastInstallmentRupiah": "34",
+        "actualTermMonths": 3
+      }
+    },
+    {
+      "name": "flat_zero_rate_final_adjustment",
+      "input": {
+        "principalRupiah": "100",
+        "termMonths": 3,
+        "model": "flat",
+        "annualRateBasisPoints": "0"
+      },
+      "scheduleRows": [
+        [1, "0", "100", "33", "0", "33", "0", "67", false],
+        [2, "0", "67", "33", "0", "33", "0", "34", false],
+        [3, "0", "34", "34", "0", "34", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "100",
+        "interestRupiah": "0",
+        "repaidPrincipalRupiah": "100",
+        "installmentsRupiah": "100",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "100",
+        "firstInstallmentRupiah": "33",
+        "lastInstallmentRupiah": "34",
+        "actualTermMonths": 3
+      }
+    },
+    {
+      "name": "effective_zero_rate_final_adjustment",
+      "input": {
+        "principalRupiah": "100",
+        "termMonths": 3,
+        "model": "effective",
+        "annualRateBasisPoints": "0"
+      },
+      "scheduleRows": [
+        [1, "0", "100", "33", "0", "33", "0", "67", false],
+        [2, "0", "67", "34", "0", "34", "0", "33", false],
+        [3, "0", "33", "33", "0", "33", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "100",
+        "interestRupiah": "0",
+        "repaidPrincipalRupiah": "100",
+        "installmentsRupiah": "100",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "100",
+        "firstInstallmentRupiah": "33",
+        "lastInstallmentRupiah": "33",
+        "actualTermMonths": 3
+      }
+    },
+    {
+      "name": "annuity_fixed_to_floating",
+      "input": {
+        "principalRupiah": "1000000",
+        "termMonths": 4,
+        "model": "annuity",
+        "annualRateBasisPoints": "1200",
+        "floatingRate": {
+          "fixedMonths": 2,
+          "annualRateBasisPoints": "2400"
+        }
+      },
+      "scheduleRows": [
+        [1, "1200", "1000000", "256281", "10000", "246281", "0", "753719", false],
+        [2, "1200", "753719", "256281", "7537", "248744", "0", "504975", false],
+        [3, "2400", "504975", "260087", "10100", "249987", "0", "254988", false],
+        [4, "2400", "254988", "260088", "5100", "254988", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "1000000",
+        "interestRupiah": "32737",
+        "repaidPrincipalRupiah": "1000000",
+        "installmentsRupiah": "1032737",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "1032737",
+        "firstInstallmentRupiah": "256281",
+        "lastInstallmentRupiah": "260088",
+        "actualTermMonths": 4
+      }
+    },
+    {
+      "name": "flat_fixed_to_floating",
+      "input": {
+        "principalRupiah": "1000000",
+        "termMonths": 4,
+        "model": "flat",
+        "annualRateBasisPoints": "1200",
+        "floatingRate": {
+          "fixedMonths": 2,
+          "annualRateBasisPoints": "2400"
+        }
+      },
+      "scheduleRows": [
+        [1, "1200", "1000000", "260000", "10000", "250000", "0", "750000", false],
+        [2, "1200", "750000", "260000", "10000", "250000", "0", "500000", false],
+        [3, "2400", "500000", "270000", "20000", "250000", "0", "250000", false],
+        [4, "2400", "250000", "270000", "20000", "250000", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "1000000",
+        "interestRupiah": "60000",
+        "repaidPrincipalRupiah": "1000000",
+        "installmentsRupiah": "1060000",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "1060000",
+        "firstInstallmentRupiah": "260000",
+        "lastInstallmentRupiah": "270000",
+        "actualTermMonths": 4
+      }
+    },
+    {
+      "name": "effective_fixed_to_floating",
+      "input": {
+        "principalRupiah": "1000000",
+        "termMonths": 4,
+        "model": "effective",
+        "annualRateBasisPoints": "1200",
+        "floatingRate": {
+          "fixedMonths": 2,
+          "annualRateBasisPoints": "2400"
+        }
+      },
+      "scheduleRows": [
+        [1, "1200", "1000000", "260000", "10000", "250000", "0", "750000", false],
+        [2, "1200", "750000", "257500", "7500", "250000", "0", "500000", false],
+        [3, "2400", "500000", "260000", "10000", "250000", "0", "250000", false],
+        [4, "2400", "250000", "255000", "5000", "250000", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "1000000",
+        "interestRupiah": "32500",
+        "repaidPrincipalRupiah": "1000000",
+        "installmentsRupiah": "1032500",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "1032500",
+        "firstInstallmentRupiah": "260000",
+        "lastInstallmentRupiah": "255000",
+        "actualTermMonths": 4
+      }
+    },
+    {
+      "name": "annuity_early_principal",
+      "input": {
+        "principalRupiah": "1000000",
+        "termMonths": 5,
+        "model": "annuity",
+        "annualRateBasisPoints": "1200",
+        "earlyRepayment": {
+          "month": 2,
+          "amountRupiah": "250000"
+        }
+      },
+      "scheduleRows": [
+        [1, "1200", "1000000", "206040", "10000", "196040", "0", "803960", false],
+        [2, "1200", "803960", "206040", "8040", "198000", "250000", "355960", false],
+        [3, "1200", "355960", "121034", "3560", "117474", "0", "238486", false],
+        [4, "1200", "238486", "121034", "2385", "118649", "0", "119837", false],
+        [5, "1200", "119837", "121035", "1198", "119837", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "1000000",
+        "interestRupiah": "25183",
+        "repaidPrincipalRupiah": "1000000",
+        "installmentsRupiah": "775183",
+        "extraRepaymentsRupiah": "250000",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "1025183",
+        "firstInstallmentRupiah": "206040",
+        "lastInstallmentRupiah": "121035",
+        "actualTermMonths": 5
+      }
+    },
+    {
+      "name": "flat_early_principal",
+      "input": {
+        "principalRupiah": "1000000",
+        "termMonths": 5,
+        "model": "flat",
+        "annualRateBasisPoints": "1200",
+        "earlyRepayment": {
+          "month": 2,
+          "amountRupiah": "250000"
+        }
+      },
+      "scheduleRows": [
+        [1, "1200", "1000000", "210000", "10000", "200000", "0", "800000", false],
+        [2, "1200", "800000", "210000", "10000", "200000", "250000", "350000", false],
+        [3, "1200", "350000", "126667", "10000", "116667", "0", "233333", false],
+        [4, "1200", "233333", "126667", "10000", "116667", "0", "116666", false],
+        [5, "1200", "116666", "126666", "10000", "116666", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "1000000",
+        "interestRupiah": "50000",
+        "repaidPrincipalRupiah": "1000000",
+        "installmentsRupiah": "800000",
+        "extraRepaymentsRupiah": "250000",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "1050000",
+        "firstInstallmentRupiah": "210000",
+        "lastInstallmentRupiah": "126666",
+        "actualTermMonths": 5
+      }
+    },
+    {
+      "name": "effective_early_principal",
+      "input": {
+        "principalRupiah": "1000000",
+        "termMonths": 5,
+        "model": "effective",
+        "annualRateBasisPoints": "1200",
+        "earlyRepayment": {
+          "month": 2,
+          "amountRupiah": "250000"
+        }
+      },
+      "scheduleRows": [
+        [1, "1200", "1000000", "210000", "10000", "200000", "0", "800000", false],
+        [2, "1200", "800000", "208000", "8000", "200000", "250000", "350000", false],
+        [3, "1200", "350000", "120167", "3500", "116667", "0", "233333", false],
+        [4, "1200", "233333", "119000", "2333", "116667", "0", "116666", false],
+        [5, "1200", "116666", "117833", "1167", "116666", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "1000000",
+        "interestRupiah": "25000",
+        "repaidPrincipalRupiah": "1000000",
+        "installmentsRupiah": "775000",
+        "extraRepaymentsRupiah": "250000",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "1025000",
+        "firstInstallmentRupiah": "210000",
+        "lastInstallmentRupiah": "117833",
+        "actualTermMonths": 5
+      }
+    },
+    {
+      "name": "fees_separate_from_principal",
+      "input": {
+        "principalRupiah": "1000",
+        "termMonths": 4,
+        "model": "annuity",
+        "annualRateBasisPoints": "0",
+        "costs": {
+          "provisionRupiah": "25",
+          "administrationRupiah": "30",
+          "insuranceRupiah": "40",
+          "taxAndNotaryRupiah": "50"
+        }
+      },
+      "scheduleRows": [
+        [1, "0", "1000", "250", "0", "250", "0", "750", false],
+        [2, "0", "750", "250", "0", "250", "0", "500", false],
+        [3, "0", "500", "250", "0", "250", "0", "250", false],
+        [4, "0", "250", "250", "0", "250", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "1000",
+        "interestRupiah": "0",
+        "repaidPrincipalRupiah": "1000",
+        "installmentsRupiah": "1000",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "145",
+        "totalCashOutflowRupiah": "1145",
+        "firstInstallmentRupiah": "250",
+        "lastInstallmentRupiah": "250",
+        "actualTermMonths": 4
+      }
+    },
+    {
+      "name": "half_rupiah_monthly_interest_rounds_away_from_zero",
+      "input": {
+        "principalRupiah": "101",
+        "termMonths": 1,
+        "model": "effective",
+        "annualRateBasisPoints": "600"
+      },
+      "scheduleRows": [
+        [1, "600", "101", "102", "1", "101", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "101",
+        "interestRupiah": "1",
+        "repaidPrincipalRupiah": "101",
+        "installmentsRupiah": "102",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "102",
+        "firstInstallmentRupiah": "102",
+        "lastInstallmentRupiah": "102",
+        "actualTermMonths": 1
+      }
+    },
+    {
+      "name": "maximum_tenor_360_months",
+      "input": {
+        "principalRupiah": "360",
+        "termMonths": 360,
+        "model": "effective",
+        "annualRateBasisPoints": "0"
+      },
+      "scheduleRows": [
+        [1, "0", "360", "1", "0", "1", "0", "359", false],
+        [2, "0", "359", "1", "0", "1", "0", "358", false],
+        [360, "0", "1", "1", "0", "1", "0", "0", true]
+      ],
+      "totals": {
+        "principalRupiah": "360",
+        "interestRupiah": "0",
+        "repaidPrincipalRupiah": "360",
+        "installmentsRupiah": "360",
+        "extraRepaymentsRupiah": "0",
+        "feesRupiah": "0",
+        "totalCashOutflowRupiah": "360",
+        "firstInstallmentRupiah": "1",
+        "lastInstallmentRupiah": "1",
+        "actualTermMonths": 360
+      }
+    }
+  ]
+}

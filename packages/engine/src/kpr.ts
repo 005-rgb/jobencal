@@ -4,7 +4,7 @@ const MONTHS_PER_YEAR = 12;
 const MONTHLY_RATE_DENOMINATOR = 120_000n;
 const MAX_RUPIAH = 999_999_999_999_999_999n;
 const METHOD_KEY = "mortgage.kpr-simulation";
-const METHOD_VERSION = "1.0.0";
+const METHOD_VERSION = "1.1.0";
 
 export type KprModel = "annuity" | "flat" | "effective";
 
@@ -199,11 +199,11 @@ function validateInput(input: KprCalculationInput): void {
     if (
       !Number.isInteger(input.earlyRepayment.month) ||
       input.earlyRepayment.month < 1 ||
-      input.earlyRepayment.month > input.termMonths
+      input.earlyRepayment.month >= input.termMonths
     ) {
       throw new KprCalculationError(
         "invalid_early_repayment",
-        "Bulan pelunasan dipercepat harus berada di dalam tenor.",
+        "Bulan pelunasan dipercepat harus sebelum angsuran terakhir.",
       );
     }
     assertSafeRupiah(input.earlyRepayment.amountRupiah, "Pelunasan dipercepat");
@@ -233,6 +233,7 @@ export function calculateKpr(input: KprCalculationInput): KprCalculation {
   const schedule: KprInstallment[] = [];
   let balance = input.principalRupiah;
   let previousMonthHadExtraRepayment = false;
+  let hasHadExtraRepayment = false;
   let totalInterest = 0n;
   let totalRegularPrincipal = 0n;
   let totalRegularInstallments = 0n;
@@ -245,8 +246,10 @@ export function calculateKpr(input: KprCalculationInput): KprCalculation {
         : input.annualRateBasisPoints;
     const remainingMonths = input.termMonths - month + 1;
     const openingBalance = balance;
+    const interestBasis =
+      input.model === "flat" ? input.principalRupiah : openingBalance;
     const interest = roundRatio(
-      openingBalance * rateBasisPoints,
+      interestBasis * rateBasisPoints,
       MONTHLY_RATE_DENOMINATOR,
       "half-away-from-zero",
     );
@@ -279,11 +282,11 @@ export function calculateKpr(input: KprCalculationInput): KprCalculation {
       payment = scheduledPrincipal + interest;
     } else {
       const principalBasis =
-        input.model === "flat" && !previousMonthHadExtraRepayment
+        input.model === "flat" && !hasHadExtraRepayment
           ? input.principalRupiah
           : openingBalance;
       const principalPeriods =
-        input.model === "flat" && !previousMonthHadExtraRepayment
+        input.model === "flat" && !hasHadExtraRepayment
           ? input.termMonths
           : remainingMonths;
       scheduledPrincipal = roundRatio(
@@ -339,6 +342,7 @@ export function calculateKpr(input: KprCalculationInput): KprCalculation {
     });
     balance = closingBalance;
     previousMonthHadExtraRepayment = extraPrincipal > 0n;
+    hasHadExtraRepayment ||= previousMonthHadExtraRepayment;
   }
 
   const repaidPrincipalRupiah = checkedSum(
@@ -368,7 +372,7 @@ export function calculateKpr(input: KprCalculationInput): KprCalculation {
   ];
   if (input.model === "flat") {
     assumptions.push(
-      "Model flat memakai pokok awal sebagai dasar bunga setiap bulan; pembayaran pokok dipercepat hanya mengurangi sisa pokok dan tidak mengubah asumsi dasar bunga flat.",
+      "Model flat memakai pokok awal sebagai dasar bunga setiap bulan; pembayaran pokok dipercepat tidak mengubah dasar bunga, tetapi porsi pokok berikutnya dibagi ulang selama tenor tersisa.",
     );
   }
   if (input.earlyRepayment) {
