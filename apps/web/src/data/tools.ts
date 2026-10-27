@@ -104,7 +104,7 @@ export const tools: readonly JobenTool[] = [
     phase: "1.11",
     name: "Invoice & Kwitansi",
     category: "Usaha",
-    description: "Susun dokumen transaksi dan unduh hasilnya.",
+    description: "Buat invoice atau kwitansi umum dengan rincian item dan total Rupiah.",
     icon: "M6 3h12v18l-3-2-3 2-3-2-3 2V3Zm3 5h6m-6 4h6m-6 4h3",
     tone: "rose",
   },

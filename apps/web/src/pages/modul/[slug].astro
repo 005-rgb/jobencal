@@ -8,6 +8,7 @@ import PriceMarginCalculator from "../../components/PriceMarginCalculator";
 import BreakEvenCalculator from "../../components/BreakEvenCalculator";
 import VehicleInstallmentCalculator from "../../components/VehicleInstallmentCalculator";
 import TerbilangCalculator from "../../components/TerbilangCalculator";
+import InvoiceCalculator from "../../components/InvoiceCalculator";
 import { tools } from "../../data/tools";
 
 export function getStaticPaths() {
@@ -25,7 +26,8 @@ const isPriceMarginTool = tool.slug === "harga-jual-margin";
 const isBepTool = tool.slug === "break-even-point";
 const isVehicleTool = tool.slug === "cicilan-kendaraan";
 const isTerbilangTool = tool.slug === "terbilang";
-const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMarginTool || isBepTool || isVehicleTool || isTerbilangTool;
+const isInvoiceTool = tool.slug === "invoice-kwitansi";
+const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMarginTool || isBepTool || isVehicleTool || isTerbilangTool || isInvoiceTool;
 ---
 
 <!doctype html>
@@ -39,6 +41,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
         ? "Simulasi cicilan kendaraan dengan pilihan anuitas, flat, atau efektif. Masukkan bunga dan biaya sebagai asumsi Anda; tidak ada tarif lembaga pembiayaan yang diasumsikan."
         : isTerbilangTool
           ? "Ubah angka menjadi kata Bahasa Indonesia dengan format angka atau nominal Rupiah, termasuk desimal dan bilangan negatif."
+          : isInvoiceTool
+            ? "Buat invoice atau kwitansi dengan rincian item dan total Rupiah. Perhitungan lokal; bukan faktur pajak."
       : isPriceMarginTool
         ? "Hitung harga jual dengan membedakan margin dan markup, serta tampilkan laba setelah diskon dan biaya yang Anda pilih."
         : isBepTool
@@ -65,7 +69,7 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
       </header>
       <main class="module-page">
         <a class="access-back-link" href="/#modul">← Kembali ke semua modul</a>
-        <section class:list={["module-detail-card", `tone-${tool.tone}`, isPayrollTool && "payroll-module-card", isKprTool && "kpr-module-card", isHppTool && "hpp-module-card", isPriceMarginTool && "price-margin-module-card", isBepTool && "bep-module-card", isTerbilangTool && "terbilang-module-card"]}>
+        <section class:list={["module-detail-card", `tone-${tool.tone}`, isPayrollTool && "payroll-module-card", isKprTool && "kpr-module-card", isHppTool && "hpp-module-card", isPriceMarginTool && "price-margin-module-card", isBepTool && "bep-module-card", isTerbilangTool && "terbilang-module-card", isInvoiceTool && "invoice-module-card"]}>
           <div class="module-detail-heading">
             <span class="tool-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d={tool.icon} /></svg>
@@ -86,6 +90,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                       ? "Simulasi tersedia · asumsi pengguna"
                       : isTerbilangTool
                         ? "Kalkulator tersedia · review bahasa diperlukan"
+                        : isInvoiceTool
+                          ? "Pembuat dokumen tersedia · tanpa pajak"
                   : "Dalam persiapan"}
             </span>
           </div>
@@ -106,6 +112,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                             ? "Simulasikan cicilan kendaraan dengan metode anuitas, flat, atau efektif. Harga kendaraan, uang muka, bunga, tenor, serta biaya awal atau pembiayaan berasal dari input Anda; hasil bukan penawaran lembaga pembiayaan."
                             : isTerbilangTool
                               ? "Ubah bilangan bulat, desimal, angka negatif, dan nominal Rupiah menjadi kata Bahasa Indonesia. Pemisah, batas angka, pelestarian digit, dan konvensi pembacaan dijelaskan pada hasil."
+                               : isInvoiceTool
+                                 ? "Buat invoice untuk tagihan atau kwitansi untuk bukti penerimaan pembayaran. Jumlah item dihitung dengan aritmetika Rupiah eksak; pajak dan biaya resmi tidak ditambahkan."
                 : tool.description}
           </p>
 
@@ -136,6 +144,10 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
           ) : isTerbilangTool ? (
             <div class="terbilang-module-content">
               <TerbilangCalculator client:load />
+            </div>
+          ) : isInvoiceTool ? (
+            <div class="invoice-module-content">
+              <InvoiceCalculator client:load />
             </div>
           ) : (
             <div class="module-status-panel" role="status">
@@ -175,6 +187,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                       ? "Metode, pembulatan, biaya yang dibiayai, dan biaya awal ditampilkan terpisah; suku bunga tidak disediakan sebagai tarif pasar."
                       : isTerbilangTool
                         ? "Hasil deterministik tetap di browser; sumber bahasa dan konvensi ejaan ditampilkan bersama hasil."
+                         : isInvoiceTool
+                           ? "Rincian dan hasil hanya ada di browser sampai Anda memilih untuk menyalin, membagikan, atau mencetaknya."
                 : "Status ketersediaan tidak berarti kalkulator sudah lulus."}</p>
           </div>
         </section>
@@ -196,6 +210,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMargi
                     ? "Modul Fase 1.6 · BEP matematis dan unit utuh dengan input pengguna; review independen masih diperlukan."
                     : isTerbilangTool
                       ? "Modul Fase 1.9 · konversi lokal; tinjauan bahasa independen masih diperlukan."
+                      : isInvoiceTool
+                        ? "Modul Fase 1.11 · invoice dan kwitansi umum, tanpa konfigurasi pajak."
               : `Modul Fase ${tool.phase} · status implementasi belum tersedia.`}
         </p>
         <a class="footer-privacy-link" href="/lapor-iklan">Laporkan iklan tidak pantas</a>

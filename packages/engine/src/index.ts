@@ -122,3 +122,17 @@ export type {
   TerbilangFormat,
   TerbilangInput,
 } from "./terbilang.js";
+export {
+  calculateInvoiceReceipt,
+  INVOICE_METHOD_KEY,
+  INVOICE_METHOD_VERSION,
+  InvoiceCalculationError,
+} from "./invoice.js";
+export type {
+  InvoiceCalculationErrorCode,
+  InvoiceDocumentType,
+  InvoiceLineInput,
+  InvoiceReceiptCalculation,
+  InvoiceReceiptInput,
+  InvoiceReceiptLine,
+} from "./invoice.js";

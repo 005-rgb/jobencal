@@ -40,4 +40,11 @@ describe("tool catalogue", () => {
     expect(hpp?.description).toMatch(/batch dan HPP per unit/i);
     expect(hpp?.description).toMatch(/overhead dan penyusutan/i);
   });
+
+  it("lists the Phase 1.11 invoice and receipt tool", () => {
+    const invoice = getToolBySlug("invoice-kwitansi");
+    expect(invoice?.phase).toBe("1.11");
+    expect(invoice?.name).toBe("Invoice & Kwitansi");
+    expect(invoice?.description).toMatch(/invoice atau kwitansi umum/i);
+  });
 });
