@@ -47,3 +47,6 @@ implemented calculation contract and the boundary between the core demo and
 the 12 calculator modules that remain unverified.
 See [`doc/FASE1_1_PAYROLL_ENGINE.md`](doc/FASE1_1_PAYROLL_ENGINE.md) for the
 payroll engine, gated input/report flow, and evidence required for publication.
+See [`doc/FASE1_5_HARGA_JUAL_MARGIN.md`](doc/FASE1_5_HARGA_JUAL_MARGIN.md) for
+the local-only price/margin calculator, formulas, rounding, fixture coverage,
+and independent-review limitation.

@@ -27,3 +27,9 @@ arithmetic regression vectors and a detailed result contract. It is not ready
 to calculate real salaries: reviewed, effective PPh 21 and BPJS rule datasets
 are intentionally not included. See
 [`doc/FASE1_1_PAYROLL_ENGINE.md`](doc/FASE1_1_PAYROLL_ENGINE.md).
+
+The Phase 1.5 price and margin calculator is available at
+`/modul/harga-jual-margin`. It keeps margin separate from markup and uses
+user-entered discounts and fees. Its arithmetic fixtures still need a second
+human review before this subphase can be called independently verified. See
+[`doc/FASE1_5_HARGA_JUAL_MARGIN.md`](doc/FASE1_5_HARGA_JUAL_MARGIN.md).

@@ -67,3 +67,12 @@ export type {
   HppCostCategory,
   HppCostLine,
 } from "./hpp.js";
+export {
+  calculatePriceMargin,
+  PriceMarginCalculationError,
+} from "./price-margin.js";
+export type {
+  PriceMarginCalculation,
+  PriceMarginErrorCode,
+  PriceMarginInput,
+} from "./price-margin.js";

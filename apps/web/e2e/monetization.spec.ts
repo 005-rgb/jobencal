@@ -177,7 +177,7 @@ test("home cards open unique module pages through a skippable ad gate", async ({
   await expect(page.locator(".module-detail-card form")).toHaveCount(0);
 });
 
-test("all twelve module URLs render distinct standalone status pages", async ({
+test("all twelve module URLs render standalone pages with shipped tools available", async ({
   page,
 }) => {
   await stubBackend(page);
@@ -199,8 +199,15 @@ test("all twelve module URLs render distinct standalone status pages", async ({
   for (const slug of slugs) {
     await page.goto(`/modul/${slug}`);
     await expect(page.locator("main h1")).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
-    ).toBeVisible();
+    if (slug === "harga-jual-margin") {
+      await expect(page.locator("form.price-margin-form")).toBeVisible();
+      await expect(
+        page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
+      ).toHaveCount(0);
+    } else {
+      await expect(
+        page.getByRole("heading", { name: "Kalkulator belum tersedia" }),
+      ).toBeVisible();
+    }
   }
 });

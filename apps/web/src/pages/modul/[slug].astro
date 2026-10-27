@@ -4,6 +4,7 @@ import ConsentManager from "../../components/ConsentManager";
 import HppCalculator from "../../components/HppCalculator";
 import KprCalculator from "../../components/KprCalculator";
 import PayrollCalculator from "../../components/PayrollCalculator";
+import PriceMarginCalculator from "../../components/PriceMarginCalculator";
 import { tools } from "../../data/tools";
 
 export function getStaticPaths() {
@@ -17,7 +18,8 @@ const { tool } = Astro.props;
 const isPayrollTool = tool.slug === "gaji-bersih";
 const isKprTool = tool.slug === "simulasi-kpr";
 const isHppTool = tool.slug === "kalkulator-hpp";
-const isCalculatorTool = isPayrollTool || isKprTool || isHppTool;
+const isPriceMarginTool = tool.slug === "harga-jual-margin";
+const isCalculatorTool = isPayrollTool || isKprTool || isHppTool || isPriceMarginTool;
 ---
 
 <!doctype html>
@@ -27,8 +29,10 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={isKprTool
       ? "Simulasi KPR anuitas, flat, efektif, bunga tetap dan mengambang, biaya, serta pembayaran pokok tambahan. Tarif bank tidak disediakan."
-      : isHppTool
-        ? "Hitung HPP batch dan per unit dengan biaya langsung, susut bahan, overhead, dan alokasi penyusutan yang dinyatakan."
+      : isPriceMarginTool
+        ? "Hitung harga jual dengan membedakan margin dan markup, serta tampilkan laba setelah diskon dan biaya yang Anda pilih."
+        : isHppTool
+          ? "Hitung HPP batch dan per unit dengan biaya langsung, susut bahan, overhead, dan alokasi penyusutan yang dinyatakan."
         : `${tool.name}: status, cakupan, dan informasi sebelum kalkulator ini tersedia.`} />
     <meta name="theme-color" content="#f4f6fa" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -49,7 +53,7 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool;
       </header>
       <main class="module-page">
         <a class="access-back-link" href="/#modul">← Kembali ke semua modul</a>
-        <section class:list={["module-detail-card", `tone-${tool.tone}`, isPayrollTool && "payroll-module-card", isKprTool && "kpr-module-card", isHppTool && "hpp-module-card"]}>
+        <section class:list={["module-detail-card", `tone-${tool.tone}`, isPayrollTool && "payroll-module-card", isKprTool && "kpr-module-card", isHppTool && "hpp-module-card", isPriceMarginTool && "price-margin-module-card"]}>
           <div class="module-detail-heading">
             <span class="tool-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d={tool.icon} /></svg>
@@ -62,6 +66,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool;
                   ? "Kalkulator tersedia · tanpa tarif bank"
                   : isHppTool
                     ? "Kalkulator tersedia · input pengguna"
+                    : isPriceMarginTool
+                      ? "Kalkulator tersedia · tarif input pengguna"
                   : "Dalam persiapan"}
             </span>
           </div>
@@ -74,6 +80,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool;
                 ? "Kalkulator lengkap untuk membandingkan anuitas, flat, dan efektif, mengatur perubahan bunga, mencatat biaya, dan menghitung pembayaran pokok tambahan. Seluruh suku bunga dan biaya adalah input Anda; hasil bukan penawaran bank."
                 : isHppTool
                   ? "Hitung biaya pokok satu batch dan per unit. Masukkan biaya langsung, susut bahan, serta overhead dan penyusutan dengan metode alokasi yang terlihat. Semua nilai biaya adalah input Anda."
+                    : isPriceMarginTool
+                      ? "Bedakan margin dari markup dan hitung harga target atau periksa harga yang sudah ada. Diskon, biaya platform, pajak, dan biaya tetap hanya dihitung jika Anda memasukkannya."
                 : tool.description}
           </p>
 
@@ -88,6 +96,10 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool;
           ) : isHppTool ? (
             <div class="hpp-module-content">
               <HppCalculator client:load />
+            </div>
+          ) : isPriceMarginTool ? (
+            <div class="price-margin-module-content">
+              <PriceMarginCalculator client:load />
             </div>
           ) : (
             <div class="module-status-panel" role="status">
@@ -119,6 +131,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool;
               ? "Ketersediaan simulasi tidak berarti suku bunga atau biaya telah diverifikasi oleh bank."
               : isHppTool
                 ? "Metode alokasi mengikuti input Anda; hasil belum memasukkan biaya yang tidak dicatat."
+                : isPriceMarginTool
+                  ? "Diskon dan biaya dihitung pada dasar yang dinyatakan; tarif pajak atau platform tidak diverifikasi."
                 : "Status ketersediaan tidak berarti kalkulator sudah lulus."}</p>
           </div>
         </section>
@@ -132,6 +146,8 @@ const isCalculatorTool = isPayrollTool || isKprTool || isHppTool;
               ? "Modul Fase 1.3 · simulasi memakai asumsi pengguna, bukan kutipan bank."
               : isHppTool
                 ? "Modul Fase 1.4 · kalkulasi lokal dengan alokasi biaya yang dinyatakan."
+                : isPriceMarginTool
+                  ? "Modul Fase 1.5 · margin, markup, dan tarif berdasarkan input pengguna."
               : `Modul Fase ${tool.phase} · status implementasi belum tersedia.`}
         </p>
         <a class="footer-privacy-link" href="/lapor-iklan">Laporkan iklan tidak pantas</a>

@@ -1,0 +1,165 @@
+{
+  "tool": "harga-jual-margin",
+  "methodVersion": "1.5.0",
+  "reference": "Pembanding matematis independen: margin = laba bersih / omzet setelah diskon; markup = laba bersih / biaya dasar.",
+  "checkedOn": "2026-10-27",
+  "effective": "Rumus aritmetika tanpa masa berlaku tarif eksternal.",
+  "rounding": "Harga target dibulatkan ke atas; diskon dan potongan dibulatkan half-away-from-zero ke Rupiah utuh.",
+  "reviewer": "Pemeriksa manusia kedua belum ditetapkan; jangan gunakan fixture ini sebagai klaim review independen formal.",
+  "cases": [
+    {
+      "id": "margin-basic-25",
+      "boundary": "target margin terpisah dari markup",
+      "input": {
+        "mode": "margin",
+        "baseCostRupiah": "100000",
+        "targetBasisPoints": "2500",
+        "discountBasisPoints": "0",
+        "platformFeeBasisPoints": "0",
+        "taxBasisPoints": "0",
+        "fixedSaleCostRupiah": "0"
+      },
+      "expected": {
+        "listedPriceRupiah": "133334",
+        "discountRupiah": "0",
+        "netSalesRupiah": "133334",
+        "platformFeeRupiah": "0",
+        "taxRupiah": "0",
+        "profitRupiah": "33334",
+        "actualMarginBasisPoints": "2500",
+        "actualMarkupBasisPoints": "3333"
+      }
+    },
+    {
+      "id": "markup-basic-25",
+      "boundary": "target markup dihitung terhadap biaya dasar",
+      "input": {
+        "mode": "markup",
+        "baseCostRupiah": "100000",
+        "targetBasisPoints": "2500",
+        "discountBasisPoints": "0",
+        "platformFeeBasisPoints": "0",
+        "taxBasisPoints": "0",
+        "fixedSaleCostRupiah": "0"
+      },
+      "expected": {
+        "listedPriceRupiah": "125000",
+        "discountRupiah": "0",
+        "netSalesRupiah": "125000",
+        "platformFeeRupiah": "0",
+        "taxRupiah": "0",
+        "profitRupiah": "25000",
+        "actualMarginBasisPoints": "2000",
+        "actualMarkupBasisPoints": "2500"
+      }
+    },
+    {
+      "id": "zero-margin-with-costs",
+      "boundary": "target 0%, diskon, biaya platform, dan biaya tetap",
+      "input": {
+        "mode": "margin",
+        "baseCostRupiah": "150000",
+        "targetBasisPoints": "0",
+        "discountBasisPoints": "1000",
+        "platformFeeBasisPoints": "500",
+        "taxBasisPoints": "0",
+        "fixedSaleCostRupiah": "1000"
+      },
+      "expected": {
+        "listedPriceRupiah": "176609",
+        "discountRupiah": "17661",
+        "netSalesRupiah": "158948",
+        "platformFeeRupiah": "7947",
+        "taxRupiah": "0",
+        "profitRupiah": "1",
+        "actualMarginBasisPoints": "0",
+        "actualMarkupBasisPoints": "0"
+      }
+    },
+    {
+      "id": "margin-discount-platform-tax",
+      "boundary": "diskon, biaya platform, pajak input, dan biaya tetap",
+      "input": {
+        "mode": "margin",
+        "baseCostRupiah": "200000",
+        "targetBasisPoints": "3000",
+        "discountBasisPoints": "1000",
+        "platformFeeBasisPoints": "500",
+        "taxBasisPoints": "250",
+        "fixedSaleCostRupiah": "5000"
+      },
+      "expected": {
+        "listedPriceRupiah": "364445",
+        "discountRupiah": "36445",
+        "netSalesRupiah": "328000",
+        "platformFeeRupiah": "16400",
+        "taxRupiah": "8200",
+        "profitRupiah": "98400",
+        "actualMarginBasisPoints": "3000",
+        "actualMarkupBasisPoints": "4920"
+      }
+    },
+    {
+      "id": "margin-impossible",
+      "boundary": "target margin ditambah biaya mencapai pembagi nol",
+      "input": {
+        "mode": "margin",
+        "baseCostRupiah": "100000",
+        "targetBasisPoints": "9000",
+        "discountBasisPoints": "0",
+        "platformFeeBasisPoints": "500",
+        "taxBasisPoints": "500",
+        "fixedSaleCostRupiah": "0"
+      },
+      "expected": {
+        "errorCode": "impossible_target"
+      }
+    },
+    {
+      "id": "analysis-loss",
+      "boundary": "harga yang diperiksa menghasilkan laba negatif",
+      "input": {
+        "mode": "analyze",
+        "baseCostRupiah": "60000",
+        "sellingPriceRupiah": "50000",
+        "discountBasisPoints": "1000",
+        "platformFeeBasisPoints": "500",
+        "taxBasisPoints": "200",
+        "fixedSaleCostRupiah": "2000"
+      },
+      "expected": {
+        "listedPriceRupiah": "50000",
+        "discountRupiah": "5000",
+        "netSalesRupiah": "45000",
+        "platformFeeRupiah": "2250",
+        "taxRupiah": "900",
+        "profitRupiah": "-20150",
+        "actualMarginBasisPoints": "-4478",
+        "actualMarkupBasisPoints": "-3358"
+      }
+    },
+    {
+      "id": "markup-price-ceiling",
+      "boundary": "harga pecahan dibulatkan ke atas dan rasio aktual ditampilkan",
+      "input": {
+        "mode": "markup",
+        "baseCostRupiah": "3",
+        "targetBasisPoints": "5000",
+        "discountBasisPoints": "0",
+        "platformFeeBasisPoints": "0",
+        "taxBasisPoints": "0",
+        "fixedSaleCostRupiah": "0"
+      },
+      "expected": {
+        "listedPriceRupiah": "5",
+        "discountRupiah": "0",
+        "netSalesRupiah": "5",
+        "platformFeeRupiah": "0",
+        "taxRupiah": "0",
+        "profitRupiah": "2",
+        "actualMarginBasisPoints": "4000",
+        "actualMarkupBasisPoints": "6667"
+      }
+    }
+  ]
+}
